@@ -197,23 +197,6 @@ export default function Home() {
     { id: 'fires', label: 'Fires', icon: FireIcon, color: 'orange' },
   ] as const;
 
-  const allViewTabs = [...mainTabs, ...secondaryTabs];
-
-  const getTabClasses = (tabId: string, color: string) => {
-    const isActive = heroView === tabId;
-    const colorMap: Record<string, string> = {
-      blue: 'bg-blue-600 text-white',
-      amber: 'bg-amber-500 text-white',
-      cyan: 'bg-cyan-500 text-white',
-      purple: 'bg-purple-600 text-white',
-      rose: 'bg-rose-500 text-white',
-      orange: 'bg-orange-500 text-white',
-    };
-    return isActive
-      ? colorMap[color]
-      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100';
-  };
-
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Header */}
@@ -265,68 +248,67 @@ export default function Home() {
       </header>
 
       {/* Hero Map Section */}
-      <section id="map" className="relative">
+      <section id="map">
+        {/* Map Views */}
+        <div className="relative bg-slate-800 rounded-none sm:rounded-2xl sm:mx-4 xl:mx-8 2xl:mx-16 sm:mt-4 overflow-hidden shadow-xl">
+          {/* View Mode Tabs - Inside map container */}
+          <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20">
+            <div className="flex items-center gap-0.5 sm:gap-1 bg-slate-900/90 backdrop-blur-sm rounded-lg p-0.5 sm:p-1 border border-slate-700">
+              {mainTabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setHeroView(tab.id)}
+                  className={`
+                    flex items-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-2.5 rounded-md text-xs font-medium transition-colors
+                    ${heroView === tab.id
+                      ? 'bg-blue-600 text-white'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-700'
+                    }
+                  `}
+                >
+                  <tab.icon className="w-4 h-4" />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                </button>
+              ))}
 
-        {/* View Mode Tabs - Clean, minimal design */}
-        <div className="absolute top-3 right-4 z-20">
-          <div className="flex items-center gap-2 bg-white/95 backdrop-blur-sm rounded-lg p-1 shadow-lg border border-slate-200">
-            {/* Main tabs - always visible */}
-            {mainTabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setHeroView(tab.id)}
-                className={`
-                  flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-colors
-                  ${getTabClasses(tab.id, tab.color)}
-                `}
-              >
-                <tab.icon className="w-4 h-4" />
-                <span className="hidden sm:inline">{tab.label}</span>
-              </button>
-            ))}
+              <div className="relative">
+                <button
+                  onClick={() => setShowMoreTabs(!showMoreTabs)}
+                  className={`
+                    flex items-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-2.5 rounded-md text-xs font-medium transition-colors
+                    ${secondaryTabs.some(t => t.id === heroView)
+                      ? 'bg-blue-600 text-white'
+                      : 'text-slate-300 hover:text-white hover:bg-slate-700'
+                    }
+                  `}
+                >
+                  <EllipsisHorizontalIcon className="w-4 h-4" />
+                  <span className="hidden sm:inline">More</span>
+                </button>
 
-            {/* More dropdown - always available for secondary tabs */}
-            <div className="relative">
-              <button
-                onClick={() => setShowMoreTabs(!showMoreTabs)}
-                className={`
-                  flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-colors
-                  ${secondaryTabs.some(t => t.id === heroView)
-                    ? getTabClasses(heroView, secondaryTabs.find(t => t.id === heroView)?.color || 'slate')
-                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
-                  }
-                `}
-              >
-                <EllipsisHorizontalIcon className="w-4 h-4" />
-                <span className="hidden sm:inline">More</span>
-              </button>
-
-              {showMoreTabs && (
-                <div className="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-xl border border-slate-200 py-1.5 min-w-[140px] z-50">
-                  {secondaryTabs.map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => {
-                        setHeroView(tab.id);
-                        setShowMoreTabs(false);
-                      }}
-                      className={`
-                        w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-left transition-colors
-                        ${heroView === tab.id ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}
-                      `}
-                    >
-                      <tab.icon className="w-4 h-4" />
-                      {tab.label}
-                    </button>
-                  ))}
-                </div>
-              )}
+                {showMoreTabs && (
+                  <div className="absolute top-full right-0 mt-2 bg-slate-800 rounded-lg shadow-xl border border-slate-700 py-1.5 min-w-[140px] z-50">
+                    {secondaryTabs.map((tab) => (
+                      <button
+                        key={tab.id}
+                        onClick={() => {
+                          setHeroView(tab.id);
+                          setShowMoreTabs(false);
+                        }}
+                        className={`
+                          w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-left transition-colors
+                          ${heroView === tab.id ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white'}
+                        `}
+                      >
+                        <tab.icon className="w-4 h-4" />
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Map Views */}
-        <div className="bg-slate-800 rounded-none sm:rounded-2xl sm:mx-4 xl:mx-8 2xl:mx-16 sm:mt-4 overflow-hidden shadow-xl">
           {heroView === 'hotspots' && (
             <WorldMap
               watchpoints={watchpoints}

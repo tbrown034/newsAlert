@@ -93,9 +93,9 @@ export function NewsCard({ item }: NewsCardProps) {
       onKeyDown={handleKeyDown}
     >
       {/* Two-column layout: Source on left, Content on right */}
-      <div className="flex gap-3">
+      <div className="flex gap-2 sm:gap-3">
         {/* Left column: Source info */}
-        <div className="flex-shrink-0 w-24 sm:w-28">
+        <div className="flex-shrink-0 w-20 sm:w-24">
           <div className="flex flex-col gap-1.5">
             {/* Platform icon + name */}
             <div className="flex items-center gap-1.5">
@@ -111,8 +111,8 @@ export function NewsCard({ item }: NewsCardProps) {
             </div>
 
             {/* Tier badge + time */}
-            <div className="flex items-center gap-2">
-              <span className={`px-1.5 py-0.5 text-2xs font-medium rounded border ${tierStyle}`}>
+            <div className="flex items-center gap-1.5">
+              <span className={`px-1 py-0.5 text-2xs font-medium rounded border ${tierStyle}`}>
                 {item.source.tier.toUpperCase()}
               </span>
               <span className="text-2xs text-slate-400">

@@ -163,7 +163,7 @@ export function NewsFeed({
   return (
     <div className="flex flex-col bg-white dark:bg-black rounded-xl overflow-hidden">
       {/* Region Tabs */}
-      <div className="sticky top-16 z-40 bg-white/95 dark:bg-black/95 backdrop-blur-sm border-b border-slate-200 dark:border-[#2f3336]">
+      <div className="sticky top-16 z-30 bg-white dark:bg-black border-b border-slate-200 dark:border-[#2f3336]">
         <div className="flex items-center">
           <div className="flex-1 overflow-x-auto scrollbar-hide">
             <div className="flex">
@@ -176,7 +176,7 @@ export function NewsFeed({
                     key={tab.id}
                     onClick={() => onSelectWatchpoint?.(tab.id)}
                     className={`
-                      relative flex-shrink-0 px-4 py-3 text-sm font-medium
+                      relative flex-shrink-0 px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-medium
                       transition-colors duration-200 whitespace-nowrap
                       ${isSelected
                         ? 'text-slate-900 dark:text-[#e7e9ea]'
