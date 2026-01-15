@@ -24,8 +24,11 @@ interface FireEvent {
 }
 
 // NASA FIRMS API for satellite fire detection
-const FIRMS_API_KEY = '23365a93d5ce62220f315ba6fb4b5de9';
-const FIRMS_API = `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${FIRMS_API_KEY}/VIIRS_SNPP_NRT/world/1`;
+// API key should be in environment variables for security
+const FIRMS_API_KEY = process.env.NASA_FIRMS_API_KEY || '';
+const FIRMS_API = FIRMS_API_KEY
+  ? `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${FIRMS_API_KEY}/VIIRS_SNPP_NRT/world/1`
+  : '';
 // NASA EONET API for natural events including wildfires
 const EONET_API = 'https://eonet.gsfc.nasa.gov/api/v3/events';
 // GDACS RSS for global disasters
@@ -105,11 +108,13 @@ export async function GET() {
   const fires: FireEvent[] = [];
 
   // Fetch from NASA FIRMS (satellite fire detections)
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 20000);
+  // Skip if no API key configured
+  if (FIRMS_API) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 20000);
 
-    const response = await fetch(FIRMS_API, {
+      const response = await fetch(FIRMS_API, {
       signal: controller.signal,
       headers: {
         'User-Agent': 'newsAlert/1.0 (OSINT Dashboard)',
@@ -183,6 +188,7 @@ export async function GET() {
   } catch (error) {
     console.error('FIRMS fetch error:', error);
   }
+}
 
   // Fetch from NASA EONET (wildfires category = 8)
   try {
