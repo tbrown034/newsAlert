@@ -1,6 +1,3 @@
-/* Google Fonts - Serif for headlines */
-@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap');
-
 @import "tailwindcss";
 
 :root {
@@ -27,8 +24,8 @@
   --accent-purple: #7c3aed;
   --accent-purple-light: #ede9fe;
 
-  /* Typography */
-  --font-serif: 'Source Serif 4', Georgia, serif;
+  /* Typography - loaded via next/font/google for optimal performance */
+  --font-serif: var(--font-source-serif), Georgia, serif;
   --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
@@ -60,6 +57,63 @@ body {
 /* Serif headlines */
 h1, h2, h3, .font-serif {
   font-family: var(--font-serif);
+}
+
+/* ============================================
+   TYPOGRAPHY SYSTEM
+   ============================================
+
+   Type Scale (based on 16px base):
+   - text-2xs:  10px (0.625rem) - metadata, timestamps
+   - text-xs:   12px (0.75rem)  - small labels
+   - text-sm:   14px (0.875rem) - secondary text
+   - text-base: 16px (1rem)     - body text
+   - text-lg:   18px (1.125rem) - emphasized text
+   - text-xl:   20px (1.25rem)  - subheadings
+   - text-2xl:  24px (1.5rem)   - section titles
+   - text-3xl:  30px (1.875rem) - page titles
+
+   Custom sizes for specific use cases:
+*/
+
+/* Micro text - metadata, timestamps, badges */
+.text-2xs {
+  font-size: 0.625rem; /* 10px */
+  line-height: 1.4;
+}
+
+/* News headline size - slightly larger than sm for better readability */
+.text-news {
+  font-size: 0.9375rem; /* 15px */
+  line-height: 1.5;
+}
+
+/* Caption text - for attribution, sources */
+.text-caption {
+  font-size: 0.6875rem; /* 11px */
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+}
+
+/* Headline typography - tighter tracking for larger text */
+.headline {
+  font-family: var(--font-serif);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Body text optimized for reading */
+.body-text {
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+/* Label typography - for section headers, tags */
+.label-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 /* Custom scrollbar for light theme */

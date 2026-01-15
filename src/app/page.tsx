@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { WatchpointSelector, NewsFeed, Legend, WorldMap, SituationBriefing, SeismicMap, WeatherMap, OutagesMap, TravelMap, FiresMap } from '@/components';
 import { watchpoints as defaultWatchpoints } from '@/lib/mockData';
 import { NewsItem, WatchpointId, Watchpoint, Earthquake } from '@/types';
-import { SparklesIcon, GlobeAltIcon, CloudIcon, SignalIcon, ExclamationTriangleIcon, FireIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon, GlobeAltIcon, CloudIcon, SignalIcon, ExclamationTriangleIcon, FireIcon, EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import { MapPinIcon } from '@heroicons/react/24/solid';
 
 interface ApiResponse {
@@ -31,6 +31,7 @@ export default function Home() {
   const [earthquakes, setEarthquakes] = useState<Earthquake[]>([]);
   const [selectedQuake, setSelectedQuake] = useState<Earthquake | null>(null);
   const [seismicLoading, setSeismicLoading] = useState(false);
+  const [showMoreTabs, setShowMoreTabs] = useState(false);
 
   // Activity level priority for auto-selection
   const activityPriority: Record<string, number> = {
@@ -134,14 +135,20 @@ export default function Home() {
     return acc;
   }, {} as Record<string, number>);
 
-  const viewTabs = [
+  // Main tabs always visible, secondary in "More" dropdown on mobile
+  const mainTabs = [
     { id: 'hotspots', label: 'Hotspots', icon: MapPinIcon, color: 'blue' },
     { id: 'seismic', label: 'Seismic', icon: GlobeAltIcon, color: 'amber' },
     { id: 'weather', label: 'Weather', icon: CloudIcon, color: 'cyan' },
+  ] as const;
+
+  const secondaryTabs = [
     { id: 'outages', label: 'Outages', icon: SignalIcon, color: 'purple' },
     { id: 'travel', label: 'Travel', icon: ExclamationTriangleIcon, color: 'rose' },
     { id: 'fires', label: 'Fires', icon: FireIcon, color: 'orange' },
   ] as const;
+
+  const allViewTabs = [...mainTabs, ...secondaryTabs];
 
   const getTabClasses = (tabId: string, color: string) => {
     const isActive = heroView === tabId;
@@ -170,7 +177,7 @@ export default function Home() {
                 <GlobeAltIcon className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900 font-serif tracking-tight">
+                <h1 className="text-2xl font-bold text-slate-900 headline">
                   Sentinel
                 </h1>
                 <p className="text-xs text-blue-600 font-medium tracking-wide uppercase">
@@ -210,27 +217,83 @@ export default function Home() {
 
       {/* Hero Map Section */}
       <section id="map" className="relative">
-        {/* Section Label */}
-        <div className="absolute top-4 left-4 z-10">
+        {/* Section Label - hidden on mobile when tabs wrap */}
+        <div className="absolute top-4 left-4 z-10 hidden sm:block">
           <span className="section-label">Live Monitoring</span>
         </div>
 
         {/* View Mode Tabs */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-4 z-20">
-          <div className="flex gap-1 bg-white/90 backdrop-blur-sm rounded-xl p-1.5 shadow-lg border border-slate-200 max-w-[calc(100vw-2rem)] overflow-x-auto scrollbar-hide">
-            {viewTabs.map((tab) => (
+        <div className="absolute top-2 sm:top-3 left-2 right-2 sm:left-auto sm:right-4 z-20">
+          <div className="flex justify-center gap-1 bg-white/90 backdrop-blur-sm rounded-xl p-1.5 shadow-lg border border-slate-200">
+            {/* Main tabs - always visible */}
+            {mainTabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setHeroView(tab.id)}
                 className={`
-                  flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold flex-shrink-0 btn-press
+                  flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-2xs sm:text-xs font-semibold btn-press
                   ${getTabClasses(tab.id, tab.color)}
                 `}
               >
-                <tab.icon className="w-3.5 h-3.5" />
+                <tab.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 {tab.label}
               </button>
             ))}
+
+            {/* Secondary tabs - visible on desktop, dropdown on mobile */}
+            <div className="hidden sm:contents">
+              {secondaryTabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setHeroView(tab.id)}
+                  className={`
+                    flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold btn-press
+                    ${getTabClasses(tab.id, tab.color)}
+                  `}
+                >
+                  <tab.icon className="w-3.5 h-3.5" />
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* More dropdown - mobile only */}
+            <div className="relative sm:hidden">
+              <button
+                onClick={() => setShowMoreTabs(!showMoreTabs)}
+                className={`
+                  flex items-center gap-1 px-2 py-1.5 rounded-lg text-2xs font-semibold btn-press
+                  ${secondaryTabs.some(t => t.id === heroView)
+                    ? getTabClasses(heroView, secondaryTabs.find(t => t.id === heroView)?.color || 'slate')
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }
+                `}
+              >
+                <EllipsisHorizontalIcon className="w-4 h-4" />
+                More
+              </button>
+
+              {showMoreTabs && (
+                <div className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-[120px] z-50">
+                  {secondaryTabs.map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => {
+                        setHeroView(tab.id);
+                        setShowMoreTabs(false);
+                      }}
+                      className={`
+                        w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-left
+                        ${heroView === tab.id ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-50'}
+                      `}
+                    >
+                      <tab.icon className="w-3.5 h-3.5" />
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -267,7 +330,7 @@ export default function Home() {
         {/* Section Header */}
         <div className="mb-6">
           <span className="section-label">Intelligence Feed</span>
-          <h2 className="text-3xl font-bold text-slate-900 font-serif mt-2">
+          <h2 className="text-3xl font-bold text-slate-900 headline mt-2">
             Real-Time Updates
           </h2>
           <p className="text-slate-600 mt-1">

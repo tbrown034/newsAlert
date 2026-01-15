@@ -37,7 +37,7 @@ export function WatchpointSelector({
             key={wp.id}
             onClick={() => onSelect(wp.id)}
             className={`
-              relative flex-1 min-w-[80px] py-4 text-[15px] font-medium
+              relative flex-1 min-w-[80px] py-4 text-news font-medium
               transition-colors duration-150
               ${isSelected ? 'text-gray-100' : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.03]'}
             `}

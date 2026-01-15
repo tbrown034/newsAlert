@@ -66,7 +66,7 @@ export function Legend() {
                       />
                     ))}
                   </div>
-                  <div className="flex justify-between mt-1 text-[10px] text-slate-400">
+                  <div className="flex justify-between mt-1 text-2xs text-slate-400">
                     <span>Close to event</span>
                     <span>Further from event</span>
                   </div>
@@ -144,7 +144,7 @@ export function Legend() {
                     <span className="text-xs text-slate-600">2-3x normal rate - above baseline</span>
                   </div>
                 </div>
-                <p className="text-[11px] text-slate-400 mt-3 italic">
+                <p className="text-caption text-slate-400 mt-3 italic">
                   Example: &quot;5 posts in 2h (usually ~3/day)&quot;
                 </p>
               </section>
@@ -179,7 +179,7 @@ export function Legend() {
 
               {/* Philosophy */}
               <section className="pt-2 border-t border-slate-200">
-                <p className="text-[11px] text-slate-500 leading-relaxed">
+                <p className="text-caption text-slate-500 leading-relaxed">
                   <strong className="text-slate-600">Philosophy:</strong> We show you <em>access</em>, not <em>truth claims</em>.
                   A reporter may cite &quot;anonymous sources&quot; while an aggregator shares raw footage.
                   Both have value. This system helps you understand the information chain without

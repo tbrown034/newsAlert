@@ -226,7 +226,7 @@ export function SeismicFeed({ onBack }: SeismicFeedProps) {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className={`px-2 py-0.5 text-[10px] font-bold rounded ${style.text} bg-white/50`}>
+          <span className={`px-2 py-0.5 text-2xs font-bold rounded ${style.text} bg-white/50`}>
             {style.label}
           </span>
           <button
@@ -260,7 +260,7 @@ export function SeismicFeed({ onBack }: SeismicFeedProps) {
         )}
 
         {/* Stats footer */}
-        <div className="mt-3 pt-3 border-t border-slate-200/50 flex items-center justify-between text-[10px] text-slate-500">
+        <div className="mt-3 pt-3 border-t border-slate-200/50 flex items-center justify-between text-2xs text-slate-500">
           <span>{stats.total} earthquakes (M2.5+) in 24h</span>
           <span>Max: M{stats.maxMagnitude.toFixed(1)}</span>
         </div>

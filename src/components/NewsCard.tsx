@@ -111,7 +111,7 @@ export function NewsCard({ item }: NewsCardProps) {
       )}
 
       {/* Main Content */}
-      <p className="text-[15px] text-slate-800 leading-relaxed mb-3">
+      <p className="text-news text-slate-800 mb-3">
         {item.title}
       </p>
 
@@ -129,7 +129,7 @@ export function NewsCard({ item }: NewsCardProps) {
                 <CheckBadgeSolid className="w-4 h-4 text-blue-500" />
               )}
             </div>
-            <span className={`px-2 py-0.5 text-[10px] font-medium rounded border ${tierStyle}`}>
+            <span className={`px-2 py-0.5 text-2xs font-medium rounded border ${tierStyle}`}>
               {item.source.tier.toUpperCase()}
             </span>
             <span className="text-xs text-slate-500">
@@ -150,25 +150,25 @@ export function NewsCard({ item }: NewsCardProps) {
             <div className="flex items-center gap-1.5 mt-1 flex-wrap">
               {/* Content type pill */}
               {messageAnalysis.contentType.type !== 'general' && (
-                <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${ctStyle.bgColor} ${ctStyle.color}`}>
+                <span className={`px-1.5 py-0.5 text-2xs font-medium rounded ${ctStyle.bgColor} ${ctStyle.color}`}>
                   {ctStyle.label}
                 </span>
               )}
               {/* Verification indicator */}
               {messageAnalysis.verification.confidence > 0.5 && messageAnalysis.verification.level !== 'unverified' && (
-                <span className={`text-[10px] ${vStyle.color}`}>
+                <span className={`text-2xs ${vStyle.color}`}>
                   {vStyle.icon} {vStyle.label}
                 </span>
               )}
               {/* Show unverified only with high confidence (explicit markers) */}
               {messageAnalysis.verification.level === 'unverified' && messageAnalysis.verification.confidence > 0.7 && (
-                <span className={`text-[10px] ${vStyle.color}`}>
+                <span className={`text-2xs ${vStyle.color}`}>
                   {vStyle.icon} {vStyle.label}
                 </span>
               )}
               {/* Provenance with cited sources */}
               {messageAnalysis.provenance.citedSources.length > 0 && (
-                <span className={`text-[10px] ${pStyle.color}`}>
+                <span className={`text-2xs ${pStyle.color}`}>
                   via {messageAnalysis.provenance.citedSources.slice(0, 2).join(', ')}
                 </span>
               )}

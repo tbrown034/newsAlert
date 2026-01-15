@@ -145,7 +145,7 @@ export function SourceAccessKey({ provenance, compact = false }: SourceAccessKey
           <div className="absolute left-0 top-full mt-2 z-50 w-64 p-3 bg-[#1a1d29] rounded-lg border border-gray-700 shadow-xl">
             {/* Mini spectrum */}
             <div className="mb-3">
-              <div className="text-[10px] text-gray-500 mb-1.5">Source Access Key</div>
+              <div className="text-2xs text-gray-500 mb-1.5">Source Access Key</div>
               <div className="relative h-1.5 rounded-full overflow-hidden bg-gray-800">
                 <div
                   className="absolute inset-y-0 left-0 rounded-full"
@@ -174,7 +174,7 @@ export function SourceAccessKey({ provenance, compact = false }: SourceAccessKey
             {/* Details */}
             <ul className="space-y-1">
               {currentConfig.details.map((detail, i) => (
-                <li key={i} className="flex items-start gap-2 text-[11px] text-gray-500">
+                <li key={i} className="flex items-start gap-2 text-caption text-gray-500">
                   <span className={`mt-1 w-1 h-1 rounded-full ${currentConfig.bgColor.replace('/10', '')}`} />
                   {detail}
                 </li>
@@ -184,7 +184,7 @@ export function SourceAccessKey({ provenance, compact = false }: SourceAccessKey
             {/* Custom description if provided */}
             {provenance.description && provenance.description !== currentConfig.description && (
               <div className="mt-2 pt-2 border-t border-gray-700">
-                <p className="text-[11px] text-gray-400 italic">{provenance.description}</p>
+                <p className="text-caption text-gray-400 italic">{provenance.description}</p>
               </div>
             )}
           </div>
@@ -223,7 +223,7 @@ export function SourceAccessKey({ provenance, compact = false }: SourceAccessKey
         />
 
         {/* Labels below spectrum */}
-        <div className="flex justify-between mt-2 text-[10px] text-gray-500">
+        <div className="flex justify-between mt-2 text-2xs text-gray-500">
           <span>Close to event</span>
           <span>Further from event</span>
         </div>
@@ -262,7 +262,7 @@ export function SourceAccessKey({ provenance, compact = false }: SourceAccessKey
                   <p className="text-xs text-gray-400 mb-2">{config.description}</p>
                   <ul className="space-y-1">
                     {config.details.map((detail, i) => (
-                      <li key={i} className="flex items-start gap-2 text-[11px] text-gray-500">
+                      <li key={i} className="flex items-start gap-2 text-caption text-gray-500">
                         <span className={`mt-1 w-1.5 h-1.5 rounded-full`} style={{ backgroundColor: spectrumColors[type] }} />
                         {detail}
                       </li>

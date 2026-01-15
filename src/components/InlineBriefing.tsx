@@ -182,11 +182,11 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
             <span className="text-xs text-slate-400">•</span>
             <span className="text-xs text-slate-500">{regionDisplayNames[region]}</span>
             {briefing.fromCache && (
-              <span className="text-[10px] text-slate-400">(cached)</span>
+              <span className="text-2xs text-slate-400">(cached)</span>
             )}
           </div>
           <div className="flex items-center gap-2">
-            <span className={`px-2 py-0.5 text-[10px] font-bold rounded ${tension.bgColor} ${tension.color}`}>
+            <span className={`px-2 py-0.5 text-2xs font-bold rounded ${tension.bgColor} ${tension.color}`}>
               {tension.label}
             </span>
             <span className="text-xs text-slate-500">{tensionScore}/10</span>
@@ -212,7 +212,7 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-sm text-slate-800">{dev.headline}</span>
                       {dev.confidence && (
-                        <span className={`text-[9px] ${confidenceStyles[dev.confidence]}`}>
+                        <span className={`text-2xs ${confidenceStyles[dev.confidence]}`}>
                           {dev.confidence} conf.
                         </span>
                       )}
@@ -281,7 +281,7 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
 
       {/* Footer - usage stats */}
       {briefing.usage && (
-        <div className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500">
+        <div className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-2xs text-slate-500">
           <span>{briefing.sourcesAnalyzed} posts analyzed</span>
           <div className="flex items-center gap-2">
             <span>{briefing.usage.inputTokens + briefing.usage.outputTokens} tokens</span>
