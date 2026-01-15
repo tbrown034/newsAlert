@@ -20,8 +20,8 @@ interface SeismicMapProps {
 
 // Get circle radius based on magnitude (exponential scaling)
 function getMagnitudeRadius(mag: number): number {
-  // Exponential scaling: mag 2 = 3px, mag 5 = 12px, mag 7 = 32px, mag 9 = 96px
-  return Math.pow(2, mag) / 2;
+  // More visible scaling: mag 2.5 = 6px, mag 5 = 16px, mag 7 = 40px
+  return Math.pow(2, mag - 1) * 1.5;
 }
 
 // Get color based on magnitude
@@ -64,7 +64,7 @@ function SeismicMapComponent({ earthquakes, selected, onSelect, isLoading }: Sei
   if (!isMounted) {
     return (
       <div className="relative w-full bg-[#0a0d12] border-b border-gray-800/60 overflow-hidden">
-        <div className="relative h-[180px] sm:h-[220px] flex items-center justify-center">
+        <div className="relative h-[280px] sm:h-[340px] flex items-center justify-center">
           <div className="text-gray-600 text-sm">Loading seismic map...</div>
         </div>
       </div>
@@ -73,12 +73,12 @@ function SeismicMapComponent({ earthquakes, selected, onSelect, isLoading }: Sei
 
   return (
     <div className="relative w-full bg-[#0a0d12] border-b border-gray-800/60 overflow-hidden">
-      <div className="relative h-[180px] sm:h-[220px]">
+      <div className="relative h-[280px] sm:h-[340px]">
         <ComposableMap
           projection="geoEqualEarth"
           projectionConfig={{
-            scale: 160,
-            center: [0, 10], // Centered globally, slight north bias
+            scale: 220,
+            center: [0, 15],
           }}
           style={{
             width: '100%',
@@ -93,7 +93,7 @@ function SeismicMapComponent({ earthquakes, selected, onSelect, isLoading }: Sei
                   geography={geo}
                   fill="#1a1f2e"
                   stroke="#2d3748"
-                  strokeWidth={0.3}
+                  strokeWidth={0.4}
                   style={{
                     default: { outline: 'none' },
                     hover: { outline: 'none', fill: '#252d3d' },
@@ -105,113 +105,113 @@ function SeismicMapComponent({ earthquakes, selected, onSelect, isLoading }: Sei
           </Geographies>
 
           {/* Earthquake markers */}
-            {earthquakes.map((eq) => {
-              const isSelected = selected?.id === eq.id;
-              const radius = getMagnitudeRadius(eq.magnitude);
-              const color = getMagnitudeColor(eq.magnitude);
+          {earthquakes.map((eq) => {
+            const isSelected = selected?.id === eq.id;
+            const radius = getMagnitudeRadius(eq.magnitude);
+            const color = getMagnitudeColor(eq.magnitude);
 
-              return (
-                <Marker
-                  key={eq.id}
-                  coordinates={[eq.coordinates[0], eq.coordinates[1]]}
-                  onClick={() => onSelect(isSelected ? null : eq)}
-                  style={{ default: { cursor: 'pointer' } }}
-                >
-                  {/* Outer glow for significant quakes */}
-                  {eq.magnitude >= 5 && (
-                    <circle
-                      r={radius * 1.5}
-                      fill={color}
-                      fillOpacity={0.2}
-                      className={eq.magnitude >= 6 ? 'animate-ping' : ''}
-                    />
-                  )}
-
-                  {/* Main marker */}
+            return (
+              <Marker
+                key={eq.id}
+                coordinates={[eq.coordinates[0], eq.coordinates[1]]}
+                onClick={() => onSelect(isSelected ? null : eq)}
+                style={{ default: { cursor: 'pointer' } }}
+              >
+                {/* Outer glow for significant quakes */}
+                {eq.magnitude >= 5 && (
                   <circle
-                    r={radius}
+                    r={radius * 1.6}
                     fill={color}
-                    fillOpacity={0.7}
-                    stroke={isSelected ? '#fff' : 'rgba(255,255,255,0.3)'}
-                    strokeWidth={isSelected ? 2 : 0.5}
-                    className="transition-all duration-200 hover:fill-opacity-90"
+                    fillOpacity={0.25}
+                    className={eq.magnitude >= 6 ? 'animate-ping' : ''}
                   />
+                )}
 
-                  {/* Magnitude label for large quakes */}
-                  {eq.magnitude >= 5 && (
-                    <text
-                      y={radius + 12}
-                      textAnchor="middle"
-                      fill="#fff"
-                      fontSize={9}
-                      fontWeight="bold"
-                      style={{ textShadow: '0 1px 3px rgba(0,0,0,0.9)' }}
-                    >
-                      M{eq.magnitude.toFixed(1)}
-                    </text>
-                  )}
-                </Marker>
-              );
-            })}
+                {/* Main marker */}
+                <circle
+                  r={radius}
+                  fill={color}
+                  fillOpacity={0.8}
+                  stroke={isSelected ? '#fff' : 'rgba(255,255,255,0.4)'}
+                  strokeWidth={isSelected ? 3 : 1}
+                  className="transition-all duration-200 hover:fill-opacity-100"
+                />
+
+                {/* Magnitude label for large quakes */}
+                {eq.magnitude >= 5 && (
+                  <text
+                    y={radius + 16}
+                    textAnchor="middle"
+                    fill="#fff"
+                    fontSize={12}
+                    fontWeight="bold"
+                    style={{ textShadow: '0 2px 4px rgba(0,0,0,0.9)' }}
+                  >
+                    M{eq.magnitude.toFixed(1)}
+                  </text>
+                )}
+              </Marker>
+            );
+          })}
         </ComposableMap>
 
         {/* Loading overlay */}
         {isLoading && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-            <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin" />
           </div>
         )}
 
         {/* Legend */}
-        <div className="absolute bottom-3 right-4 flex items-center gap-3 text-[10px] text-gray-400 z-10 bg-black/50 px-2 py-1 rounded">
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-red-500" />
+        <div className="absolute bottom-4 right-4 flex items-center gap-4 text-xs text-gray-400 z-10 bg-black/60 px-3 py-2 rounded-lg">
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-red-500" />
             <span>7+</span>
           </div>
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-orange-500" />
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-orange-500" />
             <span>6+</span>
           </div>
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-amber-500" />
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-amber-500" />
             <span>5+</span>
           </div>
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-green-500" />
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-green-500" />
             <span>&lt;5</span>
           </div>
         </div>
 
         {/* Stats badge */}
-        <div className="absolute top-3 left-4 text-xs text-gray-400 z-10 bg-black/50 px-2 py-1 rounded">
-          {earthquakes.length} earthquakes
+        <div className="absolute top-4 left-4 text-sm text-gray-300 z-10 bg-black/60 px-3 py-2 rounded-lg font-medium">
+          {earthquakes.length} earthquakes (24h)
         </div>
       </div>
 
       {/* Selected earthquake details */}
       {selected && (
-        <div className="px-4 py-3 bg-black/40 border-t border-gray-800/40">
+        <div className="px-4 py-4 bg-black/40 border-t border-gray-800/40">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-3 mb-2">
                 <span
-                  className="px-2 py-0.5 text-xs font-bold rounded"
+                  className="px-3 py-1 text-sm font-bold rounded-lg"
                   style={{
-                    backgroundColor: `${getMagnitudeColor(selected.magnitude)}20`,
+                    backgroundColor: `${getMagnitudeColor(selected.magnitude)}25`,
                     color: getMagnitudeColor(selected.magnitude),
                   }}
                 >
                   M{selected.magnitude.toFixed(1)}
                 </span>
-                <span className="text-xs text-gray-500">{formatTimeAgo(selected.time)}</span>
+                <span className="text-sm text-gray-400">{formatTimeAgo(selected.time)}</span>
                 {selected.tsunami && (
-                  <span className="px-1.5 py-0.5 text-[10px] font-medium bg-blue-500/20 text-blue-400 rounded">
+                  <span className="px-2 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-lg">
                     TSUNAMI
                   </span>
                 )}
                 {selected.alert && (
                   <span
-                    className="px-1.5 py-0.5 text-[10px] font-medium rounded"
+                    className="px-2 py-1 text-xs font-medium rounded-lg"
                     style={{
                       backgroundColor: `${getAlertColor(selected.alert)}20`,
                       color: getAlertColor(selected.alert),
@@ -221,8 +221,8 @@ function SeismicMapComponent({ earthquakes, selected, onSelect, isLoading }: Sei
                   </span>
                 )}
               </div>
-              <p className="text-sm text-gray-200 truncate">{selected.place}</p>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-base text-gray-200 truncate">{selected.place}</p>
+              <p className="text-sm text-gray-500 mt-1">
                 Depth: {selected.depth.toFixed(1)}km
                 {selected.felt && ` • ${selected.felt} felt reports`}
               </p>
@@ -231,7 +231,7 @@ function SeismicMapComponent({ earthquakes, selected, onSelect, isLoading }: Sei
               href={selected.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-blue-400 hover:text-blue-300 whitespace-nowrap"
+              className="text-sm text-blue-400 hover:text-blue-300 whitespace-nowrap font-medium"
             >
               USGS Details →
             </a>

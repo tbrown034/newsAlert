@@ -81,7 +81,7 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
   if (!isMounted) {
     return (
       <div className="relative w-full bg-[#0a0d12] border-b border-gray-800/60 overflow-hidden">
-        <div className="relative h-[180px] sm:h-[220px] flex items-center justify-center">
+        <div className="relative h-[280px] sm:h-[340px] flex items-center justify-center">
           <div className="text-gray-600 text-sm">Loading map...</div>
         </div>
       </div>
@@ -90,13 +90,13 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
 
   return (
     <div className="relative w-full bg-[#0a0d12] border-b border-gray-800/60 overflow-hidden">
-      {/* Map Container - Fixed view centered on Eurasia where most hotspots are */}
-      <div className="relative h-[180px] sm:h-[220px]">
+      {/* Map Container */}
+      <div className="relative h-[280px] sm:h-[340px]">
         <ComposableMap
           projection="geoEqualEarth"
           projectionConfig={{
-            scale: 180,
-            center: [45, 30], // Center between Middle East and Europe
+            scale: 280,
+            center: [40, 25],
           }}
           style={{
             width: '100%',
@@ -111,7 +111,7 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
                   geography={geo}
                   fill="#1a1f2e"
                   stroke="#2d3748"
-                  strokeWidth={0.3}
+                  strokeWidth={0.4}
                   style={{
                     default: { outline: 'none' },
                     hover: { outline: 'none', fill: '#252d3d' },
@@ -123,113 +123,115 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
           </Geographies>
 
           {/* Region Markers */}
-            {Object.entries(regionMarkers).map(([id, marker]) => {
-              const activityLevel = getActivityLevel(id);
-              const colors = activityColors[activityLevel];
-              const isSelected = selected === id;
-              const isHot = activityLevel === 'critical' || activityLevel === 'high';
-              const count = regionCounts[id] || 0;
+          {Object.entries(regionMarkers).map(([id, marker]) => {
+            const activityLevel = getActivityLevel(id);
+            const colors = activityColors[activityLevel];
+            const isSelected = selected === id;
+            const isHot = activityLevel === 'critical' || activityLevel === 'high';
+            const count = regionCounts[id] || 0;
 
-              return (
-                <Marker
-                  key={id}
-                  coordinates={marker.coordinates}
-                  onClick={() => onSelect(id as WatchpointId)}
-                  style={{ default: { cursor: 'pointer' } }}
-                >
-                  {/* Pulse ring for hot regions */}
-                  {isHot && (
+            return (
+              <Marker
+                key={id}
+                coordinates={marker.coordinates}
+                onClick={() => onSelect(id as WatchpointId)}
+                style={{ default: { cursor: 'pointer' } }}
+              >
+                {/* Pulse ring for hot regions */}
+                {isHot && (
+                  <circle
+                    r={28}
+                    fill="none"
+                    stroke={colors.fill}
+                    strokeWidth={3}
+                    opacity={0.5}
+                    className="animate-ping"
+                  />
+                )}
+
+                {/* Outer glow */}
+                <circle
+                  r={isSelected ? 20 : 16}
+                  fill={colors.glow}
+                  opacity={0.6}
+                />
+
+                {/* Main marker */}
+                <circle
+                  r={isSelected ? 12 : 10}
+                  fill={colors.fill}
+                  stroke={isSelected ? '#fff' : 'rgba(255,255,255,0.3)'}
+                  strokeWidth={isSelected ? 3 : 1}
+                  className={isHot ? 'animate-pulse' : ''}
+                />
+
+                {/* Count badge */}
+                {count > 0 && (
+                  <>
                     <circle
-                      r={20}
-                      fill="none"
+                      cx={16}
+                      cy={-16}
+                      r={12}
+                      fill="#0a0d12"
                       stroke={colors.fill}
                       strokeWidth={2}
-                      opacity={0.4}
-                      className="animate-ping"
                     />
-                  )}
+                    <text
+                      x={16}
+                      y={-12}
+                      textAnchor="middle"
+                      fill={colors.fill}
+                      fontSize={11}
+                      fontWeight="bold"
+                    >
+                      {count > 99 ? '99+' : count}
+                    </text>
+                  </>
+                )}
 
-                  {/* Outer glow */}
-                  <circle
-                    r={isSelected ? 14 : 10}
-                    fill={colors.glow}
-                    opacity={0.5}
-                  />
+                {/* Label */}
+                <text
+                  y={30}
+                  textAnchor="middle"
+                  fill={isSelected ? '#fff' : '#d1d5db'}
+                  fontSize={14}
+                  fontWeight={isSelected ? 'bold' : '500'}
+                  style={{
+                    textShadow: '0 2px 4px rgba(0,0,0,0.9)',
+                    pointerEvents: 'none',
+                  }}
+                >
+                  {marker.label}
+                </text>
 
-                  {/* Main marker */}
-                  <circle
-                    r={isSelected ? 8 : 6}
-                    fill={colors.fill}
-                    stroke={isSelected ? '#fff' : 'none'}
-                    strokeWidth={isSelected ? 2 : 0}
-                    className={isHot ? 'animate-pulse' : ''}
-                  />
-
-                  {/* Count badge */}
-                  {count > 0 && (
-                    <>
-                      <circle
-                        cx={10}
-                        cy={-10}
-                        r={8}
-                        fill="#0a0d12"
-                      />
-                      <text
-                        x={10}
-                        y={-6}
-                        textAnchor="middle"
-                        fill={colors.fill}
-                        fontSize={8}
-                        fontWeight="bold"
-                      >
-                        {count > 99 ? '99+' : count}
-                      </text>
-                    </>
-                  )}
-
-                  {/* Label */}
-                  <text
-                    y={20}
-                    textAnchor="middle"
-                    fill={isSelected ? '#fff' : '#9ca3af'}
-                    fontSize={10}
-                    fontWeight={isSelected ? 'bold' : 'normal'}
-                    style={{
-                      textShadow: '0 1px 2px rgba(0,0,0,0.8)',
-                      pointerEvents: 'none',
-                    }}
-                  >
-                    {marker.label}
-                  </text>
-
-                  {/* Local Time with City */}
-                  <text
-                    y={32}
-                    textAnchor="middle"
-                    fill="#6b7280"
-                    fontSize={8}
-                    fontFamily="monospace"
-                    style={{
-                      textShadow: '0 1px 2px rgba(0,0,0,0.8)',
-                      pointerEvents: 'none',
-                    }}
-                  >
-                    {getLocalTime(marker.coordinates[0], marker.city)}
-                  </text>
-                </Marker>
-              );
-            })}
+                {/* Local Time with City */}
+                <text
+                  y={48}
+                  textAnchor="middle"
+                  fill="#9ca3af"
+                  fontSize={12}
+                  fontFamily="monospace"
+                  style={{
+                    textShadow: '0 2px 4px rgba(0,0,0,0.9)',
+                    pointerEvents: 'none',
+                  }}
+                >
+                  {getLocalTime(marker.coordinates[0], marker.city)}
+                </text>
+              </Marker>
+            );
+          })}
         </ComposableMap>
 
         {/* "All Regions" button */}
         <button
           onClick={() => onSelect('all')}
           className={`
-            absolute bottom-3 left-4 px-3 py-1.5 rounded-full text-xs font-medium
+            absolute bottom-4 left-4 px-4 py-2 rounded-full text-sm font-medium
             transition-all duration-200 z-10
             ${selected === 'all'
               ? 'bg-blue-500 text-white'
-              : 'bg-gray-800/80 text-gray-400 hover:bg-gray-700/80 hover:text-gray-200'
+              : 'bg-gray-800/90 text-gray-300 hover:bg-gray-700/90 hover:text-white'
             }
           `}
         >
@@ -237,17 +239,17 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
         </button>
 
         {/* Legend */}
-        <div className="absolute bottom-3 right-4 flex items-center gap-3 text-[10px] text-gray-500 z-10">
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+        <div className="absolute bottom-4 right-4 flex items-center gap-4 text-xs text-gray-400 z-10 bg-black/60 px-3 py-2 rounded-lg">
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
             <span>Critical</span>
           </div>
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-orange-500" />
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-orange-500" />
             <span>High</span>
           </div>
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-full bg-blue-500" />
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-blue-500" />
             <span>Normal</span>
           </div>
         </div>
@@ -255,20 +257,20 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
 
       {/* Selected Region Info Bar */}
       {selected !== 'all' && (
-        <div className="px-4 py-2 bg-black/30 border-t border-gray-800/40 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="px-4 py-3 bg-black/40 border-t border-gray-800/40 flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <span
-              className="w-2.5 h-2.5 rounded-full"
+              className="w-3 h-3 rounded-full"
               style={{ backgroundColor: activityColors[getActivityLevel(selected)].fill }}
             />
-            <span className="text-sm font-medium text-gray-200">
+            <span className="text-base font-medium text-gray-100">
               {regionMarkers[selected]?.label || selected}
             </span>
-            <span className={`text-xs ${activityColors[getActivityLevel(selected)].text}`}>
+            <span className={`text-sm ${activityColors[getActivityLevel(selected)].text}`}>
               {getActivityLevel(selected).charAt(0).toUpperCase() + getActivityLevel(selected).slice(1)} Activity
             </span>
           </div>
-          <span className="text-xs text-gray-400">
+          <span className="text-sm text-gray-400">
             {regionCounts[selected] || 0} in last hour
           </span>
         </div>
