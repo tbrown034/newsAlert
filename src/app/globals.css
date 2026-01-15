@@ -1,20 +1,36 @@
+/* Google Fonts - Serif for headlines */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap');
+
 @import "tailwindcss";
 
 :root {
-  /* Dark theme by default - newsAlert aesthetic */
-  --background: #0f1219;
-  --background-secondary: #1a1d29;
-  --background-card: #232734;
-  --foreground: #e5e7eb;
-  --foreground-muted: #9ca3af;
+  /* Trevor Touch - Light theme */
+  --background: #f5f5f7;
+  --background-secondary: #eaeaec;
+  --background-card: #ffffff;
+  --foreground: #1a1a2e;
+  --foreground-muted: #64748b;
+  --foreground-light: #94a3b8;
 
   /* Accent colors */
-  --accent-blue: #3b82f6;
-  --accent-blue-hover: #2563eb;
-  --accent-amber: #f59e0b;
-  --accent-green: #10b981;
-  --accent-red: #ef4444;
-  --accent-orange: #f97316;
+  --accent-blue: #2563eb;
+  --accent-blue-hover: #1d4ed8;
+  --accent-blue-light: #dbeafe;
+  --accent-amber: #d97706;
+  --accent-amber-light: #fef3c7;
+  --accent-green: #059669;
+  --accent-green-light: #d1fae5;
+  --accent-red: #dc2626;
+  --accent-red-light: #fee2e2;
+  --accent-orange: #ea580c;
+  --accent-orange-light: #ffedd5;
+  --accent-purple: #7c3aed;
+  --accent-purple-light: #ede9fe;
+
+  /* Typography */
+  --font-serif: 'Source Serif 4', Georgia, serif;
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
 }
 
 @theme inline {
@@ -28,18 +44,25 @@
   --color-accent-green: var(--accent-green);
   --color-accent-red: var(--accent-red);
   --color-accent-orange: var(--accent-orange);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar for dark theme */
+/* Serif headlines */
+h1, h2, h3, .font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Custom scrollbar for light theme */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -50,12 +73,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--background-card);
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3f4f;
+  background: #94a3b8;
 }
 
 /* Hide scrollbar utility */
@@ -65,4 +88,92 @@ body {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* Section labels - Trevor style */
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+}
+
+/* Card styling */
+.card {
+  background: var(--background-card);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* Badge base styles */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+}
+
+.badge-blue {
+  background: var(--accent-blue-light);
+  color: var(--accent-blue);
+}
+
+.badge-red {
+  background: var(--accent-red-light);
+  color: var(--accent-red);
+}
+
+.badge-amber {
+  background: var(--accent-amber-light);
+  color: var(--accent-amber);
+}
+
+.badge-green {
+  background: var(--accent-green-light);
+  color: var(--accent-green);
+}
+
+.badge-purple {
+  background: var(--accent-purple-light);
+  color: var(--accent-purple);
+}
+
+/* Tag pills - outlined style */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  border: 1px solid #e2e8f0;
+  color: var(--foreground-muted);
+  background: transparent;
+}
+
+.tag:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+  margin: 1.5rem 0;
+}
+
+/* Link style */
+a.link {
+  color: var(--accent-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a.link:hover {
+  color: var(--accent-blue-hover);
 }

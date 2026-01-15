@@ -27,42 +27,40 @@ interface NewsFeedProps {
   onRetry?: () => void;
 }
 
-// Skeleton loader for news cards
+// Skeleton loader for news cards - Light theme
 function NewsCardSkeleton() {
   return (
-    <div className="px-4 py-4 border-b border-gray-800/50 animate-pulse">
+    <div className="px-4 py-4 border-b border-slate-100 animate-pulse">
       <div className="flex flex-col gap-3">
-        {/* Title skeleton */}
         <div className="space-y-2">
-          <div className="h-4 bg-gray-800 rounded w-[90%]" />
-          <div className="h-4 bg-gray-800 rounded w-[70%]" />
+          <div className="h-4 bg-slate-200 rounded w-[90%]" />
+          <div className="h-4 bg-slate-200 rounded w-[70%]" />
         </div>
-        {/* Source footer skeleton */}
         <div className="flex items-center gap-3">
-          <div className="w-4 h-4 bg-gray-800 rounded" />
-          <div className="h-3 bg-gray-800 rounded w-24" />
-          <div className="h-3 bg-gray-800 rounded w-16" />
-          <div className="h-3 bg-gray-800 rounded w-12" />
+          <div className="w-4 h-4 bg-slate-200 rounded" />
+          <div className="h-3 bg-slate-200 rounded w-24" />
+          <div className="h-3 bg-slate-200 rounded w-16" />
+          <div className="h-3 bg-slate-200 rounded w-12" />
         </div>
       </div>
     </div>
   );
 }
 
-// Error state component
+// Error state component - Light theme
 function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <div className="mx-4 my-6 p-4 bg-red-900/20 border border-red-800/50 rounded-lg">
+    <div className="mx-4 my-6 p-4 bg-red-50 border border-red-200 rounded-xl">
       <div className="flex items-center gap-3">
-        <ExclamationTriangleIcon className="w-5 h-5 text-red-400 flex-shrink-0" />
+        <ExclamationTriangleIcon className="w-5 h-5 text-red-500 flex-shrink-0" />
         <div className="flex-1 min-w-0">
-          <p className="text-red-400 text-sm font-medium">Failed to load feed</p>
-          <p className="text-red-400/70 text-xs mt-1 truncate">{message}</p>
+          <p className="text-red-700 text-sm font-medium">Failed to load feed</p>
+          <p className="text-red-500 text-xs mt-1 truncate">{message}</p>
         </div>
         {onRetry && (
           <button
             onClick={onRetry}
-            className="flex-shrink-0 px-3 py-1.5 text-xs font-medium bg-red-800/50 hover:bg-red-800 text-red-200 rounded transition-colors"
+            className="flex-shrink-0 px-3 py-1.5 text-xs font-medium bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors"
           >
             Retry
           </button>
@@ -72,35 +70,35 @@ function ErrorState({ message, onRetry }: { message: string; onRetry?: () => voi
   );
 }
 
-// Volume indicator - shows post count vs baseline (not AI)
+// Volume indicator - Light theme
 function VolumeIndicator({ activity }: { activity: ActivityData }) {
   const getVolumeText = () => {
     if (!activity.vsNormal || !activity.multiplier) {
-      return { text: 'Normal volume', color: 'text-gray-500' };
+      return { text: 'Normal volume', color: 'text-slate-500' };
     }
     if (activity.vsNormal === 'above') {
       const pct = activity.percentChange || 0;
-      if (pct >= 200) return { text: `${activity.multiplier}× normal volume`, color: 'text-red-400' };
-      if (pct >= 100) return { text: `${activity.multiplier}× normal volume`, color: 'text-orange-400' };
-      return { text: `+${pct}% vs normal`, color: 'text-yellow-400' };
+      if (pct >= 200) return { text: `${activity.multiplier}× normal volume`, color: 'text-red-600' };
+      if (pct >= 100) return { text: `${activity.multiplier}× normal volume`, color: 'text-orange-600' };
+      return { text: `+${pct}% vs normal`, color: 'text-amber-600' };
     } else if (activity.vsNormal === 'below') {
-      return { text: `${Math.abs(activity.percentChange || 0)}% below normal`, color: 'text-emerald-400' };
+      return { text: `${Math.abs(activity.percentChange || 0)}% below normal`, color: 'text-emerald-600' };
     }
-    return { text: 'Normal volume', color: 'text-gray-500' };
+    return { text: 'Normal volume', color: 'text-slate-500' };
   };
 
   const volume = getVolumeText();
 
   return (
-    <div className="mx-4 mt-3 px-3 py-2 flex items-center justify-between text-xs border-b border-gray-800/30">
+    <div className="px-4 py-3 flex items-center justify-between text-xs border-b border-slate-100 bg-slate-50/50">
       <div className="flex items-center gap-2">
-        <span className="text-gray-500">{activity.count} posts</span>
-        <span className="text-gray-600">in last hour</span>
+        <span className="text-slate-600 font-medium">{activity.count} posts</span>
+        <span className="text-slate-400">in last hour</span>
       </div>
       <div className="flex items-center gap-2">
-        <span className={volume.color}>{volume.text}</span>
+        <span className={`font-medium ${volume.color}`}>{volume.text}</span>
         {activity.baseline && (
-          <span className="text-gray-600">(baseline: ~{activity.baseline}/hr)</span>
+          <span className="text-slate-400">(baseline: ~{activity.baseline}/hr)</span>
         )}
       </div>
     </div>
@@ -128,27 +126,24 @@ export function NewsFeed({
   error,
   onRetry,
 }: NewsFeedProps) {
-  // Filter items by watchpoint
   const filteredItems =
     selectedWatchpoint === 'all'
       ? items
       : items.filter((item) => item.region === selectedWatchpoint);
 
-  // Sort by timestamp (newest first) - always chronological
   const sortedItems = [...filteredItems].sort(
     (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
   );
 
-  // Count items per region for badges
   const regionCounts = items.reduce((acc, item) => {
     acc[item.region] = (acc[item.region] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
   return (
-    <div className="flex flex-col">
-      {/* Region Tabs */}
-      <div className="sticky top-[57px] z-40 bg-[#0f1219]/95 backdrop-blur-md border-b border-gray-800/60">
+    <div className="flex flex-col bg-white rounded-xl overflow-hidden">
+      {/* Region Tabs - Light theme */}
+      <div className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-slate-200">
         <div className="flex items-center overflow-x-auto scrollbar-hide">
           {regionTabs.map((tab) => {
             const isSelected = selectedWatchpoint === tab.id;
@@ -162,41 +157,38 @@ export function NewsFeed({
                   relative flex-shrink-0 px-3 sm:px-4 py-3 text-xs sm:text-sm font-medium
                   transition-colors duration-200 whitespace-nowrap
                   ${isSelected
-                    ? 'text-white'
-                    : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.03]'
+                    ? 'text-slate-900'
+                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
                   }
                 `}
               >
                 {tab.icon && <span className="mr-1">{tab.icon}</span>}
                 {tab.label}
 
-                {/* Count badge - don't show for "All" or "Seismic" since they're different */}
                 {count > 0 && tab.id !== 'all' && tab.id !== 'seismic' && (
                   <span className={`
                     ml-1.5 px-1.5 py-0.5 text-xs rounded-full
                     ${isSelected
-                      ? 'bg-blue-500/30 text-blue-300'
-                      : 'bg-gray-700/50 text-gray-400'
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'bg-slate-100 text-slate-500'
                     }
                   `}>
                     {count}
                   </span>
                 )}
 
-                {/* Active indicator */}
                 {isSelected && (
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-blue-500 rounded-full" />
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-blue-600 rounded-full" />
                 )}
               </button>
             );
           })}
 
-          {/* Refresh button at end */}
           {onRefresh && (
             <button
               onClick={onRefresh}
               disabled={isLoading}
-              className="flex-shrink-0 ml-auto px-3 py-3 text-gray-500 hover:text-blue-400 transition-colors disabled:opacity-50"
+              className="flex-shrink-0 ml-auto px-3 py-3 text-slate-400 hover:text-blue-600 transition-colors disabled:opacity-50"
             >
               <ArrowPathIcon className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             </button>
@@ -204,25 +196,20 @@ export function NewsFeed({
         </div>
       </div>
 
-      {/* Seismic Feed - show instead of regular content when seismic tab selected */}
       {selectedWatchpoint === 'seismic' ? (
         <SeismicFeed />
       ) : (
         <>
-          {/* Volume Indicator - separate from AI */}
           {activity?.[selectedWatchpoint] && selectedWatchpoint !== 'all' && (
             <VolumeIndicator activity={activity[selectedWatchpoint]} />
           )}
 
-          {/* AI Briefing Card */}
           <InlineBriefing region={selectedWatchpoint} />
 
-          {/* Error state */}
           {error && (
             <ErrorState message={error} onRetry={onRetry} />
           )}
 
-          {/* Loading state with skeleton loaders */}
           {isLoading && sortedItems.length === 0 && !error && (
             <div className="flex flex-col">
               {[...Array(5)].map((_, i) => (
@@ -231,14 +218,13 @@ export function NewsFeed({
             </div>
           )}
 
-          {/* Empty state */}
           {!isLoading && !error && sortedItems.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 px-4">
-              <div className="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center mb-3">
+              <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3">
                 <span className="text-2xl">📡</span>
               </div>
-              <span className="text-gray-200 text-lg font-medium mb-1">No updates yet</span>
-              <span className="text-gray-500 text-sm text-center">
+              <span className="text-slate-800 text-lg font-medium mb-1">No updates yet</span>
+              <span className="text-slate-500 text-sm text-center">
                 {selectedWatchpoint === 'all'
                   ? 'News will appear here as it breaks'
                   : `No news for ${regionTabs.find(t => t.id === selectedWatchpoint)?.label || 'this region'} yet`}
@@ -246,17 +232,15 @@ export function NewsFeed({
             </div>
           )}
 
-          {/* News items - chronological feed */}
-          <div className="flex flex-col">
+          <div className="flex flex-col divide-y divide-slate-100">
             {sortedItems.map((item) => (
               <NewsCard key={item.id} item={item} />
             ))}
           </div>
 
-          {/* Loading more indicator */}
           {isLoading && sortedItems.length > 0 && (
             <div className="py-4 flex justify-center">
-              <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
             </div>
           )}
         </>

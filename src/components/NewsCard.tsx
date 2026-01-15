@@ -12,12 +12,12 @@ interface NewsCardProps {
   item: NewsItem;
 }
 
-// Source type colors
+// Source type colors - Light theme
 const tierColors: Record<string, string> = {
-  official: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-  osint: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-  reporter: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-  ground: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+  official: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+  osint: 'bg-amber-100 text-amber-700 border-amber-200',
+  reporter: 'bg-blue-100 text-blue-700 border-blue-200',
+  ground: 'bg-orange-100 text-orange-700 border-orange-200',
 };
 
 function formatTimeAgo(date: Date): string {
@@ -69,11 +69,11 @@ export function NewsCard({ item }: NewsCardProps) {
     }
   };
 
-  // Determine card accent based on severity
+  // Determine card accent based on severity - Light theme
   const getCardAccent = () => {
-    if (eventSignal?.severity === 'critical') return 'border-l-4 border-l-red-500 bg-red-500/[0.03]';
-    if (eventSignal?.severity === 'high') return 'border-l-4 border-l-orange-500 bg-orange-500/[0.02]';
-    if (eventSignal?.severity === 'moderate') return 'border-l-4 border-l-yellow-500/50';
+    if (eventSignal?.severity === 'critical') return 'border-l-4 border-l-red-500 bg-red-50';
+    if (eventSignal?.severity === 'high') return 'border-l-4 border-l-orange-500 bg-orange-50';
+    if (eventSignal?.severity === 'moderate') return 'border-l-4 border-l-amber-400/60';
     return '';
   };
 
@@ -83,9 +83,9 @@ export function NewsCard({ item }: NewsCardProps) {
       tabIndex={0}
       aria-label={`${item.title}. From ${item.source.name}. Click to open source.`}
       className={`
-        relative px-4 py-4 border-b border-gray-800/50
-        hover:bg-white/[0.02] transition-all duration-200 cursor-pointer
-        focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900
+        relative px-4 py-4 border-b border-slate-100
+        hover:bg-slate-50 transition-all duration-200 cursor-pointer
+        focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white
         ${getCardAccent()}
       `}
       onClick={handleOpenSource}
@@ -98,19 +98,19 @@ export function NewsCard({ item }: NewsCardProps) {
             {severityIndicator.icon} {severityIndicator.label}
           </span>
           {eventTypeLabel && eventSignal?.type !== 'unknown' && (
-            <span className="text-xs text-gray-500">{eventTypeLabel}</span>
+            <span className="text-xs text-slate-500">{eventTypeLabel}</span>
           )}
           {eventSignal?.isDeveloping && (
-            <span className="text-xs text-yellow-500/80 italic">• Developing</span>
+            <span className="text-xs text-amber-600 italic">• Developing</span>
           )}
           {eventSignal?.isConfirmed && (
-            <span className="text-xs text-emerald-400 font-medium">• Confirmed</span>
+            <span className="text-xs text-emerald-600 font-medium">• Confirmed</span>
           )}
         </div>
       )}
 
       {/* Main Content */}
-      <p className="text-[15px] text-gray-100 leading-relaxed mb-3">
+      <p className="text-[15px] text-slate-800 leading-relaxed mb-3">
         {item.title}
       </p>
 
@@ -123,15 +123,15 @@ export function NewsCard({ item }: NewsCardProps) {
               <span className={platformColor}>
                 <PlatformIcon platform={item.source.platform} className="w-4 h-4" />
               </span>
-              <span className="text-sm font-medium text-gray-300">{item.source.name}</span>
+              <span className="text-sm font-medium text-slate-700">{item.source.name}</span>
               {isVerified && (
-                <CheckBadgeSolid className="w-4 h-4 text-blue-400" />
+                <CheckBadgeSolid className="w-4 h-4 text-blue-500" />
               )}
             </div>
             <span className={`px-2 py-0.5 text-[10px] font-medium rounded border ${tierStyle}`}>
               {item.source.tier.toUpperCase()}
             </span>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-slate-500">
               {formatTimeAgo(item.timestamp)}
             </span>
           </div>
@@ -178,17 +178,17 @@ export function NewsCard({ item }: NewsCardProps) {
         {/* Right side: Media indicator, link */}
         <div className="flex items-center gap-2">
           {hasMedia && (
-            <span className="text-xs text-purple-400" title="Contains media">
+            <span className="text-xs text-purple-500" title="Contains media">
               🖼
             </span>
           )}
-          <ArrowTopRightOnSquareIcon className="w-4 h-4 text-gray-600" />
+          <ArrowTopRightOnSquareIcon className="w-4 h-4 text-slate-400" />
         </div>
       </div>
 
       {/* Moderate severity - subtle inline indicator */}
       {showSeverity && eventSignal?.severity === 'moderate' && (
-        <div className="mt-2 flex items-center gap-2 text-xs text-yellow-500/70">
+        <div className="mt-2 flex items-center gap-2 text-xs text-amber-600">
           <span>📢</span>
           <span>{eventTypeLabel || 'Notable'}</span>
           {eventSignal?.isDeveloping && <span className="italic">• Developing</span>}

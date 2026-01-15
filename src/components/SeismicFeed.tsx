@@ -101,29 +101,30 @@ function generateSeismicSummary(earthquakes: Earthquake[], stats: SeismicStats):
   return { status, summary, highlights };
 }
 
+// Light theme status styles
 const statusStyles = {
   normal: {
-    bg: 'bg-emerald-500/10',
-    border: 'border-emerald-500/30',
-    text: 'text-emerald-400',
+    bg: 'bg-emerald-50',
+    border: 'border-emerald-200',
+    text: 'text-emerald-600',
     label: 'NORMAL',
   },
   elevated: {
-    bg: 'bg-yellow-500/10',
-    border: 'border-yellow-500/30',
-    text: 'text-yellow-400',
+    bg: 'bg-amber-50',
+    border: 'border-amber-200',
+    text: 'text-amber-600',
     label: 'ELEVATED',
   },
   significant: {
-    bg: 'bg-orange-500/10',
-    border: 'border-orange-500/30',
-    text: 'text-orange-400',
+    bg: 'bg-orange-50',
+    border: 'border-orange-200',
+    text: 'text-orange-600',
     label: 'SIGNIFICANT',
   },
   critical: {
-    bg: 'bg-red-500/10',
-    border: 'border-red-500/30',
-    text: 'text-red-400',
+    bg: 'bg-red-50',
+    border: 'border-red-200',
+    text: 'text-red-600',
     label: 'CRITICAL',
   },
 };
@@ -175,10 +176,10 @@ export function SeismicFeed({ onBack }: SeismicFeedProps) {
   // Loading state
   if (isLoading && earthquakes.length === 0) {
     return (
-      <div className="mx-4 my-3 px-4 py-4 border border-gray-800/50 rounded-lg bg-gray-900/30">
+      <div className="mx-4 my-3 px-4 py-4 border border-slate-200 rounded-lg bg-white">
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 border-2 border-gray-600 border-t-transparent rounded-full animate-spin" />
-          <span className="text-sm text-gray-500">Analyzing seismic activity...</span>
+          <div className="w-4 h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+          <span className="text-sm text-slate-500">Analyzing seismic activity...</span>
         </div>
       </div>
     );
@@ -187,16 +188,16 @@ export function SeismicFeed({ onBack }: SeismicFeedProps) {
   // Error state
   if (error) {
     return (
-      <div className="mx-4 my-3 p-4 bg-red-900/20 border border-red-800/50 rounded-lg">
+      <div className="mx-4 my-3 p-4 bg-red-50 border border-red-200 rounded-lg">
         <div className="flex items-center gap-3">
-          <ExclamationTriangleIcon className="w-5 h-5 text-red-400 flex-shrink-0" />
+          <ExclamationTriangleIcon className="w-5 h-5 text-red-500 flex-shrink-0" />
           <div className="flex-1">
-            <p className="text-red-400 text-sm font-medium">Failed to load seismic data</p>
-            <p className="text-red-400/70 text-xs mt-1">{error}</p>
+            <p className="text-red-600 text-sm font-medium">Failed to load seismic data</p>
+            <p className="text-red-500 text-xs mt-1">{error}</p>
           </div>
           <button
             onClick={fetchEarthquakes}
-            className="px-3 py-1.5 text-xs font-medium bg-red-800/50 hover:bg-red-800 text-red-200 rounded"
+            className="px-3 py-1.5 text-xs font-medium bg-red-100 hover:bg-red-200 text-red-700 rounded transition-colors"
           >
             Retry
           </button>
@@ -217,21 +218,21 @@ export function SeismicFeed({ onBack }: SeismicFeedProps) {
   return (
     <div className={`mx-4 my-3 border ${style.border} rounded-lg overflow-hidden ${style.bg}`}>
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-800/30 flex items-center justify-between">
+      <div className="px-4 py-3 border-b border-slate-200/50 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <GlobeAltIcon className="w-4 h-4 text-gray-400" />
-          <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+          <GlobeAltIcon className="w-4 h-4 text-slate-500" />
+          <span className="text-xs font-semibold text-blue-600 uppercase tracking-wide">
             Seismic Monitor
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className={`px-2 py-0.5 text-[10px] font-bold rounded ${style.bg} ${style.text}`}>
+          <span className={`px-2 py-0.5 text-[10px] font-bold rounded ${style.text} bg-white/50`}>
             {style.label}
           </span>
           <button
             onClick={fetchEarthquakes}
             disabled={isLoading}
-            className="p-1 text-gray-500 hover:text-gray-300 transition-colors disabled:opacity-50"
+            className="p-1 text-slate-400 hover:text-slate-600 transition-colors disabled:opacity-50"
           >
             <ArrowPathIcon className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
@@ -240,7 +241,7 @@ export function SeismicFeed({ onBack }: SeismicFeedProps) {
 
       {/* Summary */}
       <div className="px-4 py-3">
-        <p className="text-sm text-gray-300 leading-relaxed">
+        <p className="text-sm text-slate-700 leading-relaxed">
           {analysis.summary}
         </p>
 
@@ -250,7 +251,7 @@ export function SeismicFeed({ onBack }: SeismicFeedProps) {
             {analysis.highlights.map((highlight, i) => (
               <span
                 key={i}
-                className="px-2 py-1 text-xs bg-black/20 text-gray-400 rounded"
+                className="px-2 py-1 text-xs bg-white/60 text-slate-600 rounded border border-slate-200/50"
               >
                 {highlight}
               </span>
@@ -259,7 +260,7 @@ export function SeismicFeed({ onBack }: SeismicFeedProps) {
         )}
 
         {/* Stats footer */}
-        <div className="mt-3 pt-3 border-t border-gray-800/30 flex items-center justify-between text-[10px] text-gray-500">
+        <div className="mt-3 pt-3 border-t border-slate-200/50 flex items-center justify-between text-[10px] text-slate-500">
           <span>{stats.total} earthquakes (M2.5+) in 24h</span>
           <span>Max: M{stats.maxMagnitude.toFixed(1)}</span>
         </div>

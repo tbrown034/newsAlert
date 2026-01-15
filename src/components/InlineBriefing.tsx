@@ -38,26 +38,27 @@ interface InlineBriefingProps {
   region: WatchpointId;
 }
 
+// Light theme severity styles
 const severityStyles: Record<string, { dot: string; text: string }> = {
-  critical: { dot: 'bg-red-500', text: 'text-red-400' },
-  high: { dot: 'bg-orange-500', text: 'text-orange-400' },
-  moderate: { dot: 'bg-yellow-500', text: 'text-yellow-400' },
-  routine: { dot: 'bg-gray-500', text: 'text-gray-400' },
+  critical: { dot: 'bg-red-500', text: 'text-red-600' },
+  high: { dot: 'bg-orange-500', text: 'text-orange-600' },
+  moderate: { dot: 'bg-amber-500', text: 'text-amber-600' },
+  routine: { dot: 'bg-slate-400', text: 'text-slate-500' },
 };
 
 const confidenceStyles: Record<string, string> = {
-  high: 'text-emerald-500',
-  medium: 'text-yellow-500',
-  low: 'text-gray-500',
+  high: 'text-emerald-600',
+  medium: 'text-amber-600',
+  low: 'text-slate-500',
 };
 
-// Tension level styling - matches severity colors used elsewhere
+// Tension level styling - Light theme
 function getTensionStyle(score: number): { label: string; color: string; bgColor: string } {
-  if (score >= 8) return { label: 'CRITICAL', color: 'text-red-400', bgColor: 'bg-red-500/20' };
-  if (score >= 6) return { label: 'HIGH', color: 'text-orange-400', bgColor: 'bg-orange-500/20' };
-  if (score >= 4) return { label: 'ELEVATED', color: 'text-yellow-400', bgColor: 'bg-yellow-500/20' };
-  if (score >= 2) return { label: 'WATCHFUL', color: 'text-blue-400', bgColor: 'bg-blue-500/20' };
-  return { label: 'STABLE', color: 'text-emerald-400', bgColor: 'bg-emerald-500/20' };
+  if (score >= 8) return { label: 'CRITICAL', color: 'text-red-600', bgColor: 'bg-red-100' };
+  if (score >= 6) return { label: 'HIGH', color: 'text-orange-600', bgColor: 'bg-orange-100' };
+  if (score >= 4) return { label: 'ELEVATED', color: 'text-amber-600', bgColor: 'bg-amber-100' };
+  if (score >= 2) return { label: 'WATCHFUL', color: 'text-blue-600', bgColor: 'bg-blue-100' };
+  return { label: 'STABLE', color: 'text-emerald-600', bgColor: 'bg-emerald-100' };
 }
 
 interface FollowUpResponse {
@@ -152,10 +153,10 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
   // Loading state
   if (loading) {
     return (
-      <div className="mx-4 my-3 px-4 py-3 border border-gray-800/50 rounded-lg bg-gray-900/30">
+      <div className="mx-4 my-3 px-4 py-3 border border-slate-200 rounded-lg bg-slate-50">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 border border-gray-600 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-gray-500">Generating briefing...</span>
+          <div className="w-3 h-3 border border-slate-400 border-t-transparent rounded-full animate-spin" />
+          <span className="text-xs text-slate-500">Generating briefing...</span>
         </div>
       </div>
     );
@@ -170,25 +171,25 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
   const tension = getTensionStyle(tensionScore);
 
   return (
-    <div className="mx-4 my-3 border border-gray-800/50 rounded-lg overflow-hidden">
+    <div className="mx-4 my-3 border border-slate-200 rounded-lg overflow-hidden bg-white">
       {/* Header */}
-      <div className="px-4 py-3 bg-gray-900/50 border-b border-gray-800/50">
+      <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">
+            <span className="text-xs font-semibold text-blue-600 uppercase tracking-wide">
               AI Summary
             </span>
-            <span className="text-xs text-gray-600">•</span>
-            <span className="text-xs text-gray-500">{regionDisplayNames[region]}</span>
+            <span className="text-xs text-slate-400">•</span>
+            <span className="text-xs text-slate-500">{regionDisplayNames[region]}</span>
             {briefing.fromCache && (
-              <span className="text-[10px] text-gray-600">(cached)</span>
+              <span className="text-[10px] text-slate-400">(cached)</span>
             )}
           </div>
           <div className="flex items-center gap-2">
             <span className={`px-2 py-0.5 text-[10px] font-bold rounded ${tension.bgColor} ${tension.color}`}>
               {tension.label}
             </span>
-            <span className="text-xs text-gray-500">{tensionScore}/10</span>
+            <span className="text-xs text-slate-500">{tensionScore}/10</span>
           </div>
         </div>
       </div>
@@ -196,27 +197,27 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
       {/* Body */}
       <div className="px-4 py-3">
         {/* Summary */}
-        <p className="text-sm text-gray-300 leading-relaxed">
+        <p className="text-sm text-slate-700 leading-relaxed">
           {briefing.summary}
         </p>
 
         {/* Top 3 Key Developments */}
         {briefing.keyDevelopments.length > 0 && (
-          <div className="mt-3 pt-3 border-t border-gray-800/30">
+          <div className="mt-3 pt-3 border-t border-slate-100">
             <div className="space-y-2">
               {briefing.keyDevelopments.slice(0, 3).map((dev, i) => (
                 <div key={i} className="flex items-start gap-2">
                   <div className={`w-1.5 h-1.5 rounded-full ${severityStyles[dev.severity].dot} mt-1.5 flex-shrink-0`} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm text-gray-200">{dev.headline}</span>
+                      <span className="text-sm text-slate-800">{dev.headline}</span>
                       {dev.confidence && (
                         <span className={`text-[9px] ${confidenceStyles[dev.confidence]}`}>
                           {dev.confidence} conf.
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-gray-500 mt-0.5">{dev.detail}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{dev.detail}</p>
                   </div>
                 </div>
               ))}
@@ -225,10 +226,10 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
         )}
 
         {/* Follow-up questions */}
-        <div className="mt-3 pt-3 border-t border-gray-800/30">
+        <div className="mt-3 pt-3 border-t border-slate-100">
           <button
             onClick={() => setShowFollowUp(!showFollowUp)}
-            className="text-xs text-gray-500 hover:text-gray-400 transition-colors"
+            className="text-xs text-slate-500 hover:text-blue-600 transition-colors"
           >
             {showFollowUp ? 'Hide' : 'Ask'} follow-up
           </button>
@@ -238,16 +239,16 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
               {/* Previous Q&A */}
               {followUpResponses.map((resp, i) => (
                 <div key={i} className="text-xs space-y-1">
-                  <div className="text-gray-400">Q: {resp.question}</div>
-                  <div className="text-gray-500 pl-3 border-l border-gray-700">
+                  <div className="text-slate-600 font-medium">Q: {resp.question}</div>
+                  <div className="text-slate-500 pl-3 border-l-2 border-slate-200">
                     {resp.answer}
                   </div>
                 </div>
               ))}
 
               {followUpLoading && (
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <div className="w-2 h-2 border border-gray-600 border-t-transparent rounded-full animate-spin" />
+                <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <div className="w-2 h-2 border border-slate-400 border-t-transparent rounded-full animate-spin" />
                   Thinking...
                 </div>
               )}
@@ -260,15 +261,15 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
                   onChange={(e) => setFollowUpQuestion(e.target.value)}
                   placeholder="Ask about this..."
                   disabled={followUpLoading}
-                  className="flex-1 px-2 py-1 text-xs bg-gray-900/50 border border-gray-700/50 rounded
-                    text-gray-300 placeholder-gray-600 focus:outline-none focus:border-gray-600
+                  className="flex-1 px-2 py-1 text-xs bg-slate-50 border border-slate-200 rounded
+                    text-slate-700 placeholder-slate-400 focus:outline-none focus:border-blue-500
                     disabled:opacity-50"
                 />
                 <button
                   type="submit"
                   disabled={followUpLoading || !followUpQuestion.trim()}
-                  className="px-2 py-1 text-xs text-gray-400 border border-gray-700/50 rounded
-                    hover:bg-gray-800/50 transition-colors disabled:opacity-50"
+                  className="px-2 py-1 text-xs text-slate-600 border border-slate-200 rounded
+                    hover:bg-slate-50 hover:border-blue-500 hover:text-blue-600 transition-colors disabled:opacity-50"
                 >
                   Send
                 </button>
@@ -280,7 +281,7 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
 
       {/* Footer - usage stats */}
       {briefing.usage && (
-        <div className="px-4 py-2 bg-gray-900/30 border-t border-gray-800/30 flex items-center justify-between text-[10px] text-gray-600">
+        <div className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500">
           <span>{briefing.sourcesAnalyzed} posts analyzed</span>
           <div className="flex items-center gap-2">
             <span>{briefing.usage.inputTokens + briefing.usage.outputTokens} tokens</span>
