@@ -1,19 +1,23 @@
-# newsAlert
+# Sentinel
 
 Real-time OSINT dashboard for geopolitical situational awareness. Breaking news before it's news.
 
-![newsAlert Dashboard](docs/screenshot.png)
-
 ## Features
 
-- **Real-time feed** from 60+ OSINT analysts, journalists, and official sources
+- **Real-time feed** from 285 OSINT sources (Bluesky accounts + RSS feeds)
 - **AI situation briefings** - Claude-powered summaries with tension scoring (1-10)
-- **Seismic monitoring** - Real-time USGS earthquake data with magnitude visualization
+- **Multi-layer maps**:
+  - Hotspots - Conflict zones with activity indicators
+  - Seismic - Real-time USGS earthquake data
+  - Weather - NOAA/EONET/GDACS severe weather alerts
+  - Fires - NASA FIRMS satellite wildfire detection
+  - Outages - Internet/power disruption tracking
+  - Travel - US State Dept travel advisories
 - **Smart severity detection** - Keywords analyzed to flag CRITICAL, HIGH, MODERATE events
 - **Activity anomalies** - Highlights when sources post above baseline
-- **Interactive world map** - Visual overview with local times (e.g., "03:26 Tehran")
 - **Region filtering** - Middle East, Ukraine, Taiwan, Venezuela, US
 - **Source credibility** - Tiered badges (OFFICIAL, OSINT, REPORTER, GROUND)
+- **Dark mode** - X/Twitter-inspired dark theme
 
 ## Quick Start
 
@@ -33,44 +37,31 @@ npm run dev
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 + TypeScript
-- **Styling**: Tailwind CSS
+- **Framework**: Next.js 15 + TypeScript
+- **Styling**: Tailwind CSS (dark mode)
 - **Maps**: react-simple-maps
 - **AI**: Anthropic Claude API
-- **Data**: RSS feeds + USGS API
-- **Icons**: Heroicons + custom platform SVGs
+- **Data Sources**:
+  - Bluesky API (280 OSINT accounts)
+  - RSS feeds (BBC, Al Jazeera, etc.)
+  - USGS earthquake API
+  - NOAA weather API
+  - NASA FIRMS/EONET
+  - GDACS disaster alerts
+  - US State Dept travel advisories
+- **Icons**: Heroicons
 
 ## Project Structure
 
 ```
 src/
 ├── app/
-│   ├── api/
-│   │   ├── news/          # RSS aggregation
-│   │   ├── seismic/       # USGS earthquake data
-│   │   └── summary/       # AI briefing generation
-│   └── page.tsx           # Main dashboard
-├── components/
-│   ├── WorldMap.tsx       # Interactive hotspot map
-│   ├── SeismicMap.tsx     # Earthquake visualization
-│   ├── NewsFeed.tsx       # News feed with region tabs
-│   └── InlineBriefing.tsx # AI summary component
-└── lib/
-    ├── sources.ts         # 60+ OSINT sources
-    ├── rss.ts             # Feed parser with SHA-256 dedup
-    ├── keywordDetection.ts # Severity analysis
-    └── aiSummary.ts       # Claude integration
+│   ├── api/          # All data APIs (news, seismic, weather, fires, etc.)
+│   └── page.tsx      # Main dashboard
+├── components/       # React components (maps, feeds, cards)
+├── lib/              # Utilities (sources, parsers, detection)
+└── types/            # TypeScript definitions
 ```
-
-## Data Sources
-
-60+ curated sources including:
-- **Government**: US State Dept, DHS, USGS, WHO, EU EEAS
-- **OSINT**: Bellingcat, ISW, CSIS, OSINTdefender
-- **News**: Reuters, BBC, Al Jazeera, Haaretz
-- **Analysts**: Intel Crab, Aurora Intel, Euromaidan Press
-
-See [docs/sources.md](docs/sources.md) for full list.
 
 ## Environment Variables
 

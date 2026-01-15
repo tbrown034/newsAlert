@@ -30,6 +30,31 @@
   --font-mono: var(--font-geist-mono), monospace;
 }
 
+/* Dark mode - X/Twitter inspired */
+.dark {
+  --background: #000000;
+  --background-secondary: #16181c;
+  --background-card: #16181c;
+  --foreground: #e7e9ea;
+  --foreground-muted: #71767b;
+  --foreground-light: #536471;
+
+  /* Accent colors - X-style vibrant */
+  --accent-blue: #1d9bf0;
+  --accent-blue-hover: #1a8cd8;
+  --accent-blue-light: #031018;
+  --accent-amber: #f59e0b;
+  --accent-amber-light: #422006;
+  --accent-green: #00ba7c;
+  --accent-green-light: #003d29;
+  --accent-red: #f4212e;
+  --accent-red-light: #2d0607;
+  --accent-orange: #ff7a00;
+  --accent-orange-light: #331900;
+  --accent-purple: #794bc4;
+  --accent-purple-light: #1a0f29;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-background-secondary: var(--background-secondary);
@@ -161,6 +186,12 @@ h1, h2, h3, .font-serif {
   border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
+.dark .card {
+  box-shadow: none;
+  border: 1px solid #2f3336;
+  background: #16181c;
+}
+
 /* Badge base styles */
 .badge {
   display: inline-flex;
@@ -218,7 +249,11 @@ h1, h2, h3, .font-serif {
 .divider {
   height: 1px;
   background: linear-gradient(to right, transparent, #e2e8f0, transparent);
-  margin: 1.5rem 0;
+  margin: 0.75rem 0;
+}
+
+.dark .divider {
+  background: linear-gradient(to right, transparent, #2f3336, transparent);
 }
 
 /* Link style */
@@ -308,12 +343,22 @@ a.link:hover {
 .skeleton-shimmer {
   background: linear-gradient(
     90deg,
-    #e2e8f0 0%,
-    #f1f5f9 50%,
-    #e2e8f0 100%
+    #cbd5e1 0%,
+    #e2e8f0 50%,
+    #cbd5e1 100%
   );
   background-size: 200% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+
+.dark .skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    #2f3336 0%,
+    #3a3d41 50%,
+    #2f3336 100%
+  );
+  background-size: 200% 100%;
 }
 
 /* Glow effect for important items */

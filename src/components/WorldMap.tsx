@@ -40,13 +40,15 @@ interface WorldMapProps {
   regionCounts?: Record<string, number>;
 }
 
-// Activity level colors
+// Activity level colors - visual language:
+// Green = Normal (baseline), Orange = Elevated, Red = Critical, Blue = Low (below normal), Gray = No data
 const activityColors: Record<string, { fill: string; glow: string; text: string }> = {
-  critical: { fill: '#ef4444', glow: 'rgba(239, 68, 68, 0.6)', text: 'text-red-400' },
-  high: { fill: '#f97316', glow: 'rgba(249, 115, 22, 0.5)', text: 'text-orange-400' },
-  elevated: { fill: '#f59e0b', glow: 'rgba(245, 158, 11, 0.4)', text: 'text-amber-400' },
-  normal: { fill: '#3b82f6', glow: 'rgba(59, 130, 246, 0.3)', text: 'text-blue-400' },
-  low: { fill: '#10b981', glow: 'rgba(16, 185, 129, 0.3)', text: 'text-emerald-400' },
+  critical: { fill: '#ef4444', glow: 'rgba(239, 68, 68, 0.6)', text: 'text-red-400' },      // Red - critical
+  high: { fill: '#f97316', glow: 'rgba(249, 115, 22, 0.5)', text: 'text-orange-400' },      // Orange - high
+  elevated: { fill: '#f97316', glow: 'rgba(249, 115, 22, 0.4)', text: 'text-orange-400' },  // Orange - elevated
+  normal: { fill: '#22c55e', glow: 'rgba(34, 197, 94, 0.3)', text: 'text-green-400' },      // Green - normal
+  low: { fill: '#3b82f6', glow: 'rgba(59, 130, 246, 0.3)', text: 'text-blue-400' },         // Blue - below normal
+  no_data: { fill: '#6b7280', glow: 'rgba(107, 114, 128, 0.2)', text: 'text-gray-400' },    // Gray - no data
 };
 
 // Region marker positions (longitude, latitude) with representative cities
@@ -197,29 +199,6 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
                   className={isHot ? 'animate-pulse' : ''}
                 />
 
-                {/* Count badge */}
-                {count > 0 && (
-                  <>
-                    <circle
-                      cx={16}
-                      cy={-16}
-                      r={12}
-                      fill="#0a0d12"
-                      stroke={colors.fill}
-                      strokeWidth={2}
-                    />
-                    <text
-                      x={16}
-                      y={-12}
-                      textAnchor="middle"
-                      fill={colors.fill}
-                      fontSize={11}
-                      fontWeight="bold"
-                    >
-                      {count > 99 ? '99+' : count}
-                    </text>
-                  </>
-                )}
 
                 {/* Label */}
                 <text
@@ -297,18 +276,26 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
         </button>
 
         {/* Legend */}
-        <div className="absolute bottom-4 right-4 flex items-center gap-4 text-xs text-gray-400 z-10 bg-black/60 px-3 py-2 rounded-lg">
+        <div className="absolute bottom-4 right-4 flex items-center gap-3 text-xs text-gray-400 z-10 bg-black/60 px-3 py-2 rounded-lg">
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
             <span>Critical</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-full bg-orange-500" />
-            <span>High</span>
+            <span>Elevated</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-green-500" />
+            <span>Normal</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-full bg-blue-500" />
-            <span>Normal</span>
+            <span>Low</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full bg-gray-500" />
+            <span>No Data</span>
           </div>
         </div>
       </div>

@@ -25,13 +25,14 @@ interface NewsFeedProps {
   activity?: Record<string, ActivityData>;
   error?: string | null;
   onRetry?: () => void;
+  lastUpdated?: string | null;
 }
 
-// Skeleton loader for news cards - Light theme with shimmer
+// Skeleton loader for news cards
 function NewsCardSkeleton({ index = 0 }: { index?: number }) {
   return (
     <div
-      className="px-4 py-4 border-b border-slate-100"
+      className="px-4 py-4 border-b border-slate-100 dark:border-slate-800"
       style={{ animationDelay: `${index * 100}ms` }}
     >
       <div className="flex flex-col gap-3">
@@ -50,20 +51,20 @@ function NewsCardSkeleton({ index = 0 }: { index?: number }) {
   );
 }
 
-// Error state component - Light theme
+// Error state component
 function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   return (
-    <div className="mx-4 my-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+    <div className="mx-4 my-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
       <div className="flex items-center gap-3">
-        <ExclamationTriangleIcon className="w-5 h-5 text-red-500 flex-shrink-0" />
+        <ExclamationTriangleIcon className="w-5 h-5 text-red-500 dark:text-red-400 flex-shrink-0" />
         <div className="flex-1 min-w-0">
-          <p className="text-red-700 text-sm font-medium">Failed to load feed</p>
-          <p className="text-red-500 text-xs mt-1 truncate">{message}</p>
+          <p className="text-red-700 dark:text-red-300 text-sm font-medium">Failed to load feed</p>
+          <p className="text-red-500 dark:text-red-400 text-xs mt-1 truncate">{message}</p>
         </div>
         {onRetry && (
           <button
             onClick={onRetry}
-            className="flex-shrink-0 px-3 py-1.5 text-xs font-medium bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors"
+            className="flex-shrink-0 px-3 py-1.5 text-xs font-medium bg-red-100 dark:bg-red-900/50 hover:bg-red-200 dark:hover:bg-red-800/50 text-red-700 dark:text-red-300 rounded-lg transition-colors"
           >
             Retry
           </button>
@@ -119,6 +120,21 @@ const regionTabs: { id: WatchpointId; label: string; icon?: string }[] = [
   { id: 'seismic', label: 'Seismic', icon: '🌍' },
 ];
 
+// Format relative time for last updated
+function formatLastUpdated(isoString: string | null | undefined): string {
+  if (!isoString) return '';
+  const date = new Date(isoString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMin = Math.floor(diffMs / 60000);
+
+  if (diffMin < 1) return 'just now';
+  if (diffMin < 60) return `${diffMin}m ago`;
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `${diffHr}h ago`;
+  return date.toLocaleDateString();
+}
+
 export function NewsFeed({
   items,
   selectedWatchpoint,
@@ -128,6 +144,7 @@ export function NewsFeed({
   activity,
   error,
   onRetry,
+  lastUpdated,
 }: NewsFeedProps) {
   const filteredItems =
     selectedWatchpoint === 'all'
@@ -144,9 +161,9 @@ export function NewsFeed({
   }, {} as Record<string, number>);
 
   return (
-    <div className="flex flex-col bg-white rounded-xl overflow-hidden">
-      {/* Region Tabs - Light theme */}
-      <div className="sticky top-16 z-40 bg-white/95 backdrop-blur-sm border-b border-slate-200">
+    <div className="flex flex-col bg-white dark:bg-black rounded-xl overflow-hidden">
+      {/* Region Tabs */}
+      <div className="sticky top-16 z-40 bg-white/95 dark:bg-black/95 backdrop-blur-sm border-b border-slate-200 dark:border-[#2f3336]">
         <div className="flex items-center flex-wrap sm:flex-nowrap sm:overflow-x-auto sm:scrollbar-hide">
           {regionTabs.map((tab) => {
             const isSelected = selectedWatchpoint === tab.id;
@@ -160,8 +177,8 @@ export function NewsFeed({
                   relative px-2.5 sm:px-4 py-2.5 sm:py-3 text-2xs sm:text-sm font-medium
                   transition-colors duration-200 whitespace-nowrap
                   ${isSelected
-                    ? 'text-slate-900'
-                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                    ? 'text-slate-900 dark:text-[#e7e9ea]'
+                    : 'text-slate-500 dark:text-[#71767b] hover:text-slate-700 dark:hover:text-[#e7e9ea] hover:bg-slate-50 dark:hover:bg-[#16181c]'
                   }
                 `}
               >
@@ -172,8 +189,8 @@ export function NewsFeed({
                   <span className={`
                     ml-1.5 px-1.5 py-0.5 text-xs rounded-full
                     ${isSelected
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'bg-slate-100 text-slate-500'
+                      ? 'bg-blue-100 dark:bg-[#031018] text-blue-700 dark:text-[#1d9bf0]'
+                      : 'bg-slate-100 dark:bg-[#2f3336] text-slate-500 dark:text-[#71767b]'
                     }
                   `}>
                     {count}
@@ -209,6 +226,20 @@ export function NewsFeed({
 
           <InlineBriefing region={selectedWatchpoint} />
 
+          {/* Status bar - shows data freshness */}
+          {!isLoading && sortedItems.length > 0 && (
+            <div className="px-4 py-2 flex items-center justify-between text-xs border-b border-slate-100 dark:border-[#2f3336] bg-slate-50/50 dark:bg-[#16181c]/50">
+              <span className="text-slate-500 dark:text-[#71767b]">
+                {sortedItems.length} updates {selectedWatchpoint !== 'all' && `in ${regionTabs.find(t => t.id === selectedWatchpoint)?.label}`}
+              </span>
+              {lastUpdated && (
+                <span className="text-slate-400 dark:text-[#536471]">
+                  Updated {formatLastUpdated(lastUpdated)}
+                </span>
+              )}
+            </div>
+          )}
+
           {error && (
             <ErrorState message={error} onRetry={onRetry} />
           )}
@@ -223,11 +254,11 @@ export function NewsFeed({
 
           {!isLoading && !error && sortedItems.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 px-4">
-              <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3">
+              <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3">
                 <span className="text-2xl">📡</span>
               </div>
-              <span className="text-slate-800 text-lg font-medium mb-1">No updates yet</span>
-              <span className="text-slate-500 text-sm text-center">
+              <span className="text-slate-800 dark:text-slate-100 text-lg font-medium mb-1">No updates yet</span>
+              <span className="text-slate-500 dark:text-slate-400 text-sm text-center">
                 {selectedWatchpoint === 'all'
                   ? 'News will appear here as it breaks'
                   : `No news for ${regionTabs.find(t => t.id === selectedWatchpoint)?.label || 'this region'} yet`}
@@ -235,7 +266,7 @@ export function NewsFeed({
             </div>
           )}
 
-          <div className="flex flex-col divide-y divide-slate-100">
+          <div className="flex flex-col gap-2 p-2 sm:p-3">
             {sortedItems.map((item) => (
               <NewsCard key={item.id} item={item} />
             ))}

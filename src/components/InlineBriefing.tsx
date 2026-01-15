@@ -80,29 +80,55 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout
+
     const fetchBriefing = async () => {
       setLoading(true);
       setError(null);
+      console.log(`[InlineBriefing] Fetching briefing for region: ${region}`);
 
       try {
-        const response = await fetch(`/api/summary?region=${region}&hours=4`);
+        const response = await fetch(`/api/summary?region=${region}&hours=4`, {
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
         if (!response.ok) {
-          throw new Error('Failed to fetch briefing');
+          const errorData = await response.json().catch(() => ({}));
+          console.error(`[InlineBriefing] API error ${response.status}:`, errorData);
+          throw new Error(errorData.message || `API error: ${response.status}`);
         }
+
         const data = await response.json();
+        console.log(`[InlineBriefing] Briefing loaded successfully, ${data.sourcesAnalyzed} sources analyzed`);
         setBriefing(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error loading briefing');
+        clearTimeout(timeoutId);
+        if (err instanceof Error && err.name === 'AbortError') {
+          console.error('[InlineBriefing] Request timed out after 60s');
+          setError('Request timed out. The server may be busy.');
+        } else {
+          console.error('[InlineBriefing] Fetch error:', err);
+          setError(err instanceof Error ? err.message : 'Error loading briefing');
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchBriefing();
+
     // Clear follow-ups when region changes
     setFollowUpResponses([]);
     setFollowUpQuestion('');
     setShowFollowUp(false);
+
+    return () => {
+      clearTimeout(timeoutId);
+      controller.abort();
+    };
   }, [region]);
 
   // Handle follow-up question submission
@@ -153,17 +179,38 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
   // Loading state
   if (loading) {
     return (
-      <div className="mx-4 my-3 px-4 py-3 border border-slate-200 rounded-lg bg-slate-50">
+      <div className="mx-4 my-3 px-4 py-3 border border-slate-200 dark:border-[#2f3336] rounded-lg bg-slate-50 dark:bg-[#16181c]">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 border border-slate-400 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-slate-500">Generating briefing...</span>
+          <div className="w-3 h-3 border-2 border-[#1d9bf0] border-t-transparent rounded-full animate-spin" />
+          <span className="text-xs text-slate-600 dark:text-[#71767b]">Generating AI briefing...</span>
         </div>
       </div>
     );
   }
 
-  // Error state - just hide
-  if (error || !briefing) {
+  // Error state - show error message with retry option
+  if (error) {
+    console.error('[InlineBriefing] Error loading briefing:', error);
+    return (
+      <div className="mx-4 my-3 px-4 py-3 border border-amber-200 rounded-lg bg-amber-50">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-amber-500">⚠️</span>
+            <span className="text-xs text-amber-700">Briefing unavailable</span>
+          </div>
+          <button
+            onClick={() => window.location.reload()}
+            className="text-xs text-amber-600 hover:text-amber-800 underline"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // No data state
+  if (!briefing) {
     return null;
   }
 
@@ -171,16 +218,16 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
   const tension = getTensionStyle(tensionScore);
 
   return (
-    <div className="mx-4 my-3 border border-slate-200 rounded-lg overflow-hidden bg-white">
+    <div className="mx-4 my-3 border border-slate-200 dark:border-[#2f3336] rounded-lg overflow-hidden bg-white dark:bg-[#16181c]">
       {/* Header */}
-      <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
+      <div className="px-4 py-3 bg-slate-50 dark:bg-[#16181c] border-b border-slate-200 dark:border-[#2f3336]">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-blue-600 uppercase tracking-wide">
+            <span className="text-xs font-semibold text-[#1d9bf0] uppercase tracking-wide">
               AI Summary
             </span>
-            <span className="text-xs text-slate-400">•</span>
-            <span className="text-xs text-slate-500">{regionDisplayNames[region]}</span>
+            <span className="text-xs text-slate-400 dark:text-[#536471]">•</span>
+            <span className="text-xs text-slate-500 dark:text-[#71767b]">{regionDisplayNames[region]}</span>
             {briefing.fromCache && (
               <span className="text-2xs text-slate-400">(cached)</span>
             )}
@@ -197,27 +244,27 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
       {/* Body */}
       <div className="px-4 py-3">
         {/* Summary */}
-        <p className="text-sm text-slate-700 leading-relaxed">
+        <p className="text-sm text-slate-700 dark:text-[#e7e9ea] leading-relaxed">
           {briefing.summary}
         </p>
 
         {/* Top 3 Key Developments */}
         {briefing.keyDevelopments.length > 0 && (
-          <div className="mt-3 pt-3 border-t border-slate-100">
+          <div className="mt-3 pt-3 border-t border-slate-100 dark:border-[#2f3336]">
             <div className="space-y-2">
               {briefing.keyDevelopments.slice(0, 3).map((dev, i) => (
                 <div key={i} className="flex items-start gap-2">
                   <div className={`w-1.5 h-1.5 rounded-full ${severityStyles[dev.severity].dot} mt-1.5 flex-shrink-0`} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm text-slate-800">{dev.headline}</span>
+                      <span className="text-sm text-slate-800 dark:text-[#e7e9ea]">{dev.headline}</span>
                       {dev.confidence && (
                         <span className={`text-2xs ${confidenceStyles[dev.confidence]}`}>
                           {dev.confidence} conf.
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-slate-500 mt-0.5">{dev.detail}</p>
+                    <p className="text-xs text-slate-500 dark:text-[#71767b] mt-0.5">{dev.detail}</p>
                   </div>
                 </div>
               ))}
@@ -226,7 +273,7 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
         )}
 
         {/* Follow-up questions */}
-        <div className="mt-3 pt-3 border-t border-slate-100">
+        <div className="mt-3 pt-3 border-t border-slate-100 dark:border-[#2f3336]">
           <button
             onClick={() => setShowFollowUp(!showFollowUp)}
             className="text-xs text-slate-500 hover:text-blue-600 transition-colors"
@@ -281,7 +328,7 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
 
       {/* Footer - usage stats */}
       {briefing.usage && (
-        <div className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-2xs text-slate-500">
+        <div className="px-4 py-2 bg-slate-50 dark:bg-[#16181c] border-t border-slate-100 dark:border-[#2f3336] flex items-center justify-between text-2xs text-slate-500 dark:text-[#536471]">
           <span>{briefing.sourcesAnalyzed} posts analyzed</span>
           <div className="flex items-center gap-2">
             <span>{briefing.usage.inputTokens + briefing.usage.outputTokens} tokens</span>

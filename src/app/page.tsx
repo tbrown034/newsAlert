@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { WatchpointSelector, NewsFeed, Legend, WorldMap, SituationBriefing, SeismicMap, WeatherMap, OutagesMap, TravelMap, FiresMap } from '@/components';
+import { NewsFeed, Legend, WorldMap, SituationBriefing, SeismicMap, WeatherMap, OutagesMap, TravelMap, FiresMap } from '@/components';
 import { watchpoints as defaultWatchpoints } from '@/lib/mockData';
 import { NewsItem, WatchpointId, Watchpoint, Earthquake } from '@/types';
 import { SparklesIcon, GlobeAltIcon, CloudIcon, SignalIcon, ExclamationTriangleIcon, FireIcon, EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
@@ -25,6 +25,7 @@ export default function Home() {
   const [lastFetched, setLastFetched] = useState<string | null>(null);
   const [showBriefing, setShowBriefing] = useState(false);
   const [activityData, setActivityData] = useState<ApiResponse['activity'] | null>(null);
+  const [newsError, setNewsError] = useState<string | null>(null);
 
   // Hero view mode
   const [heroView, setHeroView] = useState<HeroView>('hotspots');
@@ -42,10 +43,30 @@ export default function Home() {
   };
 
   const fetchNews = useCallback(async (autoSelectHottest = false) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 45000); // 45s timeout
+
     setIsRefreshing(true);
+    setNewsError(null);
+    console.log(`[NewsFeed] Fetching news for region: ${selectedWatchpoint}`);
+    const startTime = Date.now();
+
     try {
-      const response = await fetch(`/api/news?region=${selectedWatchpoint}&limit=50`);
+      const response = await fetch(`/api/news?region=${selectedWatchpoint}&limit=50`, {
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error(`[NewsFeed] API error ${response.status}:`, errorData);
+        throw new Error(errorData.error || `API error: ${response.status}`);
+      }
+
       const data: ApiResponse = await response.json();
+      const elapsed = Date.now() - startTime;
+      console.log(`[NewsFeed] Loaded ${data.items.length} items in ${elapsed}ms`);
 
       const items = data.items.map((item) => ({
         ...item,
@@ -85,7 +106,14 @@ export default function Home() {
         }
       }
     } catch (error) {
-      console.error('Failed to fetch news:', error);
+      clearTimeout(timeoutId);
+      if (error instanceof Error && error.name === 'AbortError') {
+        console.error('[NewsFeed] Request timed out after 45s');
+        setNewsError('Request timed out. The server may be busy - try again in a moment.');
+      } else {
+        console.error('[NewsFeed] Failed to fetch news:', error);
+        setNewsError(error instanceof Error ? error.message : 'Failed to load news feed');
+      }
     } finally {
       setIsRefreshing(false);
       setIsInitialLoad(false);
@@ -106,18 +134,39 @@ export default function Home() {
   };
 
   const fetchEarthquakes = useCallback(async () => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+
     setSeismicLoading(true);
+    console.log('[Seismic] Fetching earthquake data...');
+
     try {
-      const response = await fetch('/api/seismic?period=day&minMag=2.5');
+      const response = await fetch('/api/seismic?period=day&minMag=2.5', {
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        console.error(`[Seismic] API error ${response.status}`);
+        throw new Error(`API error: ${response.status}`);
+      }
+
       const data = await response.json();
       if (data.earthquakes) {
+        console.log(`[Seismic] Loaded ${data.earthquakes.length} earthquakes`);
         setEarthquakes(data.earthquakes.map((eq: any) => ({
           ...eq,
           time: new Date(eq.time),
         })));
       }
     } catch (error) {
-      console.error('Failed to fetch earthquakes:', error);
+      clearTimeout(timeoutId);
+      if (error instanceof Error && error.name === 'AbortError') {
+        console.error('[Seismic] Request timed out after 15s');
+      } else {
+        console.error('[Seismic] Failed to fetch earthquakes:', error);
+      }
     } finally {
       setSeismicLoading(false);
     }
@@ -166,10 +215,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[var(--background)]/95 backdrop-blur-sm border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="sticky top-0 z-50 bg-[var(--background)]/95 backdrop-blur-sm border-b border-slate-200 dark:border-[#2f3336]">
+        <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo + Title */}
             <div className="flex items-center gap-4">
@@ -177,10 +226,10 @@ export default function Home() {
                 <GlobeAltIcon className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900 headline">
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white headline">
                   Sentinel
                 </h1>
-                <p className="text-xs text-blue-600 font-medium tracking-wide uppercase">
+                <p className="text-xs text-blue-600 dark:text-blue-400 font-medium tracking-wide uppercase">
                   Global Intelligence
                 </p>
               </div>
@@ -188,10 +237,10 @@ export default function Home() {
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center gap-6">
-              <a href="#map" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+              <a href="#map" className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
                 Map
               </a>
-              <a href="#feed" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+              <a href="#feed" className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
                 Feed
               </a>
               <button
@@ -217,64 +266,43 @@ export default function Home() {
 
       {/* Hero Map Section */}
       <section id="map" className="relative">
-        {/* Section Label - hidden on mobile when tabs wrap */}
-        <div className="absolute top-4 left-4 z-10 hidden sm:block">
-          <span className="section-label">Live Monitoring</span>
-        </div>
 
-        {/* View Mode Tabs */}
-        <div className="absolute top-2 sm:top-3 left-2 right-2 sm:left-auto sm:right-4 z-20">
-          <div className="flex justify-center gap-1 bg-white/90 backdrop-blur-sm rounded-xl p-1.5 shadow-lg border border-slate-200">
+        {/* View Mode Tabs - Clean, minimal design */}
+        <div className="absolute top-3 right-4 z-20">
+          <div className="flex items-center gap-2 bg-white/95 backdrop-blur-sm rounded-lg p-1 shadow-lg border border-slate-200">
             {/* Main tabs - always visible */}
             {mainTabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setHeroView(tab.id)}
                 className={`
-                  flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-2xs sm:text-xs font-semibold btn-press
+                  flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-colors
                   ${getTabClasses(tab.id, tab.color)}
                 `}
               >
-                <tab.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                {tab.label}
+                <tab.icon className="w-4 h-4" />
+                <span className="hidden sm:inline">{tab.label}</span>
               </button>
             ))}
 
-            {/* Secondary tabs - visible on desktop, dropdown on mobile */}
-            <div className="hidden sm:contents">
-              {secondaryTabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setHeroView(tab.id)}
-                  className={`
-                    flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold btn-press
-                    ${getTabClasses(tab.id, tab.color)}
-                  `}
-                >
-                  <tab.icon className="w-3.5 h-3.5" />
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            {/* More dropdown - mobile only */}
-            <div className="relative sm:hidden">
+            {/* More dropdown - always available for secondary tabs */}
+            <div className="relative">
               <button
                 onClick={() => setShowMoreTabs(!showMoreTabs)}
                 className={`
-                  flex items-center gap-1 px-2 py-1.5 rounded-lg text-2xs font-semibold btn-press
+                  flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-colors
                   ${secondaryTabs.some(t => t.id === heroView)
                     ? getTabClasses(heroView, secondaryTabs.find(t => t.id === heroView)?.color || 'slate')
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
                   }
                 `}
               >
                 <EllipsisHorizontalIcon className="w-4 h-4" />
-                More
+                <span className="hidden sm:inline">More</span>
               </button>
 
               {showMoreTabs && (
-                <div className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border border-slate-200 py-1 min-w-[120px] z-50">
+                <div className="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-xl border border-slate-200 py-1.5 min-w-[140px] z-50">
                   {secondaryTabs.map((tab) => (
                     <button
                       key={tab.id}
@@ -283,11 +311,11 @@ export default function Home() {
                         setShowMoreTabs(false);
                       }}
                       className={`
-                        w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-left
-                        ${heroView === tab.id ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-50'}
+                        w-full flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-left transition-colors
+                        ${heroView === tab.id ? 'bg-slate-100 text-slate-900' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}
                       `}
                     >
-                      <tab.icon className="w-3.5 h-3.5" />
+                      <tab.icon className="w-4 h-4" />
                       {tab.label}
                     </button>
                   ))}
@@ -298,7 +326,7 @@ export default function Home() {
         </div>
 
         {/* Map Views */}
-        <div className="bg-slate-800 rounded-none sm:rounded-2xl sm:mx-4 sm:mt-4 overflow-hidden shadow-xl">
+        <div className="bg-slate-800 rounded-none sm:rounded-2xl sm:mx-4 xl:mx-8 2xl:mx-16 sm:mt-4 overflow-hidden shadow-xl">
           {heroView === 'hotspots' && (
             <WorldMap
               watchpoints={watchpoints}
@@ -323,17 +351,17 @@ export default function Home() {
       </section>
 
       {/* Divider */}
-      <div className="divider max-w-6xl mx-auto" />
+      <div className="divider max-w-6xl xl:max-w-7xl 2xl:max-w-[1600px] mx-auto" />
 
       {/* Main Content */}
-      <main id="feed" className="max-w-3xl mx-auto px-4 sm:px-6 pb-20">
+      <main id="feed" className="max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-4 sm:px-6 pb-20">
         {/* Section Header */}
-        <div className="mb-6">
+        <div className="mb-4">
           <span className="section-label">Intelligence Feed</span>
-          <h2 className="text-3xl font-bold text-slate-900 headline mt-2">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white headline mt-1">
             Real-Time Updates
           </h2>
-          <p className="text-slate-600 mt-1">
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-0.5">
             Aggregated from 300+ verified OSINT sources worldwide
           </p>
         </div>
@@ -347,6 +375,9 @@ export default function Home() {
             isLoading={isRefreshing || isInitialLoad}
             onRefresh={handleRefresh}
             activity={activityData || undefined}
+            lastUpdated={lastFetched}
+            error={newsError}
+            onRetry={handleRefresh}
           />
         </div>
       </main>

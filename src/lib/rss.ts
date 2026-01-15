@@ -166,10 +166,130 @@ function decodeHtmlEntities(text: string): string {
     .replace(/&[a-z]+;/gi, (entity) => entities[entity] || entity);
 }
 
-// Fetch and parse RSS feed
+// =============================================================================
+// BLUESKY API FETCHING
+// =============================================================================
+// Bluesky doesn't have native RSS - we use their public API instead
+
+interface BlueskyPost {
+  post: {
+    uri: string;
+    cid: string;
+    author: {
+      handle: string;
+      displayName?: string;
+    };
+    record: {
+      text: string;
+      createdAt: string;
+      embed?: {
+        external?: {
+          uri: string;
+          title?: string;
+          description?: string;
+        };
+      };
+    };
+  };
+}
+
+interface BlueskyFeedResponse {
+  feed: BlueskyPost[];
+}
+
+// Extract Bluesky handle from feedUrl (e.g., 'https://bsky.app/profile/bellingcat.com/rss' -> 'bellingcat.com')
+function extractBlueskyHandle(feedUrl: string): string | null {
+  const match = feedUrl.match(/bsky\.app\/profile\/([^\/]+)/);
+  return match ? match[1] : null;
+}
+
+// Check if source is a Bluesky source
+function isBlueskySource(source: Source & { feedUrl: string }): boolean {
+  return source.platform === 'bluesky' || source.feedUrl.includes('bsky.app');
+}
+
+// Fetch posts from Bluesky using their public API
+async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<RssItem[]> {
+  const handle = extractBlueskyHandle(source.feedUrl);
+  if (!handle) {
+    console.error(`Could not extract Bluesky handle from ${source.feedUrl}`);
+    return [];
+  }
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+  try {
+    const apiUrl = `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${handle}&limit=20`;
+    const response = await fetch(apiUrl, {
+      signal: controller.signal,
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      console.error(`Bluesky fetch failed for ${source.name}: ${response.status}`);
+      return [];
+    }
+
+    const data: BlueskyFeedResponse = await response.json();
+
+    return data.feed.map((item) => {
+      const text = item.post.record.text;
+      const createdAt = item.post.record.createdAt;
+      const postId = item.post.uri.split('/').pop() || item.post.cid;
+      const link = `https://bsky.app/profile/${item.post.author.handle}/post/${postId}`;
+
+      return {
+        title: text,
+        description: text,
+        link,
+        pubDate: createdAt,
+        guid: item.post.uri,
+      };
+    });
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error instanceof Error && error.name === 'AbortError') {
+      console.error(`Bluesky fetch timeout for ${source.name} (10s exceeded)`);
+    } else {
+      console.error(`Bluesky fetch error for ${source.name}:`, error);
+    }
+    return [];
+  }
+}
+
+// Fetch and parse RSS feed (or Bluesky API for Bluesky sources)
 export async function fetchRssFeed(
   source: Source & { feedUrl: string }
 ): Promise<NewsItem[]> {
+  // Use Bluesky API for Bluesky sources (they don't have native RSS)
+  if (isBlueskySource(source)) {
+    const items = await fetchBlueskyFeed(source);
+    return items.map((item) => {
+      const region = source.region !== 'all'
+        ? source.region
+        : classifyRegion(item.title, item.description);
+
+      return {
+        id: `${source.id}-${hashString(item.guid || item.link)}`,
+        title: item.title,
+        content: item.description || item.title,
+        source,
+        timestamp: new Date(item.pubDate),
+        region,
+        verificationStatus: getVerificationStatus(source.tier, source.confidence),
+        url: item.link,
+        alertStatus: null,
+        isBreaking: isBreakingNews(item.title, item.description),
+      };
+    });
+  }
+
+  // Standard RSS/Atom fetch for other sources
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
@@ -236,16 +356,46 @@ function hashString(str: string): string {
   return createHash('sha256').update(str).digest('hex').slice(0, 16);
 }
 
-// Fetch multiple RSS feeds in parallel
+// Helper to add delay between requests
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Fetch multiple RSS feeds with rate limiting for Bluesky
 export async function fetchAllRssFeeds(
   sources: (Source & { feedUrl: string })[]
 ): Promise<NewsItem[]> {
-  const results = await Promise.allSettled(
-    sources.map((source) => fetchRssFeed(source))
+  // Separate Bluesky and RSS sources
+  const blueskySources = sources.filter(isBlueskySource);
+  const rssSources = sources.filter(s => !isBlueskySource(s));
+
+  // Fetch RSS sources in parallel (no rate limit issues)
+  const rssResultsPromise = Promise.allSettled(
+    rssSources.map((source) => fetchRssFeed(source))
   );
 
+  // Fetch Bluesky sources in batches to avoid rate limits
+  const BLUESKY_BATCH_SIZE = 10;
+  const BLUESKY_BATCH_DELAY_MS = 500; // 500ms between batches
+  const blueskyResults: PromiseSettledResult<NewsItem[]>[] = [];
+
+  for (let i = 0; i < blueskySources.length; i += BLUESKY_BATCH_SIZE) {
+    const batch = blueskySources.slice(i, i + BLUESKY_BATCH_SIZE);
+    const batchResults = await Promise.allSettled(
+      batch.map((source) => fetchRssFeed(source))
+    );
+    blueskyResults.push(...batchResults);
+
+    // Add delay between batches (except for last batch)
+    if (i + BLUESKY_BATCH_SIZE < blueskySources.length) {
+      await delay(BLUESKY_BATCH_DELAY_MS);
+    }
+  }
+
+  // Wait for RSS results
+  const rssResults = await rssResultsPromise;
+
+  // Combine all results
   const allItems: NewsItem[] = [];
-  for (const result of results) {
+  for (const result of [...rssResults, ...blueskyResults]) {
     if (result.status === 'fulfilled') {
       allItems.push(...result.value);
     }

@@ -83,10 +83,10 @@ export function NewsCard({ item }: NewsCardProps) {
       tabIndex={0}
       aria-label={`${item.title}. From ${item.source.name}. Click to open source.`}
       className={`
-        relative px-4 py-4 border-b border-slate-100
-        hover:bg-gradient-to-r hover:from-slate-50 hover:to-transparent
-        transition-all duration-300 cursor-pointer group
-        focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white
+        relative px-3 py-3 sm:px-4 sm:py-3.5 bg-white dark:bg-[#16181c] rounded-lg border border-slate-200 dark:border-[#2f3336]
+        hover:border-slate-300 dark:hover:border-[#536471] hover:shadow-sm dark:hover:bg-[#1c1f23]
+        transition-all duration-200 cursor-pointer group
+        focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-black
         ${getCardAccent()}
       `}
       onClick={handleOpenSource}
@@ -111,7 +111,7 @@ export function NewsCard({ item }: NewsCardProps) {
       )}
 
       {/* Main Content */}
-      <p className="text-news text-slate-800 mb-3">
+      <p className="text-news text-slate-800 dark:text-[#e7e9ea] mb-2 leading-snug">
         {item.title}
       </p>
 
@@ -121,10 +121,13 @@ export function NewsCard({ item }: NewsCardProps) {
           {/* Top row: Platform + Source + Badge + Time */}
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <span className={platformColor}>
+              <span className={`flex items-center gap-1 ${platformColor}`}>
                 <PlatformIcon platform={item.source.platform} className="w-4 h-4" />
+                {item.source.platform === 'bluesky' && (
+                  <span className="text-2xs font-medium text-sky-600">Bluesky</span>
+                )}
               </span>
-              <span className="text-sm font-medium text-slate-700">{item.source.name}</span>
+              <span className="text-sm font-medium text-slate-700 dark:text-[#e7e9ea]">{item.source.name}</span>
               {isVerified && (
                 <CheckBadgeSolid className="w-4 h-4 text-blue-500" />
               )}
