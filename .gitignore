@@ -33,6 +33,9 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# internal docs (keep README.md and CLAUDE.md public)
+/docs/
+
 # vercel
 .vercel
 

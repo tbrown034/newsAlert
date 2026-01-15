@@ -67,12 +67,13 @@ src/
 
 Create `.env.local`:
 ```env
-# Required for AI briefings
-ANTHROPIC_API_KEY=your_key_here
+# Required
+ANTHROPIC_API_KEY=your_key_here      # AI briefings
+NASA_FIRMS_API_KEY=your_key_here     # Wildfire satellite data
 
 # Optional: Bluesky auth for higher rate limits
 BLUESKY_IDENTIFIER=your-handle.bsky.social
-BLUESKY_PASSWORD=your-app-password
+BLUESKY_APP_PASSWORD=your-app-password
 ```
 
 ## Deployment
