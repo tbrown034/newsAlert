@@ -164,51 +164,55 @@ export function NewsFeed({
     <div className="flex flex-col bg-white dark:bg-black rounded-xl overflow-hidden">
       {/* Region Tabs */}
       <div className="sticky top-16 z-40 bg-white/95 dark:bg-black/95 backdrop-blur-sm border-b border-slate-200 dark:border-[#2f3336]">
-        <div className="flex items-center flex-wrap sm:flex-nowrap sm:overflow-x-auto sm:scrollbar-hide">
-          {regionTabs.map((tab) => {
-            const isSelected = selectedWatchpoint === tab.id;
-            const count = tab.id === 'all' ? items.length : (regionCounts[tab.id] || 0);
+        <div className="flex items-center">
+          <div className="flex-1 overflow-x-auto scrollbar-hide">
+            <div className="flex">
+              {regionTabs.map((tab) => {
+                const isSelected = selectedWatchpoint === tab.id;
+                const count = tab.id === 'all' ? items.length : (regionCounts[tab.id] || 0);
 
-            return (
-              <button
-                key={tab.id}
-                onClick={() => onSelectWatchpoint?.(tab.id)}
-                className={`
-                  relative px-2.5 sm:px-4 py-2.5 sm:py-3 text-2xs sm:text-sm font-medium
-                  transition-colors duration-200 whitespace-nowrap
-                  ${isSelected
-                    ? 'text-slate-900 dark:text-[#e7e9ea]'
-                    : 'text-slate-500 dark:text-[#71767b] hover:text-slate-700 dark:hover:text-[#e7e9ea] hover:bg-slate-50 dark:hover:bg-[#16181c]'
-                  }
-                `}
-              >
-                {tab.icon && <span className="mr-1">{tab.icon}</span>}
-                {tab.label}
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => onSelectWatchpoint?.(tab.id)}
+                    className={`
+                      relative flex-shrink-0 px-4 py-3 text-sm font-medium
+                      transition-colors duration-200 whitespace-nowrap
+                      ${isSelected
+                        ? 'text-slate-900 dark:text-[#e7e9ea]'
+                        : 'text-slate-500 dark:text-[#71767b] hover:text-slate-700 dark:hover:text-[#e7e9ea] hover:bg-slate-50 dark:hover:bg-[#16181c]'
+                      }
+                    `}
+                  >
+                    {tab.icon && <span className="mr-1">{tab.icon}</span>}
+                    {tab.label}
 
-                {count > 0 && tab.id !== 'all' && tab.id !== 'seismic' && (
-                  <span className={`
-                    ml-1.5 px-1.5 py-0.5 text-xs rounded-full
-                    ${isSelected
-                      ? 'bg-blue-100 dark:bg-[#031018] text-blue-700 dark:text-[#1d9bf0]'
-                      : 'bg-slate-100 dark:bg-[#2f3336] text-slate-500 dark:text-[#71767b]'
-                    }
-                  `}>
-                    {count}
-                  </span>
-                )}
+                    {count > 0 && tab.id !== 'all' && tab.id !== 'seismic' && (
+                      <span className={`
+                        ml-1.5 px-1.5 py-0.5 text-xs rounded-full
+                        ${isSelected
+                          ? 'bg-blue-100 dark:bg-[#031018] text-blue-700 dark:text-[#1d9bf0]'
+                          : 'bg-slate-100 dark:bg-[#2f3336] text-slate-500 dark:text-[#71767b]'
+                        }
+                      `}>
+                        {count}
+                      </span>
+                    )}
 
-                {isSelected && (
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-blue-600 rounded-full" />
-                )}
-              </button>
-            );
-          })}
+                    {isSelected && (
+                      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-blue-600 rounded-full" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
           {onRefresh && (
             <button
               onClick={onRefresh}
               disabled={isLoading}
-              className="flex-shrink-0 ml-auto px-3 py-3 text-slate-400 hover:text-blue-600 transition-colors disabled:opacity-50"
+              className="flex-shrink-0 px-3 py-3 text-slate-400 hover:text-blue-600 transition-colors disabled:opacity-50 border-l border-slate-200 dark:border-[#2f3336]"
             >
               <ArrowPathIcon className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             </button>

@@ -24,10 +24,10 @@ function formatTimeAgo(date: Date): string {
   const now = new Date();
   const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-  if (seconds < 60) return 'just now';
-  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
-  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-  return `${Math.floor(seconds / 86400)}d ago`;
+  if (seconds < 60) return 'now';
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`;
+  return `${Math.floor(seconds / 86400)}d`;
 }
 
 export function NewsCard({ item }: NewsCardProps) {
@@ -71,8 +71,8 @@ export function NewsCard({ item }: NewsCardProps) {
 
   // Determine card accent based on severity - Light theme
   const getCardAccent = () => {
-    if (eventSignal?.severity === 'critical') return 'border-l-4 border-l-red-500 bg-red-50';
-    if (eventSignal?.severity === 'high') return 'border-l-4 border-l-orange-500 bg-orange-50';
+    if (eventSignal?.severity === 'critical') return 'border-l-4 border-l-red-500 bg-red-50/50';
+    if (eventSignal?.severity === 'high') return 'border-l-4 border-l-orange-500 bg-orange-50/50';
     if (eventSignal?.severity === 'moderate') return 'border-l-4 border-l-amber-400/60';
     return '';
   };
@@ -92,84 +92,96 @@ export function NewsCard({ item }: NewsCardProps) {
       onClick={handleOpenSource}
       onKeyDown={handleKeyDown}
     >
-      {/* Severity Banner for Critical/High */}
-      {showSeverity && severityIndicator && (eventSignal?.severity === 'critical' || eventSignal?.severity === 'high') && (
-        <div className={`flex items-center gap-2 mb-3 ${severityIndicator.color}`}>
-          <span className={`px-2.5 py-1 rounded-md text-xs font-bold ${severityIndicator.bgColor}`}>
-            {severityIndicator.icon} {severityIndicator.label}
-          </span>
-          {eventTypeLabel && eventSignal?.type !== 'unknown' && (
-            <span className="text-xs text-slate-500">{eventTypeLabel}</span>
-          )}
-          {eventSignal?.isDeveloping && (
-            <span className="text-xs text-amber-600 italic">• Developing</span>
-          )}
-          {eventSignal?.isConfirmed && (
-            <span className="text-xs text-emerald-600 font-medium">• Confirmed</span>
-          )}
-        </div>
-      )}
-
-      {/* Main Content */}
-      <p className="text-news text-slate-800 dark:text-[#e7e9ea] mb-2 leading-snug">
-        {item.title}
-      </p>
-
-      {/* Source Footer */}
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-1">
-          {/* Top row: Platform + Source + Badge + Time */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <span className={`flex items-center gap-1 ${platformColor}`}>
+      {/* Two-column layout: Source on left, Content on right */}
+      <div className="flex gap-3">
+        {/* Left column: Source info */}
+        <div className="flex-shrink-0 w-24 sm:w-28">
+          <div className="flex flex-col gap-1.5">
+            {/* Platform icon + name */}
+            <div className="flex items-center gap-1.5">
+              <span className={platformColor}>
                 <PlatformIcon platform={item.source.platform} className="w-4 h-4" />
-                {item.source.platform === 'bluesky' && (
-                  <span className="text-2xs font-medium text-sky-600">Bluesky</span>
-                )}
               </span>
-              <span className="text-sm font-medium text-slate-700 dark:text-[#e7e9ea]">{item.source.name}</span>
+              <span className="text-xs font-semibold text-slate-700 dark:text-[#e7e9ea] truncate">
+                {item.source.name}
+              </span>
               {isVerified && (
-                <CheckBadgeSolid className="w-4 h-4 text-blue-500" />
+                <CheckBadgeSolid className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" />
               )}
             </div>
-            <span className={`px-2 py-0.5 text-2xs font-medium rounded border ${tierStyle}`}>
-              {item.source.tier.toUpperCase()}
-            </span>
-            <span className="text-xs text-slate-500">
-              {formatTimeAgo(item.timestamp)}
-            </span>
-          </div>
 
-          {/* Activity indicator under handle */}
-          {activityIndicator && (
-            <div className={`flex items-center gap-1 text-xs ${activityIndicator.color}`}>
-              <span>{activityIndicator.icon}</span>
-              <span className="font-medium">{activityIndicator.multiplier}× more active than usual</span>
+            {/* Tier badge + time */}
+            <div className="flex items-center gap-2">
+              <span className={`px-1.5 py-0.5 text-2xs font-medium rounded border ${tierStyle}`}>
+                {item.source.tier.toUpperCase()}
+              </span>
+              <span className="text-2xs text-slate-400">
+                {formatTimeAgo(item.timestamp)}
+              </span>
+            </div>
+
+            {/* Activity indicator */}
+            {activityIndicator && (
+              <div className={`flex items-center gap-1 text-2xs ${activityIndicator.color}`}>
+                <span>{activityIndicator.icon}</span>
+                <span className="font-medium">{activityIndicator.multiplier}× active</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right column: Content */}
+        <div className="flex-1 min-w-0">
+          {/* Severity Banner for Critical/High */}
+          {showSeverity && severityIndicator && (eventSignal?.severity === 'critical' || eventSignal?.severity === 'high') && (
+            <div className={`flex items-center gap-2 mb-2 flex-wrap ${severityIndicator.color}`}>
+              <span className={`px-2 py-0.5 rounded text-2xs font-bold ${severityIndicator.bgColor}`}>
+                {severityIndicator.icon} {severityIndicator.label}
+              </span>
+              {eventTypeLabel && eventSignal?.type !== 'unknown' && (
+                <span className="text-2xs text-slate-500">{eventTypeLabel}</span>
+              )}
+              {eventSignal?.isDeveloping && (
+                <span className="text-2xs text-amber-600 italic">Developing</span>
+              )}
+              {eventSignal?.isConfirmed && (
+                <span className="text-2xs text-emerald-600 font-medium">Confirmed</span>
+              )}
+            </div>
+          )}
+
+          {/* Main message content */}
+          <p className="text-sm text-slate-800 dark:text-[#e7e9ea] leading-relaxed">
+            {item.title}
+          </p>
+
+          {/* Moderate severity - subtle inline indicator */}
+          {showSeverity && eventSignal?.severity === 'moderate' && (
+            <div className="mt-1.5 flex items-center gap-1.5 text-2xs text-amber-600">
+              <span>📢</span>
+              <span>{eventTypeLabel || 'Notable'}</span>
+              {eventSignal?.isDeveloping && <span className="italic">• Developing</span>}
             </div>
           )}
 
           {/* Message-level indicators */}
           {showMessageIndicators && (
-            <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-              {/* Content type pill */}
+            <div className="flex items-center gap-1.5 mt-2 flex-wrap">
               {messageAnalysis.contentType.type !== 'general' && (
                 <span className={`px-1.5 py-0.5 text-2xs font-medium rounded ${ctStyle.bgColor} ${ctStyle.color}`}>
                   {ctStyle.label}
                 </span>
               )}
-              {/* Verification indicator */}
               {messageAnalysis.verification.confidence > 0.5 && messageAnalysis.verification.level !== 'unverified' && (
                 <span className={`text-2xs ${vStyle.color}`}>
                   {vStyle.icon} {vStyle.label}
                 </span>
               )}
-              {/* Show unverified only with high confidence (explicit markers) */}
               {messageAnalysis.verification.level === 'unverified' && messageAnalysis.verification.confidence > 0.7 && (
                 <span className={`text-2xs ${vStyle.color}`}>
                   {vStyle.icon} {vStyle.label}
                 </span>
               )}
-              {/* Provenance with cited sources */}
               {messageAnalysis.provenance.citedSources.length > 0 && (
                 <span className={`text-2xs ${pStyle.color}`}>
                   via {messageAnalysis.provenance.citedSources.slice(0, 2).join(', ')}
@@ -177,27 +189,18 @@ export function NewsCard({ item }: NewsCardProps) {
               )}
             </div>
           )}
-        </div>
 
-        {/* Right side: Media indicator, link */}
-        <div className="flex items-center gap-2">
-          {hasMedia && (
-            <span className="text-xs text-purple-500" title="Contains media">
-              🖼
-            </span>
-          )}
-          <ArrowTopRightOnSquareIcon className="w-4 h-4 text-slate-400" />
+          {/* Footer row: Media + Link */}
+          <div className="flex items-center justify-end gap-2 mt-2">
+            {hasMedia && (
+              <span className="text-2xs text-purple-500" title="Contains media">
+                🖼
+              </span>
+            )}
+            <ArrowTopRightOnSquareIcon className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600" />
+          </div>
         </div>
       </div>
-
-      {/* Moderate severity - subtle inline indicator */}
-      {showSeverity && eventSignal?.severity === 'moderate' && (
-        <div className="mt-2 flex items-center gap-2 text-xs text-amber-600">
-          <span>📢</span>
-          <span>{eventTypeLabel || 'Notable'}</span>
-          {eventSignal?.isDeveloping && <span className="italic">• Developing</span>}
-        </div>
-      )}
     </article>
   );
 }
