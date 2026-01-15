@@ -58,11 +58,9 @@ interface StructuredPost {
   id: number;
   source: string;
   tier: string;
-  platform: string;
   minutesAgo: number;
   title: string;
   content?: string;
-  region: string;
   contentType: string;
   verification: string;
   provenance: string;
@@ -70,8 +68,9 @@ interface StructuredPost {
 
 /**
  * Smart post selection - prioritize quality over quantity
+ * Reduced to 25 posts max to optimize token usage while maintaining coverage
  */
-function selectAndStructurePosts(posts: NewsItem[], maxPosts: number = 35): StructuredPost[] {
+function selectAndStructurePosts(posts: NewsItem[], maxPosts: number = 25): StructuredPost[] {
   const now = Date.now();
 
   // Score posts for selection
@@ -136,7 +135,7 @@ function selectAndStructurePosts(posts: NewsItem[], maxPosts: number = 35): Stru
     if (selected.length >= maxPosts) break;
   }
 
-  // Structure posts with analysis
+  // Structure posts with analysis (optimized fields for token efficiency)
   return selected.map((item, idx) => {
     const analysis = analyzeMessage(item.post.title + ' ' + (item.post.content || ''));
 
@@ -144,11 +143,9 @@ function selectAndStructurePosts(posts: NewsItem[], maxPosts: number = 35): Stru
       id: idx + 1,
       source: item.post.source.name,
       tier: item.post.source.tier,
-      platform: item.post.source.platform,
       minutesAgo: item.minutesAgo,
       title: item.post.title,
       content: item.post.content !== item.post.title ? item.post.content : undefined,
-      region: item.post.region,
       contentType: analysis.contentType.type,
       verification: analysis.verification.level,
       provenance: analysis.provenance.type,
@@ -166,55 +163,26 @@ function buildEnhancedPrompt(
   timeWindowHours: number
 ): string {
   const regionName = regionDisplayNames[region];
-  const postsJson = JSON.stringify(posts, null, 2);
+  // Use compact JSON to reduce token count (~30% savings)
+  const postsJson = JSON.stringify(posts);
 
-  return `You are a senior intelligence analyst creating a situation briefing for ${regionName}.
+  return `You are an intelligence analyst creating a briefing for ${regionName}.
 
-Analyze these ${posts.length} structured posts from the last ${timeWindowHours} hours:
+Analyze ${posts.length} posts from the last ${timeWindowHours}h:
 
 <posts>
 ${postsJson}
 </posts>
 
-Each post includes:
-- source/tier: Who reported it (official > osint > reporter > ground credibility)
-- contentType: breaking/statement/report/analysis/rumor/general
-- verification: confirmed/unverified/developing/denied
-- provenance: original/official/media/aggregating
+Post fields: source, tier (official>osint>reporter>ground), minutesAgo, title, contentType, verification, provenance.
 
-Create a comprehensive briefing. Respond ONLY with valid JSON (no markdown):
+Respond with JSON only:
+{"summary":"3-4 sentence overview","tensionScore":<1-10>,"keyDevelopments":[{"headline":"<10 words","detail":"1-2 sentences","sources":[],"severity":"critical|high|moderate|routine","confidence":"high|medium|low"}],"watchIndicators":["max 3 escalation signals"]}
 
-{
-  "summary": "3-4 sentence executive summary of the overall situation",
-  "tensionScore": <1-10 integer, where 1=calm, 5=elevated, 8=high alert, 10=imminent conflict>,
-  "keyDevelopments": [
-    {
-      "headline": "Short headline under 10 words",
-      "detail": "1-2 sentence explanation with context",
-      "sources": ["Source names that reported this"],
-      "severity": "critical|high|moderate|routine",
-      "confidence": "high|medium|low"
-    }
-  ],
-  "watchIndicators": ["What specific events would signal escalation", "Max 3 items"]
-}
+Severity: critical=mass casualty/nuclear, high=strikes/invasion, moderate=movements/tensions, routine=statements.
+Confidence: high=multiple official sources, medium=single credible, low=unverified/rumor.
 
-Severity guide:
-- critical: Mass casualties, nuclear/WMD, major war escalation (rare)
-- high: Confirmed military strikes, invasions, major policy shifts
-- moderate: Troop movements, diplomatic tensions, unconfirmed reports
-- routine: Statements, minor updates, analysis
-
-Confidence guide:
-- high: Multiple tier-1 sources confirm, official statements
-- medium: Single credible source, or multiple lower-tier sources
-- low: Unverified, single OSINT source, rumors
-
-Rules:
-- Maximum 5 key developments, prioritize by importance
-- Cross-reference sources - same event from multiple sources = higher confidence
-- Be factual and neutral
-- tensionScore should reflect CURRENT situation severity, not just news volume`;
+Rules: Max 5 developments. Cross-reference sources. Be factual. Score reflects situation severity, not volume.`;
 }
 
 // =============================================================================
@@ -252,7 +220,7 @@ export async function generateSummary(
   }
 
   // Select and structure posts
-  const structuredPosts = selectAndStructurePosts(posts, 35);
+  const structuredPosts = selectAndStructurePosts(posts);
 
   // Get unique sources
   const sourceCounts = new Map<string, number>();

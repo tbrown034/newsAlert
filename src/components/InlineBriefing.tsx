@@ -68,10 +68,11 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
         const elapsed = Math.round(performance.now() - startTime);
         setLoadTimeMs(elapsed);
         if (err instanceof Error && err.name === 'AbortError') {
-          console.error(`[InlineBriefing] Request timed out after ${elapsed}ms`);
+          // Use warn instead of error to avoid triggering Next.js dev overlay
+          console.warn(`[InlineBriefing] Request timed out after ${elapsed}ms`);
           setError('Request timed out. The server may be busy.');
         } else {
-          console.error(`[InlineBriefing] Fetch error (${elapsed}ms):`, err);
+          console.warn(`[InlineBriefing] Fetch error (${elapsed}ms):`, err);
           setError(err instanceof Error ? err.message : 'Error loading briefing');
         }
       } finally {
@@ -101,7 +102,7 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
 
   // Error state - show error message with retry option
   if (error) {
-    console.error('[InlineBriefing] Error loading briefing:', error);
+    // Don't console.error - this triggers Next.js dev overlay for expected timeouts
     return (
       <div className="mx-4 my-3 px-4 py-3 border border-amber-200 rounded-lg bg-amber-50">
         <div className="flex items-center justify-between">

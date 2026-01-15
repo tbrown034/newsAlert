@@ -7,12 +7,20 @@ import {
   enrichWithActivityData,
   detectAllRegionalSurges,
 } from '@/lib/activityDetection';
-import { analyzeNewsItem, getRegionalAlert } from '@/lib/keywordDetection';
-import { WatchpointId } from '@/types';
+// Keyword detection removed - relying on volume indicators only
+import { WatchpointId, NewsItem } from '@/types';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 60; // Revalidate every minute
 export const maxDuration = 60; // Allow up to 60 seconds for fetching 285+ sources
+
+// In-memory cache to avoid re-fetching on every request
+interface CachedData {
+  items: NewsItem[];
+  timestamp: number;
+}
+const newsCache = new Map<string, CachedData>();
+const CACHE_TTL_MS = 60 * 1000; // 1 minute cache
 
 // Valid regions and limits for input validation
 const VALID_REGIONS: WatchpointId[] = ['all', 'middle-east', 'ukraine-russia', 'china-taiwan', 'venezuela', 'us-domestic', 'seismic'];
@@ -42,8 +50,23 @@ export async function GET(request: Request) {
       ? allSources
       : getSourcesByRegion(region);
 
-    // Fetch all feeds
-    const newsItems = await fetchAllRssFeeds(sources);
+    // Check cache first
+    const cacheKey = region;
+    const cached = newsCache.get(cacheKey);
+    const now = Date.now();
+
+    let newsItems: NewsItem[];
+    if (cached && (now - cached.timestamp) < CACHE_TTL_MS) {
+      // Use cached data
+      newsItems = cached.items;
+      console.log(`[News API] Using cached data for ${region} (age: ${Math.round((now - cached.timestamp) / 1000)}s)`);
+    } else {
+      // Fetch fresh data
+      console.log(`[News API] Fetching fresh data for ${region}...`);
+      newsItems = await fetchAllRssFeeds(sources);
+      // Store in cache
+      newsCache.set(cacheKey, { items: newsItems, timestamp: now });
+    }
 
     // Deduplicate items by ID (can happen when same content appears in multiple feeds)
     const seenIds = new Set<string>();
@@ -69,36 +92,8 @@ export async function GET(request: Request) {
     // Enrich items with activity data
     const withActivity = enrichWithActivityData(withAlertStatus, activityProfiles);
 
-    // Apply keyword-based event detection to each item
-    const withEventSignals = withActivity.map((item) => ({
-      ...item,
-      eventSignal: analyzeNewsItem(item),
-    }));
-
     // Sort by cascade priority (OSINT first, then recency)
-    // Also boost items with high severity signals
-    const sorted = sortByCascadePriority(withEventSignals).sort((a, b) => {
-      // Critical/high severity items float to top within their time window
-      const severityScore: Record<string, number> = {
-        critical: 100,
-        high: 50,
-        moderate: 10,
-        routine: 0,
-      };
-      const aScore = severityScore[a.eventSignal?.severity || 'routine'] || 0;
-      const bScore = severityScore[b.eventSignal?.severity || 'routine'] || 0;
-
-      // Only boost within recent items (last hour)
-      const oneHour = 60 * 60 * 1000;
-      const now = Date.now();
-      const aRecent = now - a.timestamp.getTime() < oneHour;
-      const bRecent = now - b.timestamp.getTime() < oneHour;
-
-      if (aRecent && bRecent && aScore !== bScore) {
-        return bScore - aScore;
-      }
-      return 0; // Keep existing sort order
-    });
+    const sorted = sortByCascadePriority(withActivity);
 
     // Return limited results
     const limited = sorted.slice(0, limit);
@@ -109,18 +104,10 @@ export async function GET(request: Request) {
     // Detect regional surges (new system)
     const surges = detectAllRegionalSurges(withActivity, activityProfiles);
 
-    // Get regional alerts based on keyword analysis
-    const regions: WatchpointId[] = ['middle-east', 'ukraine-russia', 'china-taiwan', 'venezuela', 'us-domestic'];
-    const regionalAlerts = regions.reduce((acc, r) => {
-      acc[r] = getRegionalAlert(withEventSignals, r);
-      return acc;
-    }, {} as Record<WatchpointId, ReturnType<typeof getRegionalAlert>>);
-
     return NextResponse.json({
       items: limited,
       activity: activityByRegion,
       surges,
-      regionalAlerts,
       fetchedAt: new Date().toISOString(),
       totalItems: filtered.length,
     });

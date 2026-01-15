@@ -5,7 +5,7 @@
  * - Content Type: What kind of post is this? (breaking, report, statement, analysis, rumor)
  * - Verification: How verified is this? (confirmed, unverified, developing, denied)
  * - Provenance: Where did the info come from? (original, official, media, aggregating)
- * - Severity: How urgent? (critical, high, moderate, routine) - from existing keywordDetection
+ * - Severity: How urgent? (inferred from verification + provenance signals)
  */
 
 // =============================================================================
@@ -504,74 +504,5 @@ export function analyzeMessage(text: string): MessageAnalysis {
     contentType,
     verification,
     provenance,
-  };
-}
-
-// =============================================================================
-// UI HELPERS
-// =============================================================================
-
-export const contentTypeDisplay: Record<ContentType, { icon: string; label: string; color: string; bgColor: string }> = {
-  breaking: { icon: '🚨', label: 'BREAKING', color: 'text-red-400', bgColor: 'bg-red-500/20' },
-  statement: { icon: '🎙', label: 'STATEMENT', color: 'text-emerald-400', bgColor: 'bg-emerald-500/20' },
-  report: { icon: '📋', label: 'REPORTS', color: 'text-blue-400', bgColor: 'bg-blue-500/20' },
-  analysis: { icon: '🔍', label: 'ANALYSIS', color: 'text-purple-400', bgColor: 'bg-purple-500/20' },
-  rumor: { icon: '💬', label: 'RUMOR', color: 'text-amber-400', bgColor: 'bg-amber-500/20' },
-  general: { icon: '📰', label: '', color: 'text-gray-400', bgColor: '' },
-};
-
-export const verificationDisplay: Record<VerificationLevel, { icon: string; label: string; color: string }> = {
-  confirmed: { icon: '✓', label: 'Confirmed', color: 'text-emerald-400' },
-  unverified: { icon: '?', label: 'Unverified', color: 'text-amber-400' },
-  developing: { icon: '◌', label: 'Developing', color: 'text-blue-400' },
-  denied: { icon: '✗', label: 'Denied', color: 'text-red-400' },
-};
-
-export const provenanceDisplay: Record<MessageProvenance, { icon: string; label: string; color: string }> = {
-  original: { icon: '📍', label: 'Original', color: 'text-red-400' },
-  official: { icon: '🏛', label: 'Official', color: 'text-emerald-400' },
-  media: { icon: '📰', label: 'Media', color: 'text-blue-400' },
-  aggregating: { icon: '🔗', label: 'Citing', color: 'text-amber-400' },
-};
-
-/**
- * Format analysis result for display
- */
-export function formatAnalysisForDisplay(analysis: MessageAnalysis): {
-  primary: string;  // e.g., "BREAKING • Unverified"
-  secondary: string | null;  // e.g., "Citing: Reuters, @OSINTdefender"
-  contentTypeStyle: typeof contentTypeDisplay[ContentType];
-  verificationStyle: typeof verificationDisplay[VerificationLevel];
-} {
-  const ctDisplay = contentTypeDisplay[analysis.contentType.type];
-  const vDisplay = verificationDisplay[analysis.verification.level];
-
-  // Primary line: Content type + verification
-  let primary = '';
-  if (analysis.contentType.type !== 'general') {
-    primary = ctDisplay.label;
-    if (analysis.verification.confidence > 0.5) {
-      primary += ` • ${vDisplay.label}`;
-    }
-  } else if (analysis.verification.confidence > 0.5) {
-    primary = vDisplay.label;
-  }
-
-  // Secondary line: Provenance/citations if notable
-  let secondary: string | null = null;
-  if (analysis.provenance.citedSources.length > 0) {
-    const sources = analysis.provenance.citedSources.slice(0, 3).join(', ');
-    secondary = `Citing: ${sources}`;
-  } else if (analysis.provenance.type === 'official' && analysis.provenance.confidence > 0.5) {
-    secondary = 'Official source';
-  } else if (analysis.provenance.type === 'original' && analysis.provenance.confidence > 0.7) {
-    secondary = 'Original reporting';
-  }
-
-  return {
-    primary,
-    secondary,
-    contentTypeStyle: ctDisplay,
-    verificationStyle: vDisplay,
   };
 }

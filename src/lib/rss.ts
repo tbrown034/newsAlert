@@ -207,6 +207,11 @@ interface BlueskyErrorResponse {
 const invalidHandleCache = new Map<string, { error: string; timestamp: number }>();
 const INVALID_HANDLE_CACHE_TTL = 60 * 60 * 1000; // 1 hour TTL
 
+// Cache for handles that timeout - shorter TTL since it might be transient
+const timeoutCache = new Map<string, { count: number; timestamp: number }>();
+const TIMEOUT_CACHE_TTL = 30 * 60 * 1000; // 30 minutes TTL
+const TIMEOUT_THRESHOLD = 2; // Skip after 2 timeouts
+
 // Extract Bluesky handle from feedUrl (e.g., 'https://bsky.app/profile/bellingcat.com/rss' -> 'bellingcat.com')
 function extractBlueskyHandle(feedUrl: string): string | null {
   const match = feedUrl.match(/bsky\.app\/profile\/([^\/]+)/);
@@ -231,6 +236,33 @@ function isHandleCachedAsInvalid(handle: string): boolean {
   return true;
 }
 
+// Check if handle has timed out too many times recently
+function isHandleTimedOut(handle: string): boolean {
+  const cached = timeoutCache.get(handle);
+  if (!cached) return false;
+
+  // Check if cache entry has expired
+  if (Date.now() - cached.timestamp > TIMEOUT_CACHE_TTL) {
+    timeoutCache.delete(handle);
+    return false;
+  }
+  return cached.count >= TIMEOUT_THRESHOLD;
+}
+
+// Record a timeout for a handle
+function recordTimeout(handle: string): void {
+  const existing = timeoutCache.get(handle);
+  const now = Date.now();
+
+  if (existing && (now - existing.timestamp) < TIMEOUT_CACHE_TTL) {
+    // Increment existing count
+    timeoutCache.set(handle, { count: existing.count + 1, timestamp: now });
+  } else {
+    // Start fresh count
+    timeoutCache.set(handle, { count: 1, timestamp: now });
+  }
+}
+
 // Fetch posts from Bluesky using their public API
 async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<RssItem[]> {
   const handle = extractBlueskyHandle(source.feedUrl);
@@ -239,13 +271,16 @@ async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<R
     return [];
   }
 
-  // Skip if handle is cached as invalid
+  // Skip if handle is cached as invalid or has timed out repeatedly
   if (isHandleCachedAsInvalid(handle)) {
     return [];
   }
+  if (isHandleTimedOut(handle)) {
+    return []; // Silently skip - already logged on previous timeouts
+  }
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout for faster failure
 
   try {
     const apiUrl = `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${handle}&limit=20`;
@@ -321,7 +356,14 @@ async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<R
   } catch (error) {
     clearTimeout(timeoutId);
     if (error instanceof Error && error.name === 'AbortError') {
-      console.warn(`[Bluesky] ${source.name} (${handle}): Request timeout (10s)`);
+      // Record timeout and log
+      recordTimeout(handle);
+      const cached = timeoutCache.get(handle);
+      if (cached && cached.count >= TIMEOUT_THRESHOLD) {
+        console.warn(`[Bluesky] ${source.name} (${handle}): Timeout #${cached.count} - skipping for 30 min`);
+      } else {
+        console.warn(`[Bluesky] ${source.name} (${handle}): Request timeout (5s)`);
+      }
     } else if (error instanceof Error) {
       console.error(`[Bluesky] ${source.name} (${handle}): ${error.message}`);
     }
@@ -334,9 +376,19 @@ export function getInvalidHandleCacheSize(): number {
   return invalidHandleCache.size;
 }
 
+// Get count of timed-out handles (for diagnostics)
+export function getTimeoutCacheSize(): number {
+  return timeoutCache.size;
+}
+
 // Clear invalid handle cache (for testing/maintenance)
 export function clearInvalidHandleCache(): void {
   invalidHandleCache.clear();
+}
+
+// Clear timeout cache (for testing/maintenance)
+export function clearTimeoutCache(): void {
+  timeoutCache.clear();
 }
 
 // Fetch and parse RSS feed (or Bluesky API for Bluesky sources)
@@ -368,7 +420,7 @@ export async function fetchRssFeed(
 
   // Standard RSS/Atom fetch for other sources
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+  const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
   try {
     const response = await fetch(source.feedUrl, {
@@ -410,7 +462,7 @@ export async function fetchRssFeed(
   } catch (error) {
     clearTimeout(timeoutId);
     if (error instanceof Error && error.name === 'AbortError') {
-      console.error(`RSS fetch timeout for ${source.name} (10s exceeded)`);
+      console.error(`RSS fetch timeout for ${source.name} (5s exceeded)`);
     } else {
       console.error(`RSS fetch error for ${source.name}:`, error);
     }
@@ -450,8 +502,8 @@ export async function fetchAllRssFeeds(
   );
 
   // Fetch Bluesky sources in batches to avoid rate limits
-  const BLUESKY_BATCH_SIZE = 10;
-  const BLUESKY_BATCH_DELAY_MS = 500; // 500ms between batches
+  const BLUESKY_BATCH_SIZE = 20; // Larger batches for faster completion
+  const BLUESKY_BATCH_DELAY_MS = 200; // Reduced delay between batches
   const blueskyResults: PromiseSettledResult<NewsItem[]>[] = [];
 
   for (let i = 0; i < blueskySources.length; i += BLUESKY_BATCH_SIZE) {

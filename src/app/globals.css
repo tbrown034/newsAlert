@@ -302,14 +302,14 @@ a.link:hover {
   transform: scale(0.97);
 }
 
-/* Pulse animation for live indicators */
+/* Pulse animation for live indicators - gentle and slow */
 @keyframes pulse-soft {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  50% { opacity: 0.85; }
 }
 
 .animate-pulse-soft {
-  animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse-soft 4s ease-in-out infinite;
 }
 
 /* Staggered fade-in for lists */

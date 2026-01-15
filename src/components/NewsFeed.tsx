@@ -3,7 +3,6 @@
 import { NewsItem, WatchpointId } from '@/types';
 import { NewsCard } from './NewsCard';
 import { InlineBriefing } from './InlineBriefing';
-import { SeismicFeed } from './SeismicFeed';
 import { ArrowPathIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 interface ActivityData {
@@ -95,7 +94,7 @@ function VolumeIndicator({ activity }: { activity: ActivityData }) {
   const volume = getVolumeText();
 
   return (
-    <div className="px-4 py-3 flex items-center justify-between text-xs border-b border-slate-100 bg-slate-50/50">
+    <div className="px-4 py-3 flex items-center justify-between text-xs border-b border-slate-100 dark:border-[#2f3336] bg-slate-50 dark:bg-[#16181c]">
       <div className="flex items-center gap-2">
         <span className="text-slate-600 font-medium">{activity.count} posts</span>
         <span className="text-slate-400">in last hour</span>
@@ -118,7 +117,6 @@ const regionTabs: { id: WatchpointId; label: string; icon?: string }[] = [
   { id: 'china-taiwan', label: 'Taiwan' },
   { id: 'venezuela', label: 'Venezuela' },
   { id: 'us-domestic', label: 'US' },
-  { id: 'seismic', label: 'Seismic', icon: '🌍' },
 ];
 
 // Format relative time for last updated
@@ -222,15 +220,18 @@ export function NewsFeed({
         </div>
       </div>
 
-      {selectedWatchpoint === 'seismic' ? (
-        <SeismicFeed />
-      ) : (
-        <>
-          {activity?.[selectedWatchpoint] && selectedWatchpoint !== 'all' && (
-            <VolumeIndicator activity={activity[selectedWatchpoint]} />
-          )}
+      <>
+        {activity?.[selectedWatchpoint] && selectedWatchpoint !== 'all' && (
+          <VolumeIndicator activity={activity[selectedWatchpoint]} />
+        )}
 
-          <InlineBriefing region={selectedWatchpoint} />
+        {/* AI Analysis Section - only show after news loads */}
+        {!isLoading && sortedItems.length > 0 && (
+          <>
+            <div className="mt-3" />
+            <InlineBriefing region={selectedWatchpoint} />
+          </>
+        )}
 
           {/* Status bar - shows data freshness and latency */}
           {!isLoading && sortedItems.length > 0 && (
@@ -285,13 +286,12 @@ export function NewsFeed({
             ))}
           </div>
 
-          {isLoading && sortedItems.length > 0 && (
-            <div className="py-4 flex justify-center">
-              <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
-            </div>
-          )}
-        </>
-      )}
+        {isLoading && sortedItems.length > 0 && (
+          <div className="py-4 flex justify-center">
+            <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+          </div>
+        )}
+      </>
     </div>
   );
 }

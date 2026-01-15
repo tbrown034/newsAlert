@@ -93,7 +93,7 @@ export interface NewsItem {
   relatedItems?: string[];
   clusterId?: string;
 
-  // NEW: Activity anomaly indicators
+  // Activity anomaly indicators
   // Shows if this source is posting more than usual
   sourceActivity?: {
     isAnomalous: boolean;
@@ -102,39 +102,6 @@ export interface NewsItem {
     windowHours: number;
     baseline: number;     // "usually 1/day"
   };
-
-  // NEW: Event signal from keyword analysis
-  // Detects major events based on content
-  eventSignal?: EventSignal;
-}
-
-// =============================================================================
-// EVENT SIGNAL - KEYWORD-BASED SEVERITY DETECTION
-// =============================================================================
-// Smart analysis of content to detect major events
-
-export type EventSeverity = 'critical' | 'high' | 'moderate' | 'routine';
-export type EventType =
-  | 'military_action'
-  | 'mass_casualty'
-  | 'diplomatic_crisis'
-  | 'natural_disaster'
-  | 'terror_attack'
-  | 'civil_unrest'
-  | 'nuclear_event'
-  | 'humanitarian'
-  | 'infrastructure'
-  | 'cyber_attack'
-  | 'unknown';
-
-export interface EventSignal {
-  severity: EventSeverity;
-  type: EventType;
-  score: number;
-  matchedKeywords: string[];
-  isConfirmed: boolean;
-  isDeveloping: boolean;
-  summary: string;
 }
 
 // =============================================================================

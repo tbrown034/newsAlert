@@ -203,15 +203,21 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[var(--background)]/95 backdrop-blur-sm border-b border-slate-200 dark:border-[#2f3336]">
+      <header className="sticky top-0 z-50 bg-[var(--background)] border-b border-slate-200 dark:border-[#2f3336]">
         <div className="max-w-6xl xl:max-w-7xl 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo + Title */}
-            <div className="flex items-center gap-4">
+            {/* Logo + Title - clickable to reset/refresh */}
+            <button
+              onClick={() => {
+                setSelectedWatchpoint('all');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="flex items-center gap-4 hover:opacity-80 transition-opacity"
+            >
               <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-md shadow-blue-600/20">
                 <GlobeAltIcon className="w-5 h-5 text-white" />
               </div>
-              <div>
+              <div className="text-left">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white headline">
                   Sentinel
                 </h1>
@@ -219,7 +225,7 @@ export default function Home() {
                   Global Intelligence
                 </p>
               </div>
-            </div>
+            </button>
 
             {/* Navigation */}
             <nav className="hidden md:flex items-center gap-6">
