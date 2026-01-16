@@ -14,12 +14,12 @@ const REAL_SAMPLES: { text: string; sourceDefault: WatchpointId; isRegionSpecifi
   // From Euromaidan Press (region-specific: Ukraine)
   {
     text: "Fire at Nevinnomyssk Azot in Russia's Stavropol Krai The factory plays a key role in Russia's production of explosives and solid-fuel components.",
-    sourceDefault: 'ukraine-russia',
+    sourceDefault: 'ukraine',
     isRegionSpecific: true,
   },
   {
     text: "Ukrainian forces reportedly advanced 2km near Robotyne according to ISW",
-    sourceDefault: 'ukraine-russia',
+    sourceDefault: 'ukraine',
     isRegionSpecific: true,
   },
 
@@ -76,7 +76,7 @@ const REAL_SAMPLES: { text: string; sourceDefault: WatchpointId; isRegionSpecifi
   },
   {
     text: "More details emerging, will update as information comes in",
-    sourceDefault: 'ukraine-russia',  // Would inherit from source
+    sourceDefault: 'ukraine',  // Would inherit from source
   },
 
   // US domestic

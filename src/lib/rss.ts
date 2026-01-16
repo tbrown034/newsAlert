@@ -502,8 +502,8 @@ export async function fetchAllRssFeeds(
   );
 
   // Fetch Bluesky sources in batches to avoid rate limits
-  const BLUESKY_BATCH_SIZE = 20; // Larger batches for faster completion
-  const BLUESKY_BATCH_DELAY_MS = 200; // Reduced delay between batches
+  const BLUESKY_BATCH_SIZE = 50; // Larger batches for faster completion
+  const BLUESKY_BATCH_DELAY_MS = 50; // Minimal delay between batches
   const blueskyResults: PromiseSettledResult<NewsItem[]>[] = [];
 
   for (let i = 0; i < blueskySources.length; i += BLUESKY_BATCH_SIZE) {

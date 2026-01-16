@@ -1,0 +1,778 @@
+[
+  {
+    "rank": 7,
+    "name": "The New York Times",
+    "handle": "nytimes.com",
+    "followers": 1271931,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 12,
+    "name": "Aaron Rupar",
+    "handle": "atrupar.com",
+    "followers": 905835,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 17,
+    "name": "The Washington Post",
+    "handle": "washingtonpost.com",
+    "followers": 815296,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 22,
+    "name": "Heather Cox Richardson (TDPR)",
+    "handle": "hcrichardson.bsky.social",
+    "followers": 750185,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 25,
+    "name": "The Guardian",
+    "handle": "theguardian.com",
+    "followers": 734133,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 29,
+    "name": "jamelle",
+    "handle": "jamellebouie.net",
+    "followers": 716840,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 33,
+    "name": "CNN",
+    "handle": "cnn.com",
+    "followers": 611780,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 46,
+    "name": "Tim Onion",
+    "handle": "bencollins.bsky.social",
+    "followers": 526589,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 60,
+    "name": "Bloomberg News",
+    "handle": "bloomberg.com",
+    "followers": 436402,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 62,
+    "name": "Politico",
+    "handle": "politico.com",
+    "followers": 434324,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 72,
+    "name": "Financial Times",
+    "handle": "financialtimes.com",
+    "followers": 398551,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 90,
+    "name": "The Atlantic",
+    "handle": "theatlantic.com",
+    "followers": 361519,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 158,
+    "name": "The Bulwark",
+    "handle": "thebulwark.com",
+    "followers": 271567,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 187,
+    "name": "POLITICO Europe",
+    "handle": "politico.eu",
+    "followers": 253726,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 225,
+    "name": "Khashoggi's Ghost",
+    "handle": "urocklive1.bsky.social",
+    "followers": 226792,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 238,
+    "name": "PBS News",
+    "handle": "pbsnews.org",
+    "followers": 219970,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 285,
+    "name": "NBC News",
+    "handle": "nbcnews.com",
+    "followers": 196254,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 373,
+    "name": "Randi Mayem Singer",
+    "handle": "rmayemsinger.bsky.social",
+    "followers": 164424,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 458,
+    "name": "Wario64",
+    "handle": "wario64.bsky.social",
+    "followers": 144467,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 470,
+    "name": "Byline Times",
+    "handle": "bylinetimes.bsky.social",
+    "followers": 143178,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 584,
+    "name": "The Daily Beans Podcast",
+    "handle": "dailybeanspod.com",
+    "followers": 123878,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 601,
+    "name": "The Daily Beast",
+    "handle": "thedailybeast.bsky.social",
+    "followers": 121534,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 614,
+    "name": "HuffPost",
+    "handle": "huffpost.com",
+    "followers": 120224,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 650,
+    "name": "U.S. Consumer Product Safety Commission",
+    "handle": "cpsc.gov",
+    "followers": 116036,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 707,
+    "name": "The Times & Sunday Times",
+    "handle": "thetimes.com",
+    "followers": 110378,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 883,
+    "name": "Los Angeles Times",
+    "handle": "latimes.com",
+    "followers": 96514,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 962,
+    "name": "Newsweek",
+    "handle": "newsweek.com",
+    "followers": 91026,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 992,
+    "name": "molly conger",
+    "handle": "socialistdogmom.bsky.social",
+    "followers": 89467,
+    "postsPerDay": 30,
+    "tier": "T1"
+  },
+  {
+    "rank": 11,
+    "name": "NPR",
+    "handle": "npr.org",
+    "followers": 957458,
+    "postsPerDay": 28.3,
+    "tier": "T1"
+  },
+  {
+    "rank": 32,
+    "name": "ProPublica",
+    "handle": "propublica.org",
+    "followers": 612479,
+    "postsPerDay": 28,
+    "tier": "T1"
+  },
+  {
+    "rank": 15,
+    "name": "George Conway ⚖️🇺🇸",
+    "handle": "gtconway.bsky.social",
+    "followers": 822902,
+    "postsPerDay": 26.7,
+    "tier": "T1"
+  },
+  {
+    "rank": 31,
+    "name": "Acyn",
+    "handle": "acyn.bsky.social",
+    "followers": 621041,
+    "postsPerDay": 25.4,
+    "tier": "T1"
+  },
+  {
+    "rank": 741,
+    "name": "Charlie Warzel",
+    "handle": "cwarzel.bsky.social",
+    "followers": 107347,
+    "postsPerDay": 23.9,
+    "tier": "T1"
+  },
+  {
+    "rank": 18,
+    "name": "Chris Hayes",
+    "handle": "chrislhayes.bsky.social",
+    "followers": 802860,
+    "postsPerDay": 22.4,
+    "tier": "T1"
+  },
+  {
+    "rank": 421,
+    "name": "Decoding Fox News",
+    "handle": "decodingfoxnews.bsky.social",
+    "followers": 153340,
+    "postsPerDay": 19.3,
+    "tier": "T1"
+  },
+  {
+    "rank": 487,
+    "name": "Randi Weingarten 🖇️📚✊🇺🇸",
+    "handle": "rweingarten.bsky.social",
+    "followers": 139544,
+    "postsPerDay": 16,
+    "tier": "T1"
+  },
+  {
+    "rank": 676,
+    "name": "SwiftOnSecurity",
+    "handle": "swiftonsecurity.com",
+    "followers": 113219,
+    "postsPerDay": 14.9,
+    "tier": "T1"
+  },
+  {
+    "rank": 212,
+    "name": "NY Times Pitchbot",
+    "handle": "nytpitchbot.bsky.social",
+    "followers": 230800,
+    "postsPerDay": 14.8,
+    "tier": "T1"
+  },
+  {
+    "rank": 21,
+    "name": "Molly Jong-Fast",
+    "handle": "mollyjongfast.bsky.social",
+    "followers": 753687,
+    "postsPerDay": 14.7,
+    "tier": "T1"
+  },
+  {
+    "rank": 298,
+    "name": "The Intercept",
+    "handle": "theintercept.com",
+    "followers": 191910,
+    "postsPerDay": 14,
+    "tier": "T1"
+  },
+  {
+    "rank": 402,
+    "name": "Vox",
+    "handle": "vox.com",
+    "followers": 156598,
+    "postsPerDay": 13.4,
+    "tier": "T1"
+  },
+  {
+    "rank": 503,
+    "name": "The Contrarian",
+    "handle": "contrariannews.org",
+    "followers": 136042,
+    "postsPerDay": 13.3,
+    "tier": "T1"
+  },
+  {
+    "rank": 26,
+    "name": "Marc Elias",
+    "handle": "marcelias.bsky.social",
+    "followers": 725307,
+    "postsPerDay": 13.1,
+    "tier": "T1"
+  },
+  {
+    "rank": 551,
+    "name": "Axios",
+    "handle": "axios.com",
+    "followers": 127194,
+    "postsPerDay": 13.1,
+    "tier": "T1"
+  },
+  {
+    "rank": 433,
+    "name": "TPM",
+    "handle": "talkingpointsmemo.com",
+    "followers": 150426,
+    "postsPerDay": 13,
+    "tier": "T1"
+  },
+  {
+    "rank": 116,
+    "name": "Kyle Griffin",
+    "handle": "kylegriffin1.bsky.social",
+    "followers": 313966,
+    "postsPerDay": 9.4,
+    "tier": "T1"
+  },
+  {
+    "rank": 110,
+    "name": "David Corn",
+    "handle": "davidcorn.bsky.social",
+    "followers": 320126,
+    "postsPerDay": 9.1,
+    "tier": "T1"
+  },
+  {
+    "rank": 43,
+    "name": "Joyce White Vance",
+    "handle": "joycewhitevance.bsky.social",
+    "followers": 553866,
+    "postsPerDay": 8.7,
+    "tier": "T1"
+  },
+  {
+    "rank": 50,
+    "name": "Katie Phang",
+    "handle": "katiephang.bsky.social",
+    "followers": 478540,
+    "postsPerDay": 7,
+    "tier": "T1"
+  },
+  {
+    "rank": 8,
+    "name": "Rachel Maddow",
+    "handle": "maddow.bsky.social",
+    "followers": 1117307,
+    "postsPerDay": 6.1,
+    "tier": "T1"
+  },
+  {
+    "rank": 28,
+    "name": "Adam Kinzinger",
+    "handle": "adamkinzinger.substack.com",
+    "followers": 721693,
+    "postsPerDay": 5.1,
+    "tier": "T1"
+  },
+  {
+    "rank": 412,
+    "name": "Scott MacFarlane",
+    "handle": "macfarlanenews.bsky.social",
+    "followers": 155246,
+    "postsPerDay": 5.1,
+    "tier": "T1"
+  },
+  {
+    "rank": 979,
+    "name": "Senator Mark Warner",
+    "handle": "markwarner.bsky.social",
+    "followers": 89991,
+    "postsPerDay": 4.9,
+    "tier": "T1"
+  },
+  {
+    "rank": 34,
+    "name": "Mehdi Hasan",
+    "handle": "mehdirhasan.bsky.social",
+    "followers": 610428,
+    "postsPerDay": 4.8,
+    "tier": "T1"
+  },
+  {
+    "rank": 114,
+    "name": "Shitpost só que de verdade",
+    "handle": "shitpostverdade2.bsky.social",
+    "followers": 317567,
+    "postsPerDay": 4.6,
+    "tier": "T1"
+  },
+  {
+    "rank": 24,
+    "name": "The Lincoln Project",
+    "handle": "lincolnproject.us",
+    "followers": 734385,
+    "postsPerDay": 4.2,
+    "tier": "T1"
+  },
+  {
+    "rank": 69,
+    "name": "Elizabeth Warren",
+    "handle": "warren.senate.gov",
+    "followers": 407018,
+    "postsPerDay": 4.2,
+    "tier": "T1"
+  },
+  {
+    "rank": 193,
+    "name": "Governor Gavin Newsom",
+    "handle": "governor.ca.gov",
+    "followers": 249870,
+    "postsPerDay": 4.2,
+    "tier": "T1"
+  },
+  {
+    "rank": 215,
+    "name": "Sen. Adam Schiff",
+    "handle": "schiff.senate.gov",
+    "followers": 230408,
+    "postsPerDay": 4.2,
+    "tier": "T1"
+  },
+  {
+    "rank": 945,
+    "name": "News Eye",
+    "handle": "newseye.bsky.social",
+    "followers": 92303,
+    "postsPerDay": 4.2,
+    "tier": "T1"
+  },
+  {
+    "rank": 435,
+    "name": "Senator Sheldon Whitehouse",
+    "handle": "whitehouse.senate.gov",
+    "followers": 149615,
+    "postsPerDay": 4.1,
+    "tier": "T1"
+  },
+  {
+    "rank": 997,
+    "name": "The News Agents",
+    "handle": "newsagents.bsky.social",
+    "followers": 89120,
+    "postsPerDay": 4.1,
+    "tier": "T1"
+  },
+  {
+    "rank": 825,
+    "name": "Chuck Schumer",
+    "handle": "schumer.senate.gov",
+    "followers": 100292,
+    "postsPerDay": 3.7,
+    "tier": "T1"
+  },
+  {
+    "rank": 829,
+    "name": "Congresswoman Ayanna Pressley",
+    "handle": "pressley.house.gov",
+    "followers": 99955,
+    "postsPerDay": 3.4,
+    "tier": "T1"
+  },
+  {
+    "rank": 44,
+    "name": "The Daily Show",
+    "handle": "thedailyshow.com",
+    "followers": 546930,
+    "postsPerDay": 3.3,
+    "tier": "T1"
+  },
+  {
+    "rank": 770,
+    "name": "Democracy Forward",
+    "handle": "democracyforward.org",
+    "followers": 104581,
+    "postsPerDay": 3.3,
+    "tier": "T1"
+  },
+  {
+    "rank": 150,
+    "name": "Governor JB Pritzker",
+    "handle": "govpritzker.illinois.gov",
+    "followers": 283758,
+    "postsPerDay": 3,
+    "tier": "T1"
+  },
+  {
+    "rank": 317,
+    "name": "Brandy Zadrozny",
+    "handle": "brandyzadrozny.bsky.social",
+    "followers": 184469,
+    "postsPerDay": 3,
+    "tier": "T1"
+  },
+  {
+    "rank": 768,
+    "name": "Congressman Eugene Vindman (VA-07)",
+    "handle": "gene4va.bsky.social",
+    "followers": 104603,
+    "postsPerDay": 3,
+    "tier": "T1"
+  },
+  {
+    "rank": 881,
+    "name": "Eixo Político",
+    "handle": "eixopolitico.com.br",
+    "followers": 96561,
+    "postsPerDay": 3,
+    "tier": "T1"
+  },
+  {
+    "rank": 473,
+    "name": "Tina Smith",
+    "handle": "smith.senate.gov",
+    "followers": 142547,
+    "postsPerDay": 2.7,
+    "tier": "T1"
+  },
+  {
+    "rank": 996,
+    "name": "Private Eye Magazine",
+    "handle": "privateeyenews.bsky.social",
+    "followers": 89159,
+    "postsPerDay": 2.5,
+    "tier": "T1"
+  },
+  {
+    "rank": 594,
+    "name": "Senator Chris Van Hollen",
+    "handle": "vanhollen.senate.gov",
+    "followers": 122831,
+    "postsPerDay": 2.4,
+    "tier": "T1"
+  },
+  {
+    "rank": 54,
+    "name": "Governor Tim Walz",
+    "handle": "governorwalz.mn.gov",
+    "followers": 469408,
+    "postsPerDay": 2.1,
+    "tier": "T1"
+  },
+  {
+    "rank": 14,
+    "name": "Brian Tyler Cohen",
+    "handle": "briantylercohen.bsky.social",
+    "followers": 828361,
+    "postsPerDay": 2,
+    "tier": "T1"
+  },
+  {
+    "rank": 385,
+    "name": "Tennessee Brando",
+    "handle": "tnbrando.bsky.social",
+    "followers": 161226,
+    "postsPerDay": 2,
+    "tier": "T1"
+  },
+  {
+    "rank": 665,
+    "name": "Cold War Steve",
+    "handle": "coldwarsteve.bsky.social",
+    "followers": 114520,
+    "postsPerDay": 2,
+    "tier": "T1"
+  },
+  {
+    "rank": 178,
+    "name": "Keith Edwards",
+    "handle": "keithedwards.bsky.social",
+    "followers": 258592,
+    "postsPerDay": 1.7,
+    "tier": "T2"
+  },
+  {
+    "rank": 995,
+    "name": "Mark Zaid, Esq",
+    "handle": "markzaidesq.bsky.social",
+    "followers": 89206,
+    "postsPerDay": 1.3,
+    "tier": "T2"
+  },
+  {
+    "rank": 42,
+    "name": "Senator Bernie Sanders",
+    "handle": "sanders.senate.gov",
+    "followers": 554219,
+    "postsPerDay": 1.2,
+    "tier": "T2"
+  },
+  {
+    "rank": 284,
+    "name": "Senator Ron Wyden",
+    "handle": "wyden.senate.gov",
+    "followers": 197600,
+    "postsPerDay": 1.1,
+    "tier": "T2"
+  },
+  {
+    "rank": 656,
+    "name": "FIVE MINUTE NEWS",
+    "handle": "fiveminutenews.bsky.social",
+    "followers": 115678,
+    "postsPerDay": 1.1,
+    "tier": "T2"
+  },
+  {
+    "rank": 41,
+    "name": "Congresswoman Jasmine Crockett",
+    "handle": "crockett.house.gov",
+    "followers": 558988,
+    "postsPerDay": 1,
+    "tier": "T2"
+  },
+  {
+    "rank": 174,
+    "name": "Rep. Jamie Raskin",
+    "handle": "raskin.house.gov",
+    "followers": 260425,
+    "postsPerDay": 1,
+    "tier": "T2"
+  },
+  {
+    "rank": 888,
+    "name": "Elizabeth Warren",
+    "handle": "elizabeth-warren.bsky.social",
+    "followers": 96231,
+    "postsPerDay": 1,
+    "tier": "T2"
+  },
+  {
+    "rank": 195,
+    "name": "Sen. Cory Booker",
+    "handle": "booker.senate.gov",
+    "followers": 247055,
+    "postsPerDay": 0.9,
+    "tier": "T2"
+  },
+  {
+    "rank": 467,
+    "name": "Julia Davis",
+    "handle": "juliadavisnews.bsky.social",
+    "followers": 143469,
+    "postsPerDay": 0.9,
+    "tier": "T2"
+  },
+  {
+    "rank": 502,
+    "name": "U.S. Representative Al Green",
+    "handle": "algreen.house.gov",
+    "followers": 136129,
+    "postsPerDay": 0.9,
+    "tier": "T2"
+  },
+  {
+    "rank": 991,
+    "name": "Elon Musk's Jet Tracking",
+    "handle": "elonjet.net",
+    "followers": 89568,
+    "postsPerDay": 0.9,
+    "tier": "T2"
+  },
+  {
+    "rank": 563,
+    "name": "The Weekly Show with Jon Stewart",
+    "handle": "weeklyshowpodcast.bsky.social",
+    "followers": 126214,
+    "postsPerDay": 0.7,
+    "tier": "T2"
+  },
+  {
+    "rank": 23,
+    "name": "Pete Buttigieg",
+    "handle": "petebuttigieg.bsky.social",
+    "followers": 741853,
+    "postsPerDay": 0.5,
+    "tier": "T2"
+  },
+  {
+    "rank": 57,
+    "name": "Randall Munroe",
+    "handle": "xkcd.com",
+    "followers": 453926,
+    "postsPerDay": 0.5,
+    "tier": "T2"
+  },
+  {
+    "rank": 38,
+    "name": "Barack Obama",
+    "handle": "barackobama.bsky.social",
+    "followers": 571983,
+    "postsPerDay": 0.4,
+    "tier": "T2"
+  },
+  {
+    "rank": 106,
+    "name": "Hillary Rodham Clinton",
+    "handle": "hillaryclinton.bsky.social",
+    "followers": 325330,
+    "postsPerDay": 0.4,
+    "tier": "T2"
+  },
+  {
+    "rank": 148,
+    "name": "Rep. Alexandria Ocasio-Cortez",
+    "handle": "ocasio-cortez.house.gov",
+    "followers": 285940,
+    "postsPerDay": 0.4,
+    "tier": "T2"
+  },
+  {
+    "rank": 450,
+    "name": "Mindy Schwartz",
+    "handle": "mindyanns.bsky.social",
+    "followers": 146038,
+    "postsPerDay": 0.3,
+    "tier": "T2"
+  },
+  {
+    "rank": 693,
+    "name": "Jemele Hill",
+    "handle": "jemelehill.bsky.social",
+    "followers": 111739,
+    "postsPerDay": 0.3,
+    "tier": "T2"
+  }
+]

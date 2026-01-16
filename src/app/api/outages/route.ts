@@ -86,7 +86,7 @@ const OUTAGE_KEYWORDS = [
 // Country name to code mapping
 const COUNTRY_NAME_TO_CODE: Record<string, string> = {
   'iran': 'IR', 'russia': 'RU', 'ukraine': 'UA', 'china': 'CN',
-  'north korea': 'KP', 'syria': 'SY', 'venezuela': 'VE', 'cuba': 'CU',
+  'north korea': 'KP', 'syria': 'SY', 'latam': 'VE', 'cuba': 'CU',
   'myanmar': 'MM', 'burma': 'MM', 'belarus': 'BY', 'pakistan': 'PK',
   'afghanistan': 'AF', 'iraq': 'IQ', 'yemen': 'YE', 'sudan': 'SD',
   'ethiopia': 'ET', 'egypt': 'EG', 'turkey': 'TR', 'israel': 'IL',

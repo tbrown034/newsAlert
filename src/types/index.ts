@@ -1,10 +1,10 @@
 // Watchpoint regions
 export type WatchpointId =
   | 'middle-east'
-  | 'ukraine-russia'
+  | 'ukraine'      // Ukraine/Russia conflict, Eastern Europe
   | 'china-taiwan'
-  | 'venezuela'
-  | 'us-domestic'
+  | 'latam'        // Latin America + Caribbean (formerly Venezuela)
+  | 'us-domestic'  // US politics, breaking news, domestic events
   | 'seismic'
   | 'all';
 

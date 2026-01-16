@@ -1,38 +1,265 @@
 import { NextResponse } from 'next/server';
-import { fetchAllRssFeeds } from '@/lib/rss';
-import { allSources, getSourcesByRegion } from '@/lib/sources';
-import { processAlertStatuses, sortByCascadePriority } from '@/lib/alertStatus';
+import { fetchRssFeed } from '@/lib/rss';
 import {
-  calculateAllSourceActivity,
-  enrichWithActivityData,
-  detectAllRegionalSurges,
-} from '@/lib/activityDetection';
-// Keyword detection removed - relying on volume indicators only
+  tier1Sources,
+  tier2Sources,
+  tier3Sources,
+  allTieredSources,
+  getSourcesByRegion,
+  TieredSource,
+  FetchTier,
+} from '@/lib/sources-clean';
+import { processAlertStatuses, sortByCascadePriority } from '@/lib/alertStatus';
+import { calculateRegionActivity } from '@/lib/activityDetection';
+import {
+  getCachedNews,
+  setCachedNews,
+  isCacheFresh,
+} from '@/lib/newsCache';
 import { WatchpointId, NewsItem } from '@/types';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 60; // Revalidate every minute
-export const maxDuration = 60; // Allow up to 60 seconds for fetching 285+ sources
+export const revalidate = 0;
+export const maxDuration = 60;
 
-// In-memory cache to avoid re-fetching on every request
-interface CachedData {
-  items: NewsItem[];
-  timestamp: number;
+// Valid regions and tiers
+const VALID_REGIONS: WatchpointId[] = ['all', 'middle-east', 'ukraine', 'china-taiwan', 'latam', 'us-domestic', 'seismic'];
+const VALID_TIERS: FetchTier[] = ['T1', 'T2', 'T3'];
+
+// Time window defaults (in hours)
+const DEFAULT_TIME_WINDOW = 12; // 12 hours default
+const MAX_TIME_WINDOW = 72; // Max 3 days
+
+// Limits (for safety)
+const MAX_LIMIT = 1000;
+const DEFAULT_LIMIT = 200;
+
+// Track in-flight fetches to prevent duplicate requests
+const inFlightFetches = new Map<string, Promise<NewsItem[]>>();
+
+// Check if source is Bluesky
+function isBlueskySource(source: TieredSource): boolean {
+  return source.platform === 'bluesky' || source.feedUrl.includes('bsky.app');
 }
-const newsCache = new Map<string, CachedData>();
-const CACHE_TTL_MS = 60 * 1000; // 1 minute cache
 
-// Valid regions and limits for input validation
-const VALID_REGIONS: WatchpointId[] = ['all', 'middle-east', 'ukraine-russia', 'china-taiwan', 'venezuela', 'us-domestic', 'seismic'];
-const MAX_LIMIT = 500;
-const DEFAULT_LIMIT = 50;
+// Get sources by tier(s) and optionally filter by region
+function getSourcesByTiers(tiers: FetchTier[], region: WatchpointId): TieredSource[] {
+  let sources: TieredSource[] = [];
+
+  for (const tier of tiers) {
+    switch (tier) {
+      case 'T1': sources = [...sources, ...tier1Sources]; break;
+      case 'T2': sources = [...sources, ...tier2Sources]; break;
+      case 'T3': sources = [...sources, ...tier3Sources]; break;
+    }
+  }
+
+  // Filter by region if not 'all'
+  if (region !== 'all') {
+    sources = sources.filter(s => s.region === region || s.region === 'all');
+  }
+
+  return sources;
+}
+
+// Filter items by time window
+function filterByTimeWindow(items: NewsItem[], hours: number): NewsItem[] {
+  const cutoff = Date.now() - (hours * 60 * 60 * 1000);
+  return items.filter(item => item.timestamp.getTime() > cutoff);
+}
+
+/**
+ * Balance feed to ensure OSINT sources get representation
+ * Without this, high-frequency news agencies (Reuters, AP) dominate
+ * and push out lower-frequency but valuable OSINT accounts
+ *
+ * Strategy:
+ * 1. Reserve 15-20% of slots for OSINT
+ * 2. Prioritize source diversity - one item per OSINT source first
+ * 3. Fill remaining OSINT slots with most recent items
+ */
+function balanceFeedByTier(items: NewsItem[], limit: number): NewsItem[] {
+  // Separate OSINT from other tiers
+  const osintItems = items.filter(item => item.source.tier === 'osint');
+  const otherItems = items.filter(item => item.source.tier !== 'osint');
+
+  // Target: at least 20% OSINT if available (increased from 15%)
+  const osintTarget = Math.floor(limit * 0.20);
+  const osintToInclude = Math.min(osintTarget, osintItems.length);
+
+  // First pass: one item per unique OSINT source (source diversity)
+  const seenSources = new Set<string>();
+  const diverseOsint: NewsItem[] = [];
+  const remainingOsint: NewsItem[] = [];
+
+  for (const item of osintItems) {
+    if (!seenSources.has(item.source.id)) {
+      seenSources.add(item.source.id);
+      diverseOsint.push(item);
+    } else {
+      remainingOsint.push(item);
+    }
+  }
+
+  // Take diverse items first, then fill with remaining most recent
+  let selectedOsint: NewsItem[];
+  if (diverseOsint.length >= osintToInclude) {
+    // We have enough unique sources - take the most recent from each
+    selectedOsint = diverseOsint.slice(0, osintToInclude);
+  } else {
+    // Take all unique sources, then fill with most recent duplicates
+    const slotsRemaining = osintToInclude - diverseOsint.length;
+    selectedOsint = [...diverseOsint, ...remainingOsint.slice(0, slotsRemaining)];
+  }
+
+  // Fill remaining slots with other items
+  const remainingSlots = limit - selectedOsint.length;
+  const selectedOther = otherItems.slice(0, remainingSlots);
+
+  // Merge and re-sort by timestamp to maintain chronological order
+  const merged = [...selectedOsint, ...selectedOther];
+  merged.sort((a, b) => {
+    // Alerts first
+    if (a.alertStatus !== b.alertStatus) {
+      const statusOrder: Record<string, number> = { CRITICAL: 0, HIGH: 1, MODERATE: 2 };
+      const aOrder = a.alertStatus ? (statusOrder[a.alertStatus] ?? 3) : 3;
+      const bOrder = b.alertStatus ? (statusOrder[b.alertStatus] ?? 3) : 3;
+      if (aOrder !== bOrder) return aOrder - bOrder;
+    }
+    // Then by time (newest first)
+    return b.timestamp.getTime() - a.timestamp.getTime();
+  });
+
+  return merged;
+}
+
+/**
+ * Fetch sources - RSS first (fast), then Bluesky (batched)
+ */
+async function fetchAllSources(
+  sources: TieredSource[]
+): Promise<NewsItem[]> {
+  const rssSources = sources.filter(s => !isBlueskySource(s));
+  const blueskySources = sources.filter(isBlueskySource);
+
+  const allItems: NewsItem[] = [];
+
+  // Fetch all RSS sources in parallel (they're fast)
+  const rssPromises = rssSources.map(async (source) => {
+    try {
+      return await fetchRssFeed(source);
+    } catch {
+      return [];
+    }
+  });
+
+  const rssResults = await Promise.allSettled(rssPromises);
+  for (const result of rssResults) {
+    if (result.status === 'fulfilled') {
+      allItems.push(...result.value);
+    }
+  }
+
+  // Fetch Bluesky in batches
+  const BATCH_SIZE = 50;
+  const BATCH_DELAY = 50;
+
+  for (let i = 0; i < blueskySources.length; i += BATCH_SIZE) {
+    const batch = blueskySources.slice(i, i + BATCH_SIZE);
+
+    const batchPromises = batch.map(async (source) => {
+      try {
+        return await fetchRssFeed(source);
+      } catch {
+        return [];
+      }
+    });
+
+    const batchResults = await Promise.allSettled(batchPromises);
+    for (const result of batchResults) {
+      if (result.status === 'fulfilled') {
+        allItems.push(...result.value);
+      }
+    }
+
+    if (i + BATCH_SIZE < blueskySources.length) {
+      await new Promise(r => setTimeout(r, BATCH_DELAY));
+    }
+  }
+
+  return allItems;
+}
+
+/**
+ * Fetch news with caching
+ * Now supports tiered fetching
+ */
+async function fetchNewsWithCache(
+  region: WatchpointId,
+  tiers: FetchTier[] = ['T1', 'T2', 'T3']
+): Promise<NewsItem[]> {
+  // Create cache key based on region and tiers
+  const tierKey = tiers.sort().join('-');
+  const cacheKey = `${region}:${tierKey}`;
+
+  // For specific regions with full tiers, try to use "all" cache first
+  if (region !== 'all' && tiers.length === 3) {
+    const allCached = getCachedNews('all:T1-T2-T3');
+    if (allCached && isCacheFresh('all:T1-T2-T3')) {
+      const filtered = allCached.items.filter(
+        item => item.region === region || item.region === 'all'
+      );
+      setCachedNews(cacheKey, filtered, true);
+      return filtered;
+    }
+  }
+
+  // Check for in-flight fetch
+  const inFlight = inFlightFetches.get(cacheKey);
+  if (inFlight) {
+    return inFlight;
+  }
+
+  const sources = getSourcesByTiers(tiers, region);
+
+  const fetchPromise = (async () => {
+    try {
+      console.log(`[News API] Fetching ${tiers.join(',')} for ${region} (${sources.length} sources)`);
+      const items = await fetchAllSources(sources);
+
+      // Deduplicate by ID
+      const seen = new Set<string>();
+      const deduped = items.filter(item => {
+        if (seen.has(item.id)) return false;
+        seen.add(item.id);
+        return true;
+      });
+
+      // Sort by timestamp
+      deduped.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+
+      // Update cache
+      setCachedNews(cacheKey, deduped, true);
+
+      return deduped;
+    } finally {
+      inFlightFetches.delete(cacheKey);
+    }
+  })();
+
+  inFlightFetches.set(cacheKey, fetchPromise);
+  return fetchPromise;
+}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const regionParam = searchParams.get('region') || 'all';
+  const tierParam = searchParams.get('tier') || 'T1,T2'; // Default: T1 and T2
+  const hoursParam = parseInt(searchParams.get('hours') || String(DEFAULT_TIME_WINDOW), 10);
   const limitParam = parseInt(searchParams.get('limit') || String(DEFAULT_LIMIT), 10);
+  const forceRefresh = searchParams.get('refresh') === 'true';
 
-  // Validate region parameter
+  // Validate region
   if (!VALID_REGIONS.includes(regionParam as WatchpointId)) {
     return NextResponse.json(
       { error: 'Invalid region parameter', validRegions: VALID_REGIONS },
@@ -40,162 +267,100 @@ export async function GET(request: Request) {
     );
   }
 
+  // Parse and validate tiers
+  const requestedTiers = tierParam.split(',').map(t => t.trim().toUpperCase()) as FetchTier[];
+  const validTiers = requestedTiers.filter(t => VALID_TIERS.includes(t));
+  if (validTiers.length === 0) {
+    return NextResponse.json(
+      { error: 'Invalid tier parameter', validTiers: VALID_TIERS, example: '?tier=T1,T2' },
+      { status: 400 }
+    );
+  }
+
   const region = regionParam as WatchpointId;
+  const tiers = validTiers;
+  const hours = Math.min(Math.max(1, isNaN(hoursParam) ? DEFAULT_TIME_WINDOW : hoursParam), MAX_TIME_WINDOW);
   const limit = Math.min(Math.max(1, isNaN(limitParam) ? DEFAULT_LIMIT : limitParam), MAX_LIMIT);
 
+  // Build cache key
+  const tierKey = tiers.sort().join('-');
+  const cacheKey = `${region}:${tierKey}`;
+
   try {
-    // Get sources for the requested region
-    // Now using ALL sources with OSINT prioritized (no limit!)
-    const sources = region === 'all'
-      ? allSources
-      : getSourcesByRegion(region);
-
-    // Check cache first
-    const cacheKey = region;
-    const cached = newsCache.get(cacheKey);
-    const now = Date.now();
-
     let newsItems: NewsItem[];
-    if (cached && (now - cached.timestamp) < CACHE_TTL_MS) {
-      // Use cached data
+    let fromCache = false;
+
+    const cached = getCachedNews(cacheKey);
+
+    if (!forceRefresh && cached && isCacheFresh(cacheKey)) {
       newsItems = cached.items;
-      console.log(`[News API] Using cached data for ${region} (age: ${Math.round((now - cached.timestamp) / 1000)}s)`);
+      fromCache = true;
+    } else if (!forceRefresh && cached) {
+      // Stale cache - return immediately, refresh in background
+      newsItems = cached.items;
+      fromCache = true;
+      console.log(`[News API] Stale cache for ${cacheKey}, refreshing in background`);
+      fetchNewsWithCache(region, tiers).catch(err => {
+        console.error('[News API] Background refresh error:', err);
+      });
     } else {
-      // Fetch fresh data
-      console.log(`[News API] Fetching fresh data for ${region}...`);
-      newsItems = await fetchAllRssFeeds(sources);
-      // Store in cache
-      newsCache.set(cacheKey, { items: newsItems, timestamp: now });
+      console.log(`[News API] Fetching fresh data for ${cacheKey}...`);
+      newsItems = await fetchNewsWithCache(region, tiers);
     }
 
-    // Deduplicate items by ID (can happen when same content appears in multiple feeds)
-    const seenIds = new Set<string>();
-    const deduplicated = newsItems.filter((item) => {
-      if (seenIds.has(item.id)) {
-        return false;
-      }
-      seenIds.add(item.id);
-      return true;
-    });
+    // Filter by region if needed
+    let filtered = region === 'all'
+      ? newsItems
+      : newsItems.filter((item) => item.region === region || item.region === 'all');
 
-    // Filter by region if specified
-    const filtered = region === 'all'
-      ? deduplicated
-      : deduplicated.filter((item) => item.region === region || item.region === 'all');
+    // Apply time window filter
+    filtered = filterByTimeWindow(filtered, hours);
 
-    // Process alert statuses (FIRST/DEVELOPING/CONFIRMED) - legacy
+    // Process alert statuses - O(n)
     const withAlertStatus = processAlertStatuses(filtered);
 
-    // Calculate source activity profiles (anomaly detection)
-    const activityProfiles = calculateAllSourceActivity(withAlertStatus, allSources);
+    // Sort - alerts first, then chronological
+    const sorted = sortByCascadePriority(withAlertStatus);
 
-    // Enrich items with activity data
-    const withActivity = enrichWithActivityData(withAlertStatus, activityProfiles);
+    // Limit results with tier balancing to ensure OSINT representation
+    const limited = balanceFeedByTier(sorted, limit);
 
-    // Sort by cascade priority (OSINT first, then recency)
-    const sorted = sortByCascadePriority(withActivity);
-
-    // Return limited results
-    const limited = sorted.slice(0, limit);
-
-    // Calculate legacy activity levels per region
-    const activityByRegion = calculateActivityLevels(newsItems);
-
-    // Detect regional surges (new system)
-    const surges = detectAllRegionalSurges(withActivity, activityProfiles);
+    // Calculate activity levels - O(n)
+    const activity = calculateRegionActivity(filtered);
 
     return NextResponse.json({
       items: limited,
-      activity: activityByRegion,
-      surges,
+      activity,
       fetchedAt: new Date().toISOString(),
       totalItems: filtered.length,
+      fromCache,
+      tiers,
+      hoursWindow: hours,
+      sourcesCount: getSourcesByTiers(tiers, region).length,
     });
   } catch (error) {
     console.error('News API error:', error);
+
+    // Try to return cached data on error
+    const cached = getCachedNews(cacheKey);
+    if (cached) {
+      console.log('[News API] Returning stale cache due to error');
+      const filtered = filterByTimeWindow(cached.items, hours);
+      return NextResponse.json({
+        items: filtered.slice(0, limit),
+        activity: calculateRegionActivity(filtered),
+        fetchedAt: new Date().toISOString(),
+        totalItems: filtered.length,
+        fromCache: true,
+        tiers,
+        hoursWindow: hours,
+        error: 'Partial data - refresh failed',
+      });
+    }
+
     return NextResponse.json(
       { error: 'Failed to fetch news', items: [], activity: {} },
       { status: 500 }
     );
   }
-}
-
-// Baseline estimates: expected posts per hour under "normal" conditions
-// These are estimates based on typical OSINT activity patterns
-const REGION_BASELINES: Record<WatchpointId, number> = {
-  'middle-east': 8,      // High activity region, many sources
-  'ukraine-russia': 10,  // Very active conflict zone
-  'china-taiwan': 3,     // Lower baseline, spikes during tensions
-  'venezuela': 2,        // Lower activity region
-  'us-domestic': 4,      // Moderate baseline
-  'seismic': 0,          // Not used for seismic (separate data source)
-  'all': 20,             // Combined baseline
-};
-
-interface RegionActivity {
-  level: string;
-  count: number;
-  breaking: number;
-  baseline: number;
-  multiplier: number;      // e.g., 2.5 = 2.5x normal
-  vsNormal: string;        // "above" | "below" | "normal"
-  percentChange: number;   // e.g., 150 = 150% above normal
-}
-
-// Calculate activity levels based on recent news volume vs baseline
-function calculateActivityLevels(
-  items: { region: WatchpointId; isBreaking?: boolean; timestamp: Date }[]
-): Record<WatchpointId, RegionActivity> {
-  const now = Date.now();
-  const oneHour = 60 * 60 * 1000;
-
-  const regions: WatchpointId[] = [
-    'middle-east',
-    'ukraine-russia',
-    'china-taiwan',
-    'venezuela',
-    'us-domestic',
-  ];
-
-  const activity = {} as Record<WatchpointId, RegionActivity>;
-
-  for (const region of regions) {
-    const regionItems = items.filter(
-      (item) => item.region === region &&
-        now - item.timestamp.getTime() < oneHour
-    );
-    const breakingCount = regionItems.filter((item) => item.isBreaking).length;
-    const totalCount = regionItems.length;
-    const baseline = REGION_BASELINES[region] || 5;
-
-    // Calculate multiplier vs baseline
-    const multiplier = baseline > 0 ? Math.round((totalCount / baseline) * 10) / 10 : 0;
-    const percentChange = baseline > 0 ? Math.round(((totalCount - baseline) / baseline) * 100) : 0;
-
-    // Determine vs normal status
-    let vsNormal: string;
-    if (multiplier >= 1.3) vsNormal = 'above';
-    else if (multiplier <= 0.7) vsNormal = 'below';
-    else vsNormal = 'normal';
-
-    // Determine level based on multiplier AND absolute breaking count
-    let level: string;
-    if (breakingCount >= 3 || multiplier >= 3) level = 'critical';
-    else if (breakingCount >= 2 || multiplier >= 2) level = 'high';
-    else if (breakingCount >= 1 || multiplier >= 1.5) level = 'elevated';
-    else if (multiplier >= 0.5) level = 'normal';
-    else level = 'low';
-
-    activity[region] = {
-      level,
-      count: totalCount,
-      breaking: breakingCount,
-      baseline,
-      multiplier,
-      vsNormal,
-      percentChange,
-    };
-  }
-
-  return activity;
 }

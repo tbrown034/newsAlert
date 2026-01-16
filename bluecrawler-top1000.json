@@ -1,0 +1,5984 @@
+[
+  {
+    "rank": 1,
+    "name": "Bluesky",
+    "handle": "bsky.app",
+    "followers": 31390720
+  },
+  {
+    "rank": 2,
+    "name": "Alexandria Ocasio-Cortez",
+    "handle": "aoc.bsky.social",
+    "followers": 2193399
+  },
+  {
+    "rank": 3,
+    "name": "Mark Cuban",
+    "handle": "mcuban.bsky.social",
+    "followers": 1488865
+  },
+  {
+    "rank": 4,
+    "name": "Mark Hamill",
+    "handle": "markhamillofficial.bsky.social",
+    "followers": 1338518
+  },
+  {
+    "rank": 5,
+    "name": "The Onion",
+    "handle": "theonion.com",
+    "followers": 1318970
+  },
+  {
+    "rank": 6,
+    "name": "George Takei",
+    "handle": "georgetakei.bsky.social",
+    "followers": 1306573
+  },
+  {
+    "rank": 7,
+    "name": "The New York Times",
+    "handle": "nytimes.com",
+    "followers": 1271931
+  },
+  {
+    "rank": 8,
+    "name": "Rachel Maddow",
+    "handle": "maddow.bsky.social",
+    "followers": 1117307
+  },
+  {
+    "rank": 9,
+    "name": "Stephen King",
+    "handle": "stephenking.bsky.social",
+    "followers": 1098143
+  },
+  {
+    "rank": 10,
+    "name": "MeidasTouch",
+    "handle": "meidastouch.com",
+    "followers": 1047085
+  },
+  {
+    "rank": 11,
+    "name": "NPR",
+    "handle": "npr.org",
+    "followers": 957458
+  },
+  {
+    "rank": 12,
+    "name": "Aaron Rupar",
+    "handle": "atrupar.com",
+    "followers": 905835
+  },
+  {
+    "rank": 13,
+    "name": "Alt National Park Service",
+    "handle": "altnps.bsky.social",
+    "followers": 889065
+  },
+  {
+    "rank": 14,
+    "name": "Brian Tyler Cohen",
+    "handle": "briantylercohen.bsky.social",
+    "followers": 828361
+  },
+  {
+    "rank": 15,
+    "name": "George Conway ⚖️🇺🇸",
+    "handle": "gtconway.bsky.social",
+    "followers": 822902
+  },
+  {
+    "rank": 16,
+    "name": "Hank Green",
+    "handle": "hankgreen.bsky.social",
+    "followers": 822120
+  },
+  {
+    "rank": 17,
+    "name": "The Washington Post",
+    "handle": "washingtonpost.com",
+    "followers": 815296
+  },
+  {
+    "rank": 18,
+    "name": "Chris Hayes",
+    "handle": "chrislhayes.bsky.social",
+    "followers": 802860
+  },
+  {
+    "rank": 19,
+    "name": "Robert Reich",
+    "handle": "rbreich.bsky.social",
+    "followers": 781112
+  },
+  {
+    "rank": 20,
+    "name": "Ron Filipkowski",
+    "handle": "ronfilipkowski.bsky.social",
+    "followers": 761910
+  },
+  {
+    "rank": 21,
+    "name": "Molly Jong-Fast",
+    "handle": "mollyjongfast.bsky.social",
+    "followers": 753687
+  },
+  {
+    "rank": 22,
+    "name": "Heather Cox Richardson (TDPR)",
+    "handle": "hcrichardson.bsky.social",
+    "followers": 750185
+  },
+  {
+    "rank": 23,
+    "name": "Pete Buttigieg",
+    "handle": "petebuttigieg.bsky.social",
+    "followers": 741853
+  },
+  {
+    "rank": 24,
+    "name": "The Lincoln Project",
+    "handle": "lincolnproject.us",
+    "followers": 734385
+  },
+  {
+    "rank": 25,
+    "name": "The Guardian",
+    "handle": "theguardian.com",
+    "followers": 734133
+  },
+  {
+    "rank": 26,
+    "name": "Marc Elias",
+    "handle": "marcelias.bsky.social",
+    "followers": 725307
+  },
+  {
+    "rank": 27,
+    "name": "Mueller, She Wrote",
+    "handle": "muellershewrote.com",
+    "followers": 722004
+  },
+  {
+    "rank": 28,
+    "name": "Adam Kinzinger",
+    "handle": "adamkinzinger.substack.com",
+    "followers": 721693
+  },
+  {
+    "rank": 29,
+    "name": "jamelle",
+    "handle": "jamellebouie.net",
+    "followers": 716840
+  },
+  {
+    "rank": 30,
+    "name": "Patton Oswalt",
+    "handle": "pattonoswalt.bsky.social",
+    "followers": 702355
+  },
+  {
+    "rank": 31,
+    "name": "Acyn",
+    "handle": "acyn.bsky.social",
+    "followers": 621041
+  },
+  {
+    "rank": 32,
+    "name": "ProPublica",
+    "handle": "propublica.org",
+    "followers": 612479
+  },
+  {
+    "rank": 33,
+    "name": "CNN",
+    "handle": "cnn.com",
+    "followers": 611780
+  },
+  {
+    "rank": 34,
+    "name": "Mehdi Hasan",
+    "handle": "mehdirhasan.bsky.social",
+    "followers": 610428
+  },
+  {
+    "rank": 35,
+    "name": "Jay 🦋",
+    "handle": "jay.bsky.team",
+    "followers": 595014
+  },
+  {
+    "rank": 36,
+    "name": "God",
+    "handle": "thegodpodcast.com",
+    "followers": 587141
+  },
+  {
+    "rank": 37,
+    "name": "Aaron Parnas",
+    "handle": "aaronparnas.bsky.social",
+    "followers": 584824
+  },
+  {
+    "rank": 38,
+    "name": "Barack Obama",
+    "handle": "barackobama.bsky.social",
+    "followers": 571983
+  },
+  {
+    "rank": 39,
+    "name": "derek guy",
+    "handle": "dieworkwear.bsky.social",
+    "followers": 563489
+  },
+  {
+    "rank": 40,
+    "name": "wint",
+    "handle": "dril.bsky.social",
+    "followers": 560818
+  },
+  {
+    "rank": 41,
+    "name": "Congresswoman Jasmine Crockett",
+    "handle": "crockett.house.gov",
+    "followers": 558988
+  },
+  {
+    "rank": 42,
+    "name": "Senator Bernie Sanders",
+    "handle": "sanders.senate.gov",
+    "followers": 554219
+  },
+  {
+    "rank": 43,
+    "name": "Joyce White Vance",
+    "handle": "joycewhitevance.bsky.social",
+    "followers": 553866
+  },
+  {
+    "rank": 44,
+    "name": "The Daily Show",
+    "handle": "thedailyshow.com",
+    "followers": 546930
+  },
+  {
+    "rank": 45,
+    "name": "JoJoFromJerz",
+    "handle": "jojofromjerz.bsky.social",
+    "followers": 531523
+  },
+  {
+    "rank": 46,
+    "name": "Tim Onion",
+    "handle": "bencollins.bsky.social",
+    "followers": 526589
+  },
+  {
+    "rank": 47,
+    "name": "Rick Wilson",
+    "handle": "therickwilson.bsky.social",
+    "followers": 519798
+  },
+  {
+    "rank": 48,
+    "name": "Jon Cooper",
+    "handle": "joncooper-us.bsky.social",
+    "followers": 512927
+  },
+  {
+    "rank": 49,
+    "name": "BrooklynDad_Defiant!",
+    "handle": "mmpadellan.bsky.social",
+    "followers": 488519
+  },
+  {
+    "rank": 50,
+    "name": "Katie Phang",
+    "handle": "katiephang.bsky.social",
+    "followers": 478540
+  },
+  {
+    "rank": 51,
+    "name": "LeVar Burton",
+    "handle": "levarburton.bsky.social",
+    "followers": 473372
+  },
+  {
+    "rank": 52,
+    "name": "Timothy Snyder",
+    "handle": "timothysnyder.bsky.social",
+    "followers": 471079
+  },
+  {
+    "rank": 53,
+    "name": "Just Jack",
+    "handle": "just-jack-1.bsky.social",
+    "followers": 470491
+  },
+  {
+    "rank": 54,
+    "name": "Governor Tim Walz",
+    "handle": "governorwalz.mn.gov",
+    "followers": 469408
+  },
+  {
+    "rank": 55,
+    "name": "WeRateDogs",
+    "handle": "weratedogs.com",
+    "followers": 462802
+  },
+  {
+    "rank": 56,
+    "name": "Anonymous",
+    "handle": "youranoncentral.bsky.social",
+    "followers": 455219
+  },
+  {
+    "rank": 57,
+    "name": "Randall Munroe",
+    "handle": "xkcd.com",
+    "followers": 453926
+  },
+  {
+    "rank": 58,
+    "name": "Jim Acosta",
+    "handle": "jimacosta.bsky.social",
+    "followers": 446546
+  },
+  {
+    "rank": 59,
+    "name": "Kara Swisher",
+    "handle": "karaswisher.bsky.social",
+    "followers": 438184
+  },
+  {
+    "rank": 60,
+    "name": "Bloomberg News",
+    "handle": "bloomberg.com",
+    "followers": 436402
+  },
+  {
+    "rank": 61,
+    "name": "CALL TO ACTIVISM",
+    "handle": "calltoactivism.bsky.social",
+    "followers": 436175
+  },
+  {
+    "rank": 62,
+    "name": "Politico",
+    "handle": "politico.com",
+    "followers": 434324
+  },
+  {
+    "rank": 63,
+    "name": "Al Yankovic",
+    "handle": "alyankovic.bsky.social",
+    "followers": 426951
+  },
+  {
+    "rank": 64,
+    "name": "Internet Archive",
+    "handle": "archive.org",
+    "followers": 426019
+  },
+  {
+    "rank": 65,
+    "name": "Adam Parkhomenko",
+    "handle": "adamparkhomenko.bsky.social",
+    "followers": 420701
+  },
+  {
+    "rank": 66,
+    "name": "Judd Legum",
+    "handle": "juddlegum.bsky.social",
+    "followers": 415436
+  },
+  {
+    "rank": 67,
+    "name": "Bodega Cats",
+    "handle": "bodegacats.bsky.social",
+    "followers": 415270
+  },
+  {
+    "rank": 68,
+    "name": "Anne Applebaum",
+    "handle": "anneapplebaum.bsky.social",
+    "followers": 415036
+  },
+  {
+    "rank": 69,
+    "name": "Elizabeth Warren",
+    "handle": "warren.senate.gov",
+    "followers": 407018
+  },
+  {
+    "rank": 70,
+    "name": "Seth Abramson",
+    "handle": "sethabramson.bsky.social",
+    "followers": 400670
+  },
+  {
+    "rank": 71,
+    "name": "Democracy Docket",
+    "handle": "democracydocket.com",
+    "followers": 399413
+  },
+  {
+    "rank": 72,
+    "name": "Financial Times",
+    "handle": "financialtimes.com",
+    "followers": 398551
+  },
+  {
+    "rank": 73,
+    "name": "Jeff Tiedrich",
+    "handle": "jefftiedrich.bsky.social",
+    "followers": 393077
+  },
+  {
+    "rank": 74,
+    "name": "Joy-Ann Reid",
+    "handle": "joyannreid.bsky.social",
+    "followers": 392161
+  },
+  {
+    "rank": 75,
+    "name": "Fred Wellman",
+    "handle": "fpwellman.bsky.social",
+    "followers": 390193
+  },
+  {
+    "rank": 76,
+    "name": "Zohran Kwame Mamdani",
+    "handle": "zohrankmamdani.bsky.social",
+    "followers": 389456
+  },
+  {
+    "rank": 77,
+    "name": "Kevin M. Kruse",
+    "handle": "kevinmkruse.bsky.social",
+    "followers": 389103
+  },
+  {
+    "rank": 78,
+    "name": "Angry",
+    "handle": "angrystaffer.bsky.social",
+    "followers": 385572
+  },
+  {
+    "rank": 79,
+    "name": "Phil Lewis",
+    "handle": "phillewis.bsky.social",
+    "followers": 385253
+  },
+  {
+    "rank": 80,
+    "name": "Jon Cryer",
+    "handle": "mrjoncryer.bsky.social",
+    "followers": 383002
+  },
+  {
+    "rank": 81,
+    "name": "Mary L Trump",
+    "handle": "maryltrump.bsky.social",
+    "followers": 382570
+  },
+  {
+    "rank": 82,
+    "name": "Ben Stiller",
+    "handle": "benstiller.redhour.com",
+    "followers": 380049
+  },
+  {
+    "rank": 83,
+    "name": "Rex Chapman",
+    "handle": "rexchapman.bsky.social",
+    "followers": 377581
+  },
+  {
+    "rank": 84,
+    "name": "Morgan J Freeman",
+    "handle": "mjfree.bsky.social",
+    "followers": 372782
+  },
+  {
+    "rank": 85,
+    "name": "The Tennessee Holler",
+    "handle": "thetnholler.bsky.social",
+    "followers": 372194
+  },
+  {
+    "rank": 86,
+    "name": "tobyfox",
+    "handle": "tobyfox.undertale.com",
+    "followers": 371581
+  },
+  {
+    "rank": 87,
+    "name": "WIRED",
+    "handle": "wired.com",
+    "followers": 371339
+  },
+  {
+    "rank": 88,
+    "name": "Tom Nichols",
+    "handle": "radiofreetom.bsky.social",
+    "followers": 366930
+  },
+  {
+    "rank": 89,
+    "name": "Fucking Bitch Hat",
+    "handle": "kenwhite.bsky.social",
+    "followers": 363549
+  },
+  {
+    "rank": 90,
+    "name": "The Atlantic",
+    "handle": "theatlantic.com",
+    "followers": 361519
+  },
+  {
+    "rank": 91,
+    "name": "Brett Meiselas",
+    "handle": "bmeiselas.bsky.social",
+    "followers": 355538
+  },
+  {
+    "rank": 92,
+    "name": "Barb McQuade",
+    "handle": "barbmcquade.bsky.social",
+    "followers": 350837
+  },
+  {
+    "rank": 93,
+    "name": "Mother Jones",
+    "handle": "motherjones.com",
+    "followers": 350373
+  },
+  {
+    "rank": 94,
+    "name": "Laurence H. Tribe",
+    "handle": "tribelaw.bsky.social",
+    "followers": 349506
+  },
+  {
+    "rank": 95,
+    "name": "John Scalzi",
+    "handle": "scalzi.com",
+    "followers": 348765
+  },
+  {
+    "rank": 96,
+    "name": "Mina Kimes",
+    "handle": "minakimes.bsky.social",
+    "followers": 348592
+  },
+  {
+    "rank": 97,
+    "name": "The New Yorker",
+    "handle": "newyorker.com",
+    "followers": 346864
+  },
+  {
+    "rank": 98,
+    "name": "Christopher Webb",
+    "handle": "cwebbonline.com",
+    "followers": 346443
+  },
+  {
+    "rank": 99,
+    "name": "Ben Meiselas",
+    "handle": "meiselasb.bsky.social",
+    "followers": 340462
+  },
+  {
+    "rank": 100,
+    "name": "southpaw",
+    "handle": "nycsouthpaw.bsky.social",
+    "followers": 338288
+  },
+  {
+    "rank": 101,
+    "name": "Asha Rangappa",
+    "handle": "asharangappa.bsky.social",
+    "followers": 335712
+  },
+  {
+    "rank": 102,
+    "name": "PatriotTakes 🇺🇸",
+    "handle": "patriottakes.bsky.social",
+    "followers": 333939
+  },
+  {
+    "rank": 103,
+    "name": "Alexander S. Vindman",
+    "handle": "avindman.bsky.social",
+    "followers": 329566
+  },
+  {
+    "rank": 104,
+    "name": "The Athletic",
+    "handle": "theathletic.com",
+    "followers": 329213
+  },
+  {
+    "rank": 105,
+    "name": "Tristan Snell",
+    "handle": "tristansnell.bsky.social",
+    "followers": 326709
+  },
+  {
+    "rank": 106,
+    "name": "Hillary Rodham Clinton",
+    "handle": "hillaryclinton.bsky.social",
+    "followers": 325330
+  },
+  {
+    "rank": 107,
+    "name": "Lawrence O'Donnell",
+    "handle": "lawrenceodonnell.bsky.social",
+    "followers": 322554
+  },
+  {
+    "rank": 108,
+    "name": "Mrs. Betty Bowers",
+    "handle": "mrsbettybowers.bsky.social",
+    "followers": 322293
+  },
+  {
+    "rank": 109,
+    "name": "Scott Dworkin",
+    "handle": "dworkin.bsky.social",
+    "followers": 321410
+  },
+  {
+    "rank": 110,
+    "name": "David Corn",
+    "handle": "davidcorn.bsky.social",
+    "followers": 320126
+  },
+  {
+    "rank": 111,
+    "name": "Kumail Nanjiani",
+    "handle": "kumail.bsky.social",
+    "followers": 318657
+  },
+  {
+    "rank": 112,
+    "name": "James Gunn",
+    "handle": "jamesgunn.bsky.social",
+    "followers": 318229
+  },
+  {
+    "rank": 113,
+    "name": "Jen Rubin",
+    "handle": "jenrubin.bsky.social",
+    "followers": 318024
+  },
+  {
+    "rank": 114,
+    "name": "Shitpost só que de verdade",
+    "handle": "shitpostverdade2.bsky.social",
+    "followers": 317567
+  },
+  {
+    "rank": 115,
+    "name": "Neil Gaiman",
+    "handle": "neilhimself.neilgaiman.com",
+    "followers": 315184
+  },
+  {
+    "rank": 116,
+    "name": "Kyle Griffin",
+    "handle": "kylegriffin1.bsky.social",
+    "followers": 313966
+  },
+  {
+    "rank": 117,
+    "name": "Andrew Weissmann",
+    "handle": "weissmann.substack.com",
+    "followers": 313799
+  },
+  {
+    "rank": 118,
+    "name": "Ruth Ben-Ghiat",
+    "handle": "ruthbenghiat.bsky.social",
+    "followers": 311795
+  },
+  {
+    "rank": 119,
+    "name": "Paul Krugman",
+    "handle": "pkrugman.bsky.social",
+    "followers": 310896
+  },
+  {
+    "rank": 120,
+    "name": "Glenn Kirschner",
+    "handle": "glennkirschner.bsky.social",
+    "followers": 309407
+  },
+  {
+    "rank": 121,
+    "name": "onion person",
+    "handle": "junlper.beer",
+    "followers": 308862
+  },
+  {
+    "rank": 122,
+    "name": "Texas Paul",
+    "handle": "realtexaspaul.com",
+    "followers": 308728
+  },
+  {
+    "rank": 123,
+    "name": "PoliticsGirl",
+    "handle": "politicsgirl.bsky.social",
+    "followers": 308228
+  },
+  {
+    "rank": 124,
+    "name": "Kat Abughazaleh",
+    "handle": "katmabu.bsky.social",
+    "followers": 307908
+  },
+  {
+    "rank": 125,
+    "name": "Chris Geidner",
+    "handle": "chrisgeidner.bsky.social",
+    "followers": 307745
+  },
+  {
+    "rank": 126,
+    "name": "Paul Frazee",
+    "handle": "pfrazee.com",
+    "followers": 307393
+  },
+  {
+    "rank": 127,
+    "name": "Better Things Are Possible",
+    "handle": "internethippo.bsky.social",
+    "followers": 306788
+  },
+  {
+    "rank": 128,
+    "name": "FLAVOR FLAV ⏰",
+    "handle": "flavorflav.bsky.social",
+    "followers": 306131
+  },
+  {
+    "rank": 129,
+    "name": "Jimmy Kimmel",
+    "handle": "jimmykimmel.com",
+    "followers": 305092
+  },
+  {
+    "rank": 130,
+    "name": "Jake Tapper, long-suffering Philly sports fan",
+    "handle": "jaketapper.bsky.social",
+    "followers": 303911
+  },
+  {
+    "rank": 131,
+    "name": "David Pakman",
+    "handle": "davidpakman.bsky.social",
+    "followers": 303528
+  },
+  {
+    "rank": 132,
+    "name": "Adam Serwer",
+    "handle": "adamserwer.bsky.social",
+    "followers": 302578
+  },
+  {
+    "rank": 133,
+    "name": "John Cusack",
+    "handle": "johncusack.bsky.social",
+    "followers": 301596
+  },
+  {
+    "rank": 134,
+    "name": "emptywheel",
+    "handle": "emptywheel.bsky.social",
+    "followers": 301050
+  },
+  {
+    "rank": 135,
+    "name": "Cats of Yore",
+    "handle": "catsofyore.bsky.social",
+    "followers": 300054
+  },
+  {
+    "rank": 136,
+    "name": "Jon Bois",
+    "handle": "jonbois.bsky.social",
+    "followers": 300013
+  },
+  {
+    "rank": 137,
+    "name": "Wajahat Ali",
+    "handle": "wajali.bsky.social",
+    "followers": 298975
+  },
+  {
+    "rank": 138,
+    "name": "Guillermo del Toro",
+    "handle": "realgdt.bsky.social",
+    "followers": 298065
+  },
+  {
+    "rank": 139,
+    "name": "Reuters",
+    "handle": "reuters.com",
+    "followers": 297279
+  },
+  {
+    "rank": 140,
+    "name": "Harry Litman",
+    "handle": "harrylitman.bsky.social",
+    "followers": 297124
+  },
+  {
+    "rank": 141,
+    "name": "Republicans Against Trumpism",
+    "handle": "rpsagainsttrump.bsky.social",
+    "followers": 296480
+  },
+  {
+    "rank": 142,
+    "name": "Lula",
+    "handle": "lulaoficialbluesky.bsky.social",
+    "followers": 295020
+  },
+  {
+    "rank": 143,
+    "name": "Ken Klippenstein",
+    "handle": "kenklippenstein.bsky.social",
+    "followers": 291434
+  },
+  {
+    "rank": 144,
+    "name": "Andy Richter",
+    "handle": "andyrichter.co",
+    "followers": 290685
+  },
+  {
+    "rank": 145,
+    "name": "Yashar Ali 🐘",
+    "handle": "yasharali.bsky.social",
+    "followers": 289923
+  },
+  {
+    "rank": 146,
+    "name": "Jordy 🇺🇸🦅",
+    "handle": "meidasjordy.bsky.social",
+    "followers": 289426
+  },
+  {
+    "rank": 147,
+    "name": "Kyle Cheney",
+    "handle": "kyledcheney.bsky.social",
+    "followers": 288050
+  },
+  {
+    "rank": 148,
+    "name": "Rep. Alexandria Ocasio-Cortez",
+    "handle": "ocasio-cortez.house.gov",
+    "followers": 285940
+  },
+  {
+    "rank": 149,
+    "name": "The Associated Press",
+    "handle": "apnews.com",
+    "followers": 284528
+  },
+  {
+    "rank": 150,
+    "name": "Governor JB Pritzker",
+    "handle": "govpritzker.illinois.gov",
+    "followers": 283758
+  },
+  {
+    "rank": 151,
+    "name": "shauna",
+    "handle": "goldengateblond.bsky.social",
+    "followers": 282389
+  },
+  {
+    "rank": 152,
+    "name": "Katie Mack",
+    "handle": "astrokatie.com",
+    "followers": 280066
+  },
+  {
+    "rank": 153,
+    "name": "Taylor Lorenz @ XBIZ LA",
+    "handle": "taylorlorenz.bsky.social",
+    "followers": 279921
+  },
+  {
+    "rank": 154,
+    "name": "Hoarse Whisperer",
+    "handle": "therealhoarse.bsky.social",
+    "followers": 278598
+  },
+  {
+    "rank": 155,
+    "name": "Neil deGrasse Tyson",
+    "handle": "neildegrassetyson.com",
+    "followers": 275611
+  },
+  {
+    "rank": 156,
+    "name": "Matthew Gertz",
+    "handle": "mattgertz.bsky.social",
+    "followers": 272177
+  },
+  {
+    "rank": 157,
+    "name": "Malcolm Nance, Leading Resister",
+    "handle": "malcolmnance.bsky.social",
+    "followers": 272030
+  },
+  {
+    "rank": 158,
+    "name": "The Bulwark",
+    "handle": "thebulwark.com",
+    "followers": 271567
+  },
+  {
+    "rank": 159,
+    "name": "Liam Nissan™",
+    "handle": "theliamnissan.bsky.social",
+    "followers": 270813
+  },
+  {
+    "rank": 160,
+    "name": "Roxane Gay",
+    "handle": "roxanegay.bsky.social",
+    "followers": 268274
+  },
+  {
+    "rank": 161,
+    "name": "Jack Hopkins-The Original",
+    "handle": "therealjackhopkins.bsky.social",
+    "followers": 267506
+  },
+  {
+    "rank": 162,
+    "name": "Bluesky Safety",
+    "handle": "safety.bsky.app",
+    "followers": 265734
+  },
+  {
+    "rank": 163,
+    "name": "Nature Neon",
+    "handle": "natureneon.bsky.social",
+    "followers": 265375
+  },
+  {
+    "rank": 164,
+    "name": "Josh Marshall",
+    "handle": "joshtpm.bsky.social",
+    "followers": 264692
+  },
+  {
+    "rank": 165,
+    "name": "Hakeem Jeffries",
+    "handle": "hakeem-jeffries.bsky.social",
+    "followers": 264190
+  },
+  {
+    "rank": 166,
+    "name": "Erin Reed",
+    "handle": "erininthemorning.com",
+    "followers": 263567
+  },
+  {
+    "rank": 167,
+    "name": "Pop Base",
+    "handle": "popbase.tv",
+    "followers": 263511
+  },
+  {
+    "rank": 168,
+    "name": "Nick Knudsen",
+    "handle": "nickknudsenus.bsky.social",
+    "followers": 263066
+  },
+  {
+    "rank": 169,
+    "name": "Harry Dunn",
+    "handle": "libradunn1.bsky.social",
+    "followers": 262850
+  },
+  {
+    "rank": 170,
+    "name": "ElieNYC",
+    "handle": "elienyc.bsky.social",
+    "followers": 262784
+  },
+  {
+    "rank": 171,
+    "name": "ナガノ",
+    "handle": "ngntrtr.bsky.social",
+    "followers": 262370
+  },
+  {
+    "rank": 172,
+    "name": "Maxwell Frost",
+    "handle": "maxwellfrost.bsky.social",
+    "followers": 262010
+  },
+  {
+    "rank": 173,
+    "name": "Sherrilyn Ifill",
+    "handle": "sifill.bsky.social",
+    "followers": 260511
+  },
+  {
+    "rank": 174,
+    "name": "Rep. Jamie Raskin",
+    "handle": "raskin.house.gov",
+    "followers": 260425
+  },
+  {
+    "rank": 175,
+    "name": "The Verge",
+    "handle": "theverge.com",
+    "followers": 259658
+  },
+  {
+    "rank": 176,
+    "name": "Haus of Decline",
+    "handle": "hausofdecline.bsky.social",
+    "followers": 259422
+  },
+  {
+    "rank": 177,
+    "name": "Anna Bower",
+    "handle": "annabower.bsky.social",
+    "followers": 259053
+  },
+  {
+    "rank": 178,
+    "name": "Keith Edwards",
+    "handle": "keithedwards.bsky.social",
+    "followers": 258592
+  },
+  {
+    "rank": 179,
+    "name": "Tea Pain",
+    "handle": "teapainusa.bsky.social",
+    "followers": 257063
+  },
+  {
+    "rank": 180,
+    "name": "Indivisible ❌👑",
+    "handle": "indivisible.org",
+    "followers": 256923
+  },
+  {
+    "rank": 181,
+    "name": "Mara Wilson",
+    "handle": "marawilson.bsky.social",
+    "followers": 256061
+  },
+  {
+    "rank": 182,
+    "name": "Art Candee 🍿🥤",
+    "handle": "artcandee.bsky.social",
+    "followers": 255660
+  },
+  {
+    "rank": 183,
+    "name": "James O’Brien",
+    "handle": "mrjamesob.bsky.social",
+    "followers": 255316
+  },
+  {
+    "rank": 184,
+    "name": "Dahlia Lithwick",
+    "handle": "dahlialithwick.bsky.social",
+    "followers": 254970
+  },
+  {
+    "rank": 185,
+    "name": "Steven  Beschloss",
+    "handle": "stevenbeschloss.bsky.social",
+    "followers": 254301
+  },
+  {
+    "rank": 186,
+    "name": "Bellingcat",
+    "handle": "bellingcat.com",
+    "followers": 253801
+  },
+  {
+    "rank": 187,
+    "name": "POLITICO Europe",
+    "handle": "politico.eu",
+    "followers": 253726
+  },
+  {
+    "rank": 188,
+    "name": "Jasmine Crockett",
+    "handle": "jasmineforus.bsky.social",
+    "followers": 253008
+  },
+  {
+    "rank": 189,
+    "name": "Stephen Colbert",
+    "handle": "stephencolbert.bsky.social",
+    "followers": 252664
+  },
+  {
+    "rank": 190,
+    "name": "Gavin Newsom",
+    "handle": "gavinnewsom.bsky.social",
+    "followers": 252530
+  },
+  {
+    "rank": 191,
+    "name": "luscas",
+    "handle": "luscas.com.br",
+    "followers": 252057
+  },
+  {
+    "rank": 192,
+    "name": "pixelatedboat aka “mr bluesky”",
+    "handle": "pixelatedboat.bsky.social",
+    "followers": 251247
+  },
+  {
+    "rank": 193,
+    "name": "Governor Gavin Newsom",
+    "handle": "governor.ca.gov",
+    "followers": 249870
+  },
+  {
+    "rank": 194,
+    "name": "Morgan Fairchild",
+    "handle": "morgfair.bsky.social",
+    "followers": 249856
+  },
+  {
+    "rank": 195,
+    "name": "Sen. Cory Booker",
+    "handle": "booker.senate.gov",
+    "followers": 247055
+  },
+  {
+    "rank": 196,
+    "name": "Carl Quintanilla",
+    "handle": "carlquintanilla.bsky.social",
+    "followers": 246439
+  },
+  {
+    "rank": 197,
+    "name": "Steve Vladeck",
+    "handle": "stevevladeck.bsky.social",
+    "followers": 245742
+  },
+  {
+    "rank": 198,
+    "name": "Jess Piper",
+    "handle": "piperformissouri.bsky.social",
+    "followers": 241943
+  },
+  {
+    "rank": 199,
+    "name": "Hoodlum 🇺🇸",
+    "handle": "nothoodlum.bsky.social",
+    "followers": 241477
+  },
+  {
+    "rank": 200,
+    "name": "UpdateCharts",
+    "handle": "updatecharts.com.br",
+    "followers": 241051
+  },
+  {
+    "rank": 201,
+    "name": "ESPN",
+    "handle": "espn.com",
+    "followers": 240502
+  },
+  {
+    "rank": 202,
+    "name": "Norm Eisen",
+    "handle": "normeisen.bsky.social",
+    "followers": 239003
+  },
+  {
+    "rank": 203,
+    "name": "BBC Newsnight",
+    "handle": "bbcnewsnight.bsky.social",
+    "followers": 236531
+  },
+  {
+    "rank": 204,
+    "name": "Casey Newton",
+    "handle": "caseynewton.bsky.social",
+    "followers": 235790
+  },
+  {
+    "rank": 205,
+    "name": "Charlotte Clymer",
+    "handle": "charlotteclymer.bsky.social",
+    "followers": 235560
+  },
+  {
+    "rank": 206,
+    "name": "John Pavlovitz",
+    "handle": "johnpavlovitz.bsky.social",
+    "followers": 234395
+  },
+  {
+    "rank": 207,
+    "name": "ERIKA HILTON",
+    "handle": "erikahilton.bsky.social",
+    "followers": 233722
+  },
+  {
+    "rank": 208,
+    "name": "Parker Molloy",
+    "handle": "parkermolloy.com",
+    "followers": 233497
+  },
+  {
+    "rank": 209,
+    "name": "Fred Guttenberg",
+    "handle": "fredguttenberg.bsky.social",
+    "followers": 231983
+  },
+  {
+    "rank": 210,
+    "name": "Andrea Junker",
+    "handle": "strandjunker.com",
+    "followers": 231876
+  },
+  {
+    "rank": 211,
+    "name": "Aaron Black",
+    "handle": "aaronblack.bsky.social",
+    "followers": 231599
+  },
+  {
+    "rank": 212,
+    "name": "NY Times Pitchbot",
+    "handle": "nytpitchbot.bsky.social",
+    "followers": 230800
+  },
+  {
+    "rank": 213,
+    "name": "Molly White",
+    "handle": "molly.wiki",
+    "followers": 230685
+  },
+  {
+    "rank": 214,
+    "name": "Frank Figliuzzi",
+    "handle": "frankfigliuzzi.bsky.social",
+    "followers": 230484
+  },
+  {
+    "rank": 215,
+    "name": "Sen. Adam Schiff",
+    "handle": "schiff.senate.gov",
+    "followers": 230408
+  },
+  {
+    "rank": 216,
+    "name": "Lakota Man 🪶",
+    "handle": "lakotaman.bsky.social",
+    "followers": 230321
+  },
+  {
+    "rank": 217,
+    "name": "SB",
+    "handle": "seriesbrasil.com.br",
+    "followers": 229715
+  },
+  {
+    "rank": 218,
+    "name": "Scott Galloway",
+    "handle": "profgalloway.com",
+    "followers": 228824
+  },
+  {
+    "rank": 219,
+    "name": "Dave Weigel",
+    "handle": "daveweigel.bsky.social",
+    "followers": 228540
+  },
+  {
+    "rank": 220,
+    "name": "Democracy Now!",
+    "handle": "democracynow.org",
+    "followers": 228145
+  },
+  {
+    "rank": 221,
+    "name": "Susie Dent",
+    "handle": "susiedentwords.bsky.social",
+    "followers": 228109
+  },
+  {
+    "rank": 222,
+    "name": "Jay Rosen",
+    "handle": "jayrosen.bsky.social",
+    "followers": 227968
+  },
+  {
+    "rank": 223,
+    "name": "Carole Cadwalladr",
+    "handle": "carolecadwalla.bsky.social",
+    "followers": 227788
+  },
+  {
+    "rank": 224,
+    "name": "Ricky Gervais",
+    "handle": "mrrickygervais.bsky.social",
+    "followers": 227480
+  },
+  {
+    "rank": 225,
+    "name": "Khashoggi's Ghost",
+    "handle": "urocklive1.bsky.social",
+    "followers": 226792
+  },
+  {
+    "rank": 226,
+    "name": "Felipe Neto",
+    "handle": "felipeneto.com.br",
+    "followers": 226207
+  },
+  {
+    "rank": 227,
+    "name": "John Green",
+    "handle": "johngreensbluesky.bsky.social",
+    "followers": 225835
+  },
+  {
+    "rank": 228,
+    "name": "John Fugelsang",
+    "handle": "johnfugelsang.bsky.social",
+    "followers": 225828
+  },
+  {
+    "rank": 229,
+    "name": "Culture Crave 🍿",
+    "handle": "culturecrave.co",
+    "followers": 225076
+  },
+  {
+    "rank": 230,
+    "name": "Marisa Kabas",
+    "handle": "marisakabas.bsky.social",
+    "followers": 223744
+  },
+  {
+    "rank": 231,
+    "name": "Brian Schatz",
+    "handle": "schatz.bsky.social",
+    "followers": 223641
+  },
+  {
+    "rank": 232,
+    "name": "Mia Farrow",
+    "handle": "miafarrow.bsky.social",
+    "followers": 223448
+  },
+  {
+    "rank": 233,
+    "name": "Don Lemon",
+    "handle": "donlemonofficial.bsky.social",
+    "followers": 221779
+  },
+  {
+    "rank": 234,
+    "name": "Ryan Goodman",
+    "handle": "rgoodlaw.bsky.social",
+    "followers": 221725
+  },
+  {
+    "rank": 235,
+    "name": "Olivia of Troye",
+    "handle": "oliviaoftroye.com",
+    "followers": 221699
+  },
+  {
+    "rank": 236,
+    "name": "Occupy Democrats",
+    "handle": "occupydemocrats.bsky.social",
+    "followers": 221521
+  },
+  {
+    "rank": 237,
+    "name": "#TuckFrump",
+    "handle": "realtuckfrumper.bsky.social",
+    "followers": 220811
+  },
+  {
+    "rank": 238,
+    "name": "PBS News",
+    "handle": "pbsnews.org",
+    "followers": 219970
+  },
+  {
+    "rank": 239,
+    "name": "Leah Litman",
+    "handle": "leahlitman.bsky.social",
+    "followers": 219605
+  },
+  {
+    "rank": 240,
+    "name": "The Volatile Mermaid",
+    "handle": "ohnoshetwitnt.bsky.social",
+    "followers": 218740
+  },
+  {
+    "rank": 241,
+    "name": "Ben Wikler",
+    "handle": "benwikler.bsky.social",
+    "followers": 218739
+  },
+  {
+    "rank": 242,
+    "name": "Dave Itzkoff",
+    "handle": "ditzkoff.bsky.social",
+    "followers": 218119
+  },
+  {
+    "rank": 243,
+    "name": "Jen Taub",
+    "handle": "jentaub.bsky.social",
+    "followers": 216472
+  },
+  {
+    "rank": 244,
+    "name": "Eleven Films",
+    "handle": "elevenfilms.com",
+    "followers": 216039
+  },
+  {
+    "rank": 245,
+    "name": "Grant Stern",
+    "handle": "grantstern.bsky.social",
+    "followers": 215617
+  },
+  {
+    "rank": 246,
+    "name": "𝑀𝒶𝓎𝓇𝒶°❀⋆.ೃ࿔*:･🫧",
+    "handle": "mayraphotography.bsky.social",
+    "followers": 215408
+  },
+  {
+    "rank": 247,
+    "name": "Ed Yong",
+    "handle": "edyong209.bsky.social",
+    "followers": 214581
+  },
+  {
+    "rank": 248,
+    "name": "John Collins",
+    "handle": "logicallyjc.bsky.social",
+    "followers": 213891
+  },
+  {
+    "rank": 249,
+    "name": "Krassensteins",
+    "handle": "krassenstein.bsky.social",
+    "followers": 212958
+  },
+  {
+    "rank": 250,
+    "name": "Media Matters for America",
+    "handle": "mmfa.bsky.social",
+    "followers": 212578
+  },
+  {
+    "rank": 251,
+    "name": "Taniel",
+    "handle": "taniel.bsky.social",
+    "followers": 212346
+  },
+  {
+    "rank": 252,
+    "name": "Michael Cohen",
+    "handle": "michaelcohen212.bsky.social",
+    "followers": 211873
+  },
+  {
+    "rank": 253,
+    "name": "TizzyEnt",
+    "handle": "tizzyent.bsky.social",
+    "followers": 211457
+  },
+  {
+    "rank": 254,
+    "name": "Space",
+    "handle": "redditspaceviewes.bsky.social",
+    "followers": 209847
+  },
+  {
+    "rank": 255,
+    "name": "Alex Winter",
+    "handle": "alexwinter.com",
+    "followers": 209826
+  },
+  {
+    "rank": 256,
+    "name": "Greg Sargent",
+    "handle": "gregsargent.bsky.social",
+    "followers": 209609
+  },
+  {
+    "rank": 257,
+    "name": "Eric Feigl-Ding",
+    "handle": "drericding.bsky.social",
+    "followers": 209225
+  },
+  {
+    "rank": 258,
+    "name": "Henry Winkler",
+    "handle": "hwinkler4real.bsky.social",
+    "followers": 209074
+  },
+  {
+    "rank": 259,
+    "name": "Charlie Sykes",
+    "handle": "sykescharlie.bsky.social",
+    "followers": 208993
+  },
+  {
+    "rank": 260,
+    "name": "Chris Murphy",
+    "handle": "chrismurphyct.bsky.social",
+    "followers": 208392
+  },
+  {
+    "rank": 261,
+    "name": "Steam",
+    "handle": "steampowered.com",
+    "followers": 208080
+  },
+  {
+    "rank": 262,
+    "name": "Alejandra Caraballo",
+    "handle": "esqueer.net",
+    "followers": 208004
+  },
+  {
+    "rank": 263,
+    "name": "MaddowBlog",
+    "handle": "maddowblog.bsky.social",
+    "followers": 206750
+  },
+  {
+    "rank": 264,
+    "name": "Benjamin Wittes",
+    "handle": "benjaminwittes.lawfaremedia.org",
+    "followers": 206498
+  },
+  {
+    "rank": 265,
+    "name": "Bill Kristol",
+    "handle": "billkristolbulwark.bsky.social",
+    "followers": 206362
+  },
+  {
+    "rank": 266,
+    "name": "ACLU",
+    "handle": "aclu.org",
+    "followers": 205918
+  },
+  {
+    "rank": 267,
+    "name": "I Smoked Democracy",
+    "handle": "dknight10k.bsky.social",
+    "followers": 205210
+  },
+  {
+    "rank": 268,
+    "name": "Al Jazeera English",
+    "handle": "aljazeera.com",
+    "followers": 205182
+  },
+  {
+    "rank": 269,
+    "name": "Eric Swalwell",
+    "handle": "ericswalwell.bsky.social",
+    "followers": 204575
+  },
+  {
+    "rank": 270,
+    "name": "Jeri Ryan (official account)",
+    "handle": "jerilryan.bsky.social",
+    "followers": 203789
+  },
+  {
+    "rank": 271,
+    "name": "Tim O’Brien",
+    "handle": "timobrien.bsky.social",
+    "followers": 201730
+  },
+  {
+    "rank": 272,
+    "name": "Heather Thomas",
+    "handle": "heatherthomasaf.bsky.social",
+    "followers": 201470
+  },
+  {
+    "rank": 273,
+    "name": "50501: The People’s Movement ❌👑",
+    "handle": "50501movement.bsky.social",
+    "followers": 201098
+  },
+  {
+    "rank": 274,
+    "name": "David Leavitt",
+    "handle": "davidleavitt.bsky.social",
+    "followers": 200662
+  },
+  {
+    "rank": 275,
+    "name": "Santiago Mayer",
+    "handle": "santiagomayer.com",
+    "followers": 200617
+  },
+  {
+    "rank": 276,
+    "name": "Eric Holder",
+    "handle": "ericholder.bsky.social",
+    "followers": 200597
+  },
+  {
+    "rank": 277,
+    "name": "Mike Masnick",
+    "handle": "mmasnick.bsky.social",
+    "followers": 200266
+  },
+  {
+    "rank": 278,
+    "name": "VoteVets",
+    "handle": "votevets.org",
+    "followers": 200054
+  },
+  {
+    "rank": 279,
+    "name": "David Frum",
+    "handle": "davidfrum.bsky.social",
+    "followers": 199532
+  },
+  {
+    "rank": 280,
+    "name": "Monica Lewinsky",
+    "handle": "monicalewinsky.bsky.social",
+    "followers": 199522
+  },
+  {
+    "rank": 281,
+    "name": "Peter Stefanovic",
+    "handle": "peterstefanovic.bsky.social",
+    "followers": 198744
+  },
+  {
+    "rank": 282,
+    "name": "🥖Kekeflipnote🥖",
+    "handle": "kekeflipnote.bsky.social",
+    "followers": 198260
+  },
+  {
+    "rank": 283,
+    "name": "Science Friday",
+    "handle": "scifri.bsky.social",
+    "followers": 197694
+  },
+  {
+    "rank": 284,
+    "name": "Senator Ron Wyden",
+    "handle": "wyden.senate.gov",
+    "followers": 197600
+  },
+  {
+    "rank": 285,
+    "name": "NBC News",
+    "handle": "nbcnews.com",
+    "followers": 196254
+  },
+  {
+    "rank": 286,
+    "name": "Clara Jeffery",
+    "handle": "clarajeffery.bsky.social",
+    "followers": 195337
+  },
+  {
+    "rank": 287,
+    "name": "Joshua J. Friedman",
+    "handle": "joshuajfriedman.com",
+    "followers": 195267
+  },
+  {
+    "rank": 288,
+    "name": "Ken Jennings",
+    "handle": "kenjennings.bsky.social",
+    "followers": 195141
+  },
+  {
+    "rank": 289,
+    "name": "undefined",
+    "handle": "oliviajulianna.bsky.social",
+    "followers": 195077
+  },
+  {
+    "rank": 290,
+    "name": "Asawin Suebsaeng",
+    "handle": "swin24.bsky.social",
+    "followers": 194856
+  },
+  {
+    "rank": 291,
+    "name": "McSpocky™",
+    "handle": "mcspocky.bsky.social",
+    "followers": 194587
+  },
+  {
+    "rank": 292,
+    "name": "George Monbiot",
+    "handle": "georgemonbiot.bsky.social",
+    "followers": 194328
+  },
+  {
+    "rank": 293,
+    "name": "Patti Olivier EPSTEIN FILES NEVER FORGET",
+    "handle": "patti3333.bsky.social",
+    "followers": 193382
+  },
+  {
+    "rank": 294,
+    "name": "2026 all the things",
+    "handle": "pwnallthethings.bsky.social",
+    "followers": 193335
+  },
+  {
+    "rank": 295,
+    "name": "darth™️",
+    "handle": "darthbluesky.bsky.social",
+    "followers": 193148
+  },
+  {
+    "rank": 296,
+    "name": "Shannon Watts",
+    "handle": "shannonrwatts.bsky.social",
+    "followers": 192894
+  },
+  {
+    "rank": 297,
+    "name": "Cory Booker",
+    "handle": "corybooker.com",
+    "followers": 192528
+  },
+  {
+    "rank": 298,
+    "name": "The Intercept",
+    "handle": "theintercept.com",
+    "followers": 191910
+  },
+  {
+    "rank": 299,
+    "name": "Planeta do Futebol 🌎",
+    "handle": "planetadofutebol.bsky.social",
+    "followers": 191679
+  },
+  {
+    "rank": 300,
+    "name": "Nicolle Wallace",
+    "handle": "nicollewallace.bsky.social",
+    "followers": 190887
+  },
+  {
+    "rank": 301,
+    "name": "DevinCow",
+    "handle": "devincow.bsky.social",
+    "followers": 190452
+  },
+  {
+    "rank": 302,
+    "name": "Michael Hobbes",
+    "handle": "michaelhobbes.bsky.social",
+    "followers": 190426
+  },
+  {
+    "rank": 303,
+    "name": "More Perfect Union",
+    "handle": "moreperfectunion.bsky.social",
+    "followers": 190294
+  },
+  {
+    "rank": 304,
+    "name": "Harry Sisson",
+    "handle": "harryjsisson.bsky.social",
+    "followers": 190151
+  },
+  {
+    "rank": 305,
+    "name": "TechCrunch",
+    "handle": "techcrunch.com",
+    "followers": 188675
+  },
+  {
+    "rank": 306,
+    "name": "Bradley Whitford",
+    "handle": "bradleywhitford.bsky.social",
+    "followers": 188235
+  },
+  {
+    "rank": 307,
+    "name": "Rebecca Solnit",
+    "handle": "rebeccasolnit.bsky.social",
+    "followers": 187702
+  },
+  {
+    "rank": 308,
+    "name": "𝕊𝕦𝕟𝕕𝕒𝕖 𝔾𝕦𝕣𝕝",
+    "handle": "sundaedivine.lol",
+    "followers": 187365
+  },
+  {
+    "rank": 309,
+    "name": "Adam Cohen (My Personal Views Only)",
+    "handle": "axidentaliberal.bsky.social",
+    "followers": 187316
+  },
+  {
+    "rank": 310,
+    "name": "The Wall Street Journal",
+    "handle": "wsj.com",
+    "followers": 186998
+  },
+  {
+    "rank": 311,
+    "name": "AltYellostoneNatPar",
+    "handle": "altyellonatpark.org",
+    "followers": 186809
+  },
+  {
+    "rank": 312,
+    "name": "Jon Favreau",
+    "handle": "jonfavs.bsky.social",
+    "followers": 186456
+  },
+  {
+    "rank": 313,
+    "name": "Kamala Harris",
+    "handle": "kamalaharris.com",
+    "followers": 186124
+  },
+  {
+    "rank": 314,
+    "name": "The Kyiv Independent",
+    "handle": "kyivindependent.com",
+    "followers": 185975
+  },
+  {
+    "rank": 315,
+    "name": "Ilhan Omar",
+    "handle": "ilhanmn.bsky.social",
+    "followers": 185418
+  },
+  {
+    "rank": 316,
+    "name": "Stephanie Kennedy",
+    "handle": "wordswithsteph.bsky.social",
+    "followers": 184586
+  },
+  {
+    "rank": 317,
+    "name": "Brandy Zadrozny",
+    "handle": "brandyzadrozny.bsky.social",
+    "followers": 184469
+  },
+  {
+    "rank": 318,
+    "name": "Chris Kluwe",
+    "handle": "chriswarcraft.bsky.social",
+    "followers": 184413
+  },
+  {
+    "rank": 319,
+    "name": "Mark Carney",
+    "handle": "mark-carney.bsky.social",
+    "followers": 184254
+  },
+  {
+    "rank": 320,
+    "name": "Drew Harwell",
+    "handle": "drewharwell.com",
+    "followers": 183941
+  },
+  {
+    "rank": 321,
+    "name": "Hbomberguy",
+    "handle": "hbomberguy.bsky.social",
+    "followers": 183765
+  },
+  {
+    "rank": 322,
+    "name": "Jamie Carter",
+    "handle": "jctheresistance.demcast.com",
+    "followers": 181643
+  },
+  {
+    "rank": 323,
+    "name": "Technology Connections",
+    "handle": "techconnectify.bsky.social",
+    "followers": 181280
+  },
+  {
+    "rank": 324,
+    "name": "iti malias 😍",
+    "handle": "itimaliasoficial.bsky.social",
+    "followers": 179991
+  },
+  {
+    "rank": 325,
+    "name": "Tim Miller",
+    "handle": "timmiller.bsky.social",
+    "followers": 179854
+  },
+  {
+    "rank": 326,
+    "name": "Palmer Report",
+    "handle": "palmerreport.com",
+    "followers": 179647
+  },
+  {
+    "rank": 327,
+    "name": "DrDinD.bsky.social",
+    "handle": "drdind.bsky.social",
+    "followers": 179309
+  },
+  {
+    "rank": 328,
+    "name": "Adam Mockler",
+    "handle": "adammockler.com",
+    "followers": 178811
+  },
+  {
+    "rank": 329,
+    "name": "lukelukeluke",
+    "handle": "lukelukeluke.bsky.social",
+    "followers": 178248
+  },
+  {
+    "rank": 330,
+    "name": "Andy Kaczynski",
+    "handle": "kfile.bsky.social",
+    "followers": 178134
+  },
+  {
+    "rank": 331,
+    "name": "Ryan Reynolds",
+    "handle": "vancityreynolds.bsky.social",
+    "followers": 177817
+  },
+  {
+    "rank": 332,
+    "name": "Peter Sagal",
+    "handle": "petersagal.bsky.social",
+    "followers": 177366
+  },
+  {
+    "rank": 333,
+    "name": "Carol Vorderman",
+    "handle": "carolvorders.bsky.social",
+    "followers": 177043
+  },
+  {
+    "rank": 334,
+    "name": "Renee DiResta",
+    "handle": "noupside.bsky.social",
+    "followers": 176991
+  },
+  {
+    "rank": 335,
+    "name": "Machine Pun Kelly",
+    "handle": "kellyscaletta.bsky.social",
+    "followers": 176626
+  },
+  {
+    "rank": 336,
+    "name": "Malena-PRO-CHOICE 🌊 🟦🟧Fighting Tyranny!",
+    "handle": "malena.bsky.social",
+    "followers": 176518
+  },
+  {
+    "rank": 337,
+    "name": "Melissa Murray",
+    "handle": "profmmurray.bsky.social",
+    "followers": 176185
+  },
+  {
+    "rank": 338,
+    "name": "💙❤️💙Mia💙❤️💙",
+    "handle": "mommamia.bsky.social",
+    "followers": 175576
+  },
+  {
+    "rank": 339,
+    "name": "Outspoken™️",
+    "handle": "out5p0ken.bsky.social",
+    "followers": 175337
+  },
+  {
+    "rank": 340,
+    "name": "Oliver Darcy",
+    "handle": "oliverdarcy.bsky.social",
+    "followers": 174979
+  },
+  {
+    "rank": 341,
+    "name": "WuTangIsForTheChildren",
+    "handle": "wutangforchildren.bsky.social",
+    "followers": 173301
+  },
+  {
+    "rank": 342,
+    "name": "DiscussingFilm",
+    "handle": "discussingfilm.net",
+    "followers": 172937
+  },
+  {
+    "rank": 343,
+    "name": "soul nate",
+    "handle": "mnateshyamalan.bsky.social",
+    "followers": 172625
+  },
+  {
+    "rank": 344,
+    "name": "Duolingo Brasil 🇧🇷",
+    "handle": "duolingobrasil.com.br",
+    "followers": 172577
+  },
+  {
+    "rank": 345,
+    "name": "Jairme",
+    "handle": "jairme.bsky.social",
+    "followers": 171907
+  },
+  {
+    "rank": 346,
+    "name": "Mike Nellis",
+    "handle": "mikenellis.bsky.social",
+    "followers": 171765
+  },
+  {
+    "rank": 347,
+    "name": "Being Liberal ®🗽🏳️‍🌈",
+    "handle": "beingliberal.bsky.social",
+    "followers": 171481
+  },
+  {
+    "rank": 348,
+    "name": "Amee Vanderpool",
+    "handle": "girlsreallyrule.bsky.social",
+    "followers": 171475
+  },
+  {
+    "rank": 349,
+    "name": "Ed Zitron",
+    "handle": "edzitron.com",
+    "followers": 171070
+  },
+  {
+    "rank": 350,
+    "name": "WHO",
+    "handle": "who.int",
+    "followers": 170675
+  },
+  {
+    "rank": 351,
+    "name": "Rachel Bitecofer",
+    "handle": "rachelbitecofer.bsky.social",
+    "followers": 170256
+  },
+  {
+    "rank": 352,
+    "name": "Valerie Bertinelli",
+    "handle": "wolfiesmom.bsky.social",
+    "followers": 170117
+  },
+  {
+    "rank": 353,
+    "name": "Kat Tenbarge",
+    "handle": "kattenbarge.bsky.social",
+    "followers": 169694
+  },
+  {
+    "rank": 354,
+    "name": "Liz Cheney",
+    "handle": "lizcheney.bsky.social",
+    "followers": 169116
+  },
+  {
+    "rank": 355,
+    "name": "lack/珈琲紳士",
+    "handle": "lalalalack.bsky.social",
+    "followers": 169094
+  },
+  {
+    "rank": 356,
+    "name": "Maya Wiley",
+    "handle": "maya4rights.bsky.social",
+    "followers": 168974
+  },
+  {
+    "rank": 357,
+    "name": "Robert Evans (the Only Robert Evans)",
+    "handle": "iwriteok.bsky.social",
+    "followers": 168476
+  },
+  {
+    "rank": 358,
+    "name": "Chico Barney",
+    "handle": "chicobarney.bsky.social",
+    "followers": 168287
+  },
+  {
+    "rank": 359,
+    "name": "Max Kennerly",
+    "handle": "maxkennerly.bsky.social",
+    "followers": 167710
+  },
+  {
+    "rank": 360,
+    "name": "Karen Attiah",
+    "handle": "karenattiah.bsky.social",
+    "followers": 167624
+  },
+  {
+    "rank": 361,
+    "name": "IGN",
+    "handle": "ign.com",
+    "followers": 167174
+  },
+  {
+    "rank": 362,
+    "name": "Philip Bump",
+    "handle": "pbump.com",
+    "followers": 167076
+  },
+  {
+    "rank": 363,
+    "name": "Tal Lavin",
+    "handle": "swordsjew.bsky.social",
+    "followers": 166975
+  },
+  {
+    "rank": 364,
+    "name": "Le Monde",
+    "handle": "lemonde.fr",
+    "followers": 166897
+  },
+  {
+    "rank": 365,
+    "name": "Lawfare",
+    "handle": "lawfaremedia.org",
+    "followers": 166472
+  },
+  {
+    "rank": 366,
+    "name": "Isaiah Martin",
+    "handle": "isaiahrmartin.bsky.social",
+    "followers": 166112
+  },
+  {
+    "rank": 367,
+    "name": "Democratic Wins Media",
+    "handle": "democraticwins.bsky.social",
+    "followers": 165621
+  },
+  {
+    "rank": 368,
+    "name": "Don Moynihan",
+    "handle": "donmoyn.bsky.social",
+    "followers": 165571
+  },
+  {
+    "rank": 369,
+    "name": "Peter Morley ♿️",
+    "handle": "petermorley.bsky.social",
+    "followers": 165441
+  },
+  {
+    "rank": 370,
+    "name": "Satan",
+    "handle": "thedevil.bsky.social",
+    "followers": 164849
+  },
+  {
+    "rank": 371,
+    "name": "404 Media",
+    "handle": "404media.co",
+    "followers": 164707
+  },
+  {
+    "rank": 372,
+    "name": "Troy Matthews",
+    "handle": "keeptroyblue.bsky.social",
+    "followers": 164503
+  },
+  {
+    "rank": 373,
+    "name": "Randi Mayem Singer",
+    "handle": "rmayemsinger.bsky.social",
+    "followers": 164424
+  },
+  {
+    "rank": 374,
+    "name": "Prisonculture",
+    "handle": "prisonculture.bsky.social",
+    "followers": 164384
+  },
+  {
+    "rank": 375,
+    "name": "Qasim Rashid, Esq.",
+    "handle": "qasimrashid.com",
+    "followers": 163973
+  },
+  {
+    "rank": 376,
+    "name": "Hunter Walker",
+    "handle": "hunterw.bsky.social",
+    "followers": 163340
+  },
+  {
+    "rank": 377,
+    "name": "Imani Gandy",
+    "handle": "angryblacklady.blacksky.app",
+    "followers": 163235
+  },
+  {
+    "rank": 378,
+    "name": "Ali Velshi",
+    "handle": "velshi.com",
+    "followers": 163008
+  },
+  {
+    "rank": 379,
+    "name": "Pat Fuller",
+    "handle": "bannerite.bsky.social",
+    "followers": 162819
+  },
+  {
+    "rank": 380,
+    "name": "EL PAÍS",
+    "handle": "elpais.com",
+    "followers": 162255
+  },
+  {
+    "rank": 381,
+    "name": "Choco Harvey Milk",
+    "handle": "chocoharveymilk.bsky.social",
+    "followers": 162208
+  },
+  {
+    "rank": 382,
+    "name": "Brian Cardone",
+    "handle": "cardonebrian.bsky.social",
+    "followers": 162109
+  },
+  {
+    "rank": 383,
+    "name": "Dionne Warwick",
+    "handle": "dionnewarwick.bsky.social",
+    "followers": 162041
+  },
+  {
+    "rank": 384,
+    "name": "Noah Shachtman",
+    "handle": "noahshachtman.bsky.social",
+    "followers": 161876
+  },
+  {
+    "rank": 385,
+    "name": "Tennessee Brando",
+    "handle": "tnbrando.bsky.social",
+    "followers": 161226
+  },
+  {
+    "rank": 386,
+    "name": "Elizabeth Spiers",
+    "handle": "espiers.bsky.social",
+    "followers": 161225
+  },
+  {
+    "rank": 387,
+    "name": "Kathy Griffin",
+    "handle": "kathygriffin.bsky.social",
+    "followers": 161194
+  },
+  {
+    "rank": 388,
+    "name": "Paul F. Tompkins",
+    "handle": "pftompkins.bsky.social",
+    "followers": 160925
+  },
+  {
+    "rank": 389,
+    "name": "FT Visual & Data Journalism",
+    "handle": "data.ft.com",
+    "followers": 160752
+  },
+  {
+    "rank": 390,
+    "name": "ArtButMakeItSports",
+    "handle": "artbutmakeitsports.bsky.social",
+    "followers": 160398
+  },
+  {
+    "rank": 391,
+    "name": "DemCast USA",
+    "handle": "demcast.com",
+    "followers": 160203
+  },
+  {
+    "rank": 392,
+    "name": "sarah jeong",
+    "handle": "sarahjeong.bsky.social",
+    "followers": 160132
+  },
+  {
+    "rank": 393,
+    "name": "lizzo",
+    "handle": "lizzobeeating.bsky.social",
+    "followers": 158672
+  },
+  {
+    "rank": 394,
+    "name": "Heather Paterson",
+    "handle": "heatherpaterson.co.uk",
+    "followers": 158499
+  },
+  {
+    "rank": 395,
+    "name": "Ryan Mac 🙃",
+    "handle": "rmac.bsky.social",
+    "followers": 158211
+  },
+  {
+    "rank": 396,
+    "name": "Tiffany Drastic",
+    "handle": "pdxeleven.bsky.social",
+    "followers": 157973
+  },
+  {
+    "rank": 397,
+    "name": "Andrew Weinstein",
+    "handle": "andrewjweinstein.com",
+    "followers": 157955
+  },
+  {
+    "rank": 398,
+    "name": "Nadine Smith",
+    "handle": "nadinesmith.bsky.social",
+    "followers": 157908
+  },
+  {
+    "rank": 399,
+    "name": "Ryan J. Reilly “paints a vivid and urgent portrait of… disarray”",
+    "handle": "ryanjreilly.com",
+    "followers": 156982
+  },
+  {
+    "rank": 400,
+    "name": "Peter Baker",
+    "handle": "peterbakernyt.bsky.social",
+    "followers": 156691
+  },
+  {
+    "rank": 401,
+    "name": "temmie",
+    "handle": "tuyoki.bsky.social",
+    "followers": 156627
+  },
+  {
+    "rank": 402,
+    "name": "Vox",
+    "handle": "vox.com",
+    "followers": 156598
+  },
+  {
+    "rank": 403,
+    "name": "Joshua Walker",
+    "handle": "bigjosh84.bsky.social",
+    "followers": 156302
+  },
+  {
+    "rank": 404,
+    "name": "Kai Ryssdal",
+    "handle": "kairyssdal.bsky.social",
+    "followers": 156287
+  },
+  {
+    "rank": 405,
+    "name": "Alt CDC (they/them)",
+    "handle": "altcdc.altgov.info",
+    "followers": 155657
+  },
+  {
+    "rank": 406,
+    "name": "Catherine Rampell",
+    "handle": "crampell.bsky.social",
+    "followers": 155641
+  },
+  {
+    "rank": 407,
+    "name": "Ian Rapoport",
+    "handle": "rapsheet.bsky.social",
+    "followers": 155610
+  },
+  {
+    "rank": 408,
+    "name": "Jason Kander",
+    "handle": "jasonkander.bsky.social",
+    "followers": 155589
+  },
+  {
+    "rank": 409,
+    "name": "Pirate Software",
+    "handle": "piratesoftware.live",
+    "followers": 155490
+  },
+  {
+    "rank": 410,
+    "name": "KittyKatGirl😻🙏💞🐞",
+    "handle": "mary1kathy.bsky.social",
+    "followers": 155452
+  },
+  {
+    "rank": 411,
+    "name": "Mark Joseph Stern",
+    "handle": "mjsdc.bsky.social",
+    "followers": 155430
+  },
+  {
+    "rank": 412,
+    "name": "Scott MacFarlane",
+    "handle": "macfarlanenews.bsky.social",
+    "followers": 155246
+  },
+  {
+    "rank": 413,
+    "name": "Ali Vitali",
+    "handle": "alivitali.bsky.social",
+    "followers": 154827
+  },
+  {
+    "rank": 414,
+    "name": "Eric Topol",
+    "handle": "erictopol.bsky.social",
+    "followers": 154455
+  },
+  {
+    "rank": 415,
+    "name": "George Hahn",
+    "handle": "georgehahn.com",
+    "followers": 154348
+  },
+  {
+    "rank": 416,
+    "name": "Ana Marie Cox",
+    "handle": "anamariecox.bsky.social",
+    "followers": 153963
+  },
+  {
+    "rank": 417,
+    "name": "Kiana Mai",
+    "handle": "kianamai.bsky.social",
+    "followers": 153911
+  },
+  {
+    "rank": 418,
+    "name": "Lisa Reyna Loe",
+    "handle": "lisaloe.bsky.social",
+    "followers": 153824
+  },
+  {
+    "rank": 419,
+    "name": "Lynda Carter",
+    "handle": "lyndacarter.bsky.social",
+    "followers": 153648
+  },
+  {
+    "rank": 420,
+    "name": "Joshua Martin",
+    "handle": "joshuarmartin.bsky.social",
+    "followers": 153480
+  },
+  {
+    "rank": 421,
+    "name": "Decoding Fox News",
+    "handle": "decodingfoxnews.bsky.social",
+    "followers": 153340
+  },
+  {
+    "rank": 422,
+    "name": "Kaylan_TX",
+    "handle": "kaylan.bsky.social",
+    "followers": 153095
+  },
+  {
+    "rank": 423,
+    "name": "dell cameron",
+    "handle": "dell.bsky.social",
+    "followers": 153032
+  },
+  {
+    "rank": 424,
+    "name": "Jen Psaki",
+    "handle": "jenpsaki.bsky.social",
+    "followers": 153017
+  },
+  {
+    "rank": 425,
+    "name": "Lee-in-Iowa 💙",
+    "handle": "lee-in-iowa.bsky.social",
+    "followers": 152911
+  },
+  {
+    "rank": 426,
+    "name": "Jay Willis",
+    "handle": "jaywillis.net",
+    "followers": 152651
+  },
+  {
+    "rank": 427,
+    "name": "weird medieval guys",
+    "handle": "weirdmedieval.bsky.social",
+    "followers": 152364
+  },
+  {
+    "rank": 428,
+    "name": "Mikel Jollett",
+    "handle": "mikeljollett.bsky.social",
+    "followers": 151842
+  },
+  {
+    "rank": 429,
+    "name": "POPOK",
+    "handle": "mspopok.bsky.social",
+    "followers": 151642
+  },
+  {
+    "rank": 430,
+    "name": "Helen Kennedy",
+    "handle": "helenkennedy.bsky.social",
+    "followers": 151330
+  },
+  {
+    "rank": 431,
+    "name": "Skyleigh Uhrich",
+    "handle": "skylee1.bsky.social",
+    "followers": 150988
+  },
+  {
+    "rank": 432,
+    "name": "Alastair Campbell",
+    "handle": "alastaircampbell2.bsky.social",
+    "followers": 150474
+  },
+  {
+    "rank": 433,
+    "name": "TPM",
+    "handle": "talkingpointsmemo.com",
+    "followers": 150426
+  },
+  {
+    "rank": 434,
+    "name": "Jason Schreier",
+    "handle": "jasonschreier.bsky.social",
+    "followers": 150012
+  },
+  {
+    "rank": 435,
+    "name": "Senator Sheldon Whitehouse",
+    "handle": "whitehouse.senate.gov",
+    "followers": 149615
+  },
+  {
+    "rank": 436,
+    "name": "Sandi Bachom 📹🎥🎬",
+    "handle": "sandibachom.bsky.social",
+    "followers": 149362
+  },
+  {
+    "rank": 437,
+    "name": "Tris",
+    "handle": "trisresists.bsky.social",
+    "followers": 148936
+  },
+  {
+    "rank": 438,
+    "name": "Best of Dying Twitter",
+    "handle": "bestofdyingtwit.bsky.social",
+    "followers": 148875
+  },
+  {
+    "rank": 439,
+    "name": "AntifaPuddin’Pop",
+    "handle": "antifapuddinpop.bsky.social",
+    "followers": 147939
+  },
+  {
+    "rank": 440,
+    "name": "Brian Stelter",
+    "handle": "brianstelter.bsky.social",
+    "followers": 147656
+  },
+  {
+    "rank": 441,
+    "name": "Gabe Sanchez",
+    "handle": "iamgabesanchez.bsky.social",
+    "followers": 147647
+  },
+  {
+    "rank": 442,
+    "name": "しぐれうい",
+    "handle": "uishig.bsky.social",
+    "followers": 147525
+  },
+  {
+    "rank": 443,
+    "name": "Chelsea Manning",
+    "handle": "xychelsea.tv",
+    "followers": 147495
+  },
+  {
+    "rank": 444,
+    "name": "Josh Chafetz",
+    "handle": "joshchafetz.bsky.social",
+    "followers": 147339
+  },
+  {
+    "rank": 445,
+    "name": "Sari Beth Rosenberg",
+    "handle": "sari.bsky.social",
+    "followers": 147261
+  },
+  {
+    "rank": 446,
+    "name": "Charlie Savage",
+    "handle": "charliesavage.bsky.social",
+    "followers": 147212
+  },
+  {
+    "rank": 447,
+    "name": "Greg Olear",
+    "handle": "gregolear.bsky.social",
+    "followers": 146229
+  },
+  {
+    "rank": 448,
+    "name": "Carl T. Bergstrom",
+    "handle": "carlbergstrom.com",
+    "followers": 146096
+  },
+  {
+    "rank": 449,
+    "name": "Chasten Glezman Buttigieg",
+    "handle": "chastenbuttigieg.bsky.social",
+    "followers": 146082
+  },
+  {
+    "rank": 450,
+    "name": "Mindy Schwartz",
+    "handle": "mindyanns.bsky.social",
+    "followers": 146038
+  },
+  {
+    "rank": 451,
+    "name": "elDiario.es",
+    "handle": "eldiario.es",
+    "followers": 145898
+  },
+  {
+    "rank": 452,
+    "name": "Jenny Cohn",
+    "handle": "jennycohn.bsky.social",
+    "followers": 145824
+  },
+  {
+    "rank": 453,
+    "name": "Lewis Goodall",
+    "handle": "lewisgoodall.com",
+    "followers": 145607
+  },
+  {
+    "rank": 454,
+    "name": "Really American",
+    "handle": "reallyamerican.bsky.social",
+    "followers": 145474
+  },
+  {
+    "rank": 455,
+    "name": "undefined",
+    "handle": "mayoisspicyy.bsky.social",
+    "followers": 145390
+  },
+  {
+    "rank": 456,
+    "name": "Analisa Swan (she/her)",
+    "handle": "analisaswan.bsky.social",
+    "followers": 144764
+  },
+  {
+    "rank": 457,
+    "name": "Saeed Jones",
+    "handle": "theferocity.bsky.social",
+    "followers": 144483
+  },
+  {
+    "rank": 458,
+    "name": "Wario64",
+    "handle": "wario64.bsky.social",
+    "followers": 144467
+  },
+  {
+    "rank": 459,
+    "name": "FWC Indivisible",
+    "handle": "fwcindivisible.bsky.social",
+    "followers": 144442
+  },
+  {
+    "rank": 460,
+    "name": "Amanda Knox",
+    "handle": "amandaknox.com",
+    "followers": 144365
+  },
+  {
+    "rank": 461,
+    "name": "Ian Dunt",
+    "handle": "iandunt.bsky.social",
+    "followers": 144191
+  },
+  {
+    "rank": 462,
+    "name": "Eliza Orlins",
+    "handle": "elizaorlins.bsky.social",
+    "followers": 144164
+  },
+  {
+    "rank": 463,
+    "name": "Quinta Brunson",
+    "handle": "quintabrunson.bsky.social",
+    "followers": 144076
+  },
+  {
+    "rank": 464,
+    "name": "Katharine Hayhoe",
+    "handle": "katharinehayhoe.com",
+    "followers": 143683
+  },
+  {
+    "rank": 465,
+    "name": "Peter",
+    "handle": "notalawyer.bsky.social",
+    "followers": 143647
+  },
+  {
+    "rank": 466,
+    "name": "JP",
+    "handle": "jpbrammer.bsky.social",
+    "followers": 143541
+  },
+  {
+    "rank": 467,
+    "name": "Julia Davis",
+    "handle": "juliadavisnews.bsky.social",
+    "followers": 143469
+  },
+  {
+    "rank": 468,
+    "name": "Under The Desk News",
+    "handle": "underthedesknews.bsky.social",
+    "followers": 143351
+  },
+  {
+    "rank": 469,
+    "name": "Laura Rozen",
+    "handle": "lkrozen.bsky.social",
+    "followers": 143224
+  },
+  {
+    "rank": 470,
+    "name": "Byline Times",
+    "handle": "bylinetimes.bsky.social",
+    "followers": 143178
+  },
+  {
+    "rank": 471,
+    "name": "WTFGOP a.k.a on Twitter @Doggintrump",
+    "handle": "wtfgop.bsky.social",
+    "followers": 143094
+  },
+  {
+    "rank": 472,
+    "name": "I'm Uni :3",
+    "handle": "unicouniuni3.bsky.social",
+    "followers": 142562
+  },
+  {
+    "rank": 473,
+    "name": "Tina Smith",
+    "handle": "smith.senate.gov",
+    "followers": 142547
+  },
+  {
+    "rank": 474,
+    "name": "Lauren Windsor",
+    "handle": "laurenwindsor.bsky.social",
+    "followers": 142266
+  },
+  {
+    "rank": 475,
+    "name": "Alan Rosenblatt",
+    "handle": "drdigipol.bsky.social",
+    "followers": 142203
+  },
+  {
+    "rank": 476,
+    "name": "Dr. Jack Brown",
+    "handle": "drjackbrown.bsky.social",
+    "followers": 142164
+  },
+  {
+    "rank": 477,
+    "name": "Brown Eyed Susan",
+    "handle": "browneyedsusan.bsky.social",
+    "followers": 141916
+  },
+  {
+    "rank": 478,
+    "name": "Mimi Rocah",
+    "handle": "mimirocah1.bsky.social",
+    "followers": 141441
+  },
+  {
+    "rank": 479,
+    "name": "Randy Rainbow",
+    "handle": "randyrainbow.bsky.social",
+    "followers": 141405
+  },
+  {
+    "rank": 480,
+    "name": "Electronic Frontier Foundation",
+    "handle": "eff.org",
+    "followers": 141300
+  },
+  {
+    "rank": 481,
+    "name": "Jason Leopold",
+    "handle": "jasonleopold.bsky.social",
+    "followers": 140985
+  },
+  {
+    "rank": 482,
+    "name": "Richard Branson",
+    "handle": "richardbranson.bsky.social",
+    "followers": 140361
+  },
+  {
+    "rank": 483,
+    "name": "Laura Packard",
+    "handle": "laurapackard.com",
+    "followers": 140131
+  },
+  {
+    "rank": 484,
+    "name": "SimzArt",
+    "handle": "simzart.bsky.social",
+    "followers": 140042
+  },
+  {
+    "rank": 485,
+    "name": "Jeff (Gutenberg Parenthesis) Jarvis",
+    "handle": "jeffjarvis.bsky.social",
+    "followers": 139982
+  },
+  {
+    "rank": 486,
+    "name": "Nigella Lawson",
+    "handle": "nigella.bsky.social",
+    "followers": 139766
+  },
+  {
+    "rank": 487,
+    "name": "Randi Weingarten 🖇️📚✊🇺🇸",
+    "handle": "rweingarten.bsky.social",
+    "followers": 139544
+  },
+  {
+    "rank": 488,
+    "name": "Pearlmania500",
+    "handle": "pearlmania500.bsky.social",
+    "followers": 139424
+  },
+  {
+    "rank": 489,
+    "name": "Karly Kingsley",
+    "handle": "karlykingsley.bsky.social",
+    "followers": 139408
+  },
+  {
+    "rank": 490,
+    "name": "Ty Ross",
+    "handle": "cooltxchick.bsky.social",
+    "followers": 138806
+  },
+  {
+    "rank": 491,
+    "name": "Sarah Wood",
+    "handle": "sarahwood.bsky.social",
+    "followers": 138698
+  },
+  {
+    "rank": 492,
+    "name": "James Fallows",
+    "handle": "jfallows.bsky.social",
+    "followers": 138609
+  },
+  {
+    "rank": 493,
+    "name": "Barbra Streisand",
+    "handle": "barbrastreisand.bsky.social",
+    "followers": 138121
+  },
+  {
+    "rank": 494,
+    "name": "Ian Bassin",
+    "handle": "ianbassin.bsky.social",
+    "followers": 137529
+  },
+  {
+    "rank": 495,
+    "name": "Olúfẹ́mi O. Táíwò",
+    "handle": "olufemiotaiwo.bsky.social",
+    "followers": 137348
+  },
+  {
+    "rank": 496,
+    "name": "Karen Friedman Agnifilo",
+    "handle": "kfa-legal.bsky.social",
+    "followers": 137219
+  },
+  {
+    "rank": 497,
+    "name": "Eliot Higgins",
+    "handle": "eliothiggins.bsky.social",
+    "followers": 136821
+  },
+  {
+    "rank": 498,
+    "name": "The New Republic",
+    "handle": "newrepublic.com",
+    "followers": 136722
+  },
+  {
+    "rank": 499,
+    "name": "Norm Ornstein",
+    "handle": "normornstein.bsky.social",
+    "followers": 136654
+  },
+  {
+    "rank": 500,
+    "name": "Shanlon Wu",
+    "handle": "shanlonwu.com",
+    "followers": 136557
+  },
+  {
+    "rank": 501,
+    "name": "Sarah Kendzior",
+    "handle": "sarahkendzior.bsky.social",
+    "followers": 136366
+  },
+  {
+    "rank": 502,
+    "name": "U.S. Representative Al Green",
+    "handle": "algreen.house.gov",
+    "followers": 136129
+  },
+  {
+    "rank": 503,
+    "name": "The Contrarian",
+    "handle": "contrariannews.org",
+    "followers": 136042
+  },
+  {
+    "rank": 504,
+    "name": "Alyssa Milano",
+    "handle": "alyssamilano.bsky.social",
+    "followers": 136006
+  },
+  {
+    "rank": 505,
+    "name": "Moon lover",
+    "handle": "moon1over.bsky.social",
+    "followers": 135782
+  },
+  {
+    "rank": 506,
+    "name": "Naomi Klein",
+    "handle": "naomiaklein.bsky.social",
+    "followers": 135698
+  },
+  {
+    "rank": 507,
+    "name": "Michael Adzema",
+    "handle": "sillymickel.bsky.social",
+    "followers": 135689
+  },
+  {
+    "rank": 508,
+    "name": "Maca Iglesias🇺🇸Thank You, President Biden🇺🇸",
+    "handle": "rotterdamvvg.bsky.social",
+    "followers": 135447
+  },
+  {
+    "rank": 509,
+    "name": "Jonathan Slater",
+    "handle": "jonathanslater.bsky.social",
+    "followers": 135397
+  },
+  {
+    "rank": 510,
+    "name": "MS NOW",
+    "handle": "ms.now",
+    "followers": 135349
+  },
+  {
+    "rank": 511,
+    "name": "#BlueStormComin1🌪️👊🔥🇺🇸 #Resistance 🙌🏻",
+    "handle": "bluestormcomin1.bsky.social",
+    "followers": 135239
+  },
+  {
+    "rank": 512,
+    "name": "eve6",
+    "handle": "eve6.bsky.social",
+    "followers": 134863
+  },
+  {
+    "rank": 513,
+    "name": "Robert Cooper",
+    "handle": "robertcooper-us.bsky.social",
+    "followers": 134641
+  },
+  {
+    "rank": 514,
+    "name": "Yvette Nicole Brown",
+    "handle": "ynb.bsky.social",
+    "followers": 134607
+  },
+  {
+    "rank": 515,
+    "name": "Will Sommer",
+    "handle": "willsommer.bsky.social",
+    "followers": 134312
+  },
+  {
+    "rank": 516,
+    "name": "Justin Hendrix",
+    "handle": "justinhendrix.bsky.social",
+    "followers": 134307
+  },
+  {
+    "rank": 517,
+    "name": "Joe Walsh",
+    "handle": "walshfreedom.bsky.social",
+    "followers": 134306
+  },
+  {
+    "rank": 518,
+    "name": "Leia🇨🇴🇺🇸",
+    "handle": "theswprincess.bsky.social",
+    "followers": 133887
+  },
+  {
+    "rank": 519,
+    "name": "Marko (Nerd and Jock Comics)",
+    "handle": "markoraassina.bsky.social",
+    "followers": 133856
+  },
+  {
+    "rank": 520,
+    "name": "Stephanie “LB”",
+    "handle": "lincolnsbible.bsky.social",
+    "followers": 133680
+  },
+  {
+    "rank": 521,
+    "name": "El Mundo Today",
+    "handle": "elmundotoday.com",
+    "followers": 133479
+  },
+  {
+    "rank": 522,
+    "name": "Bradley P. Moss",
+    "handle": "bradmossesq.bsky.social",
+    "followers": 133196
+  },
+  {
+    "rank": 523,
+    "name": "David Mack",
+    "handle": "davidmackau.bsky.social",
+    "followers": 133034
+  },
+  {
+    "rank": 524,
+    "name": "Brennan Lee Mulligan",
+    "handle": "brennanleemulligan.bsky.social",
+    "followers": 132761
+  },
+  {
+    "rank": 525,
+    "name": "Marques Brownlee",
+    "handle": "mkbhd.com",
+    "followers": 131852
+  },
+  {
+    "rank": 526,
+    "name": "Jen🇺🇸🏴‍☠️",
+    "handle": "jen.sheshed.rocks",
+    "followers": 131745
+  },
+  {
+    "rank": 527,
+    "name": "Ekrem İmamoğlu",
+    "handle": "ekremimamoglu.com",
+    "followers": 131490
+  },
+  {
+    "rank": 528,
+    "name": "Robert Garcia",
+    "handle": "robertgarcia.bsky.social",
+    "followers": 131410
+  },
+  {
+    "rank": 529,
+    "name": "Simon Rosenberg",
+    "handle": "simonwdc.bsky.social",
+    "followers": 131258
+  },
+  {
+    "rank": 530,
+    "name": "depths of wikipedia",
+    "handle": "depthsofwikipedia.bsky.social",
+    "followers": 131138
+  },
+  {
+    "rank": 531,
+    "name": "Steve Marmel",
+    "handle": "marmel.bsky.social",
+    "followers": 131062
+  },
+  {
+    "rank": 532,
+    "name": "Will Bunch",
+    "handle": "willbunch.bsky.social",
+    "followers": 130663
+  },
+  {
+    "rank": 533,
+    "name": "Voters of Tomorrow",
+    "handle": "votersoftomorrow.org",
+    "followers": 130630
+  },
+  {
+    "rank": 534,
+    "name": "Tim Dickinson",
+    "handle": "timdickinson.bsky.social",
+    "followers": 130494
+  },
+  {
+    "rank": 535,
+    "name": "Michael McDonald",
+    "handle": "electproject.bsky.social",
+    "followers": 130197
+  },
+  {
+    "rank": 536,
+    "name": "Sarah Longwell",
+    "handle": "sarahlongwell25.bsky.social",
+    "followers": 130105
+  },
+  {
+    "rank": 537,
+    "name": "Mike Galsworthy",
+    "handle": "mikegalsworthy.bsky.social",
+    "followers": 129844
+  },
+  {
+    "rank": 538,
+    "name": "Cheri Jacobus",
+    "handle": "cherijacobus.bsky.social",
+    "followers": 129799
+  },
+  {
+    "rank": 539,
+    "name": "Rio Tazewell",
+    "handle": "riotazewell.bsky.social",
+    "followers": 129627
+  },
+  {
+    "rank": 540,
+    "name": "Armando Iannucci",
+    "handle": "aiannucci.bsky.social",
+    "followers": 129349
+  },
+  {
+    "rank": 541,
+    "name": "Emily Nussbaum",
+    "handle": "emilynussbaum.bsky.social",
+    "followers": 129111
+  },
+  {
+    "rank": 542,
+    "name": "The Independent",
+    "handle": "the-independent.com",
+    "followers": 129045
+  },
+  {
+    "rank": 543,
+    "name": "Lori Coleman",
+    "handle": "democracystorm.bsky.social",
+    "followers": 129013
+  },
+  {
+    "rank": 544,
+    "name": "SuzyQ",
+    "handle": "suzyqfit4u.bsky.social",
+    "followers": 128613
+  },
+  {
+    "rank": 545,
+    "name": "Anthony Davis",
+    "handle": "theanthonydavis.bsky.social",
+    "followers": 128399
+  },
+  {
+    "rank": 546,
+    "name": "Amanda Carpenter",
+    "handle": "amandacarpenter.bsky.social",
+    "followers": 127862
+  },
+  {
+    "rank": 547,
+    "name": "TizzyWoman",
+    "handle": "tizzywoman.bsky.social",
+    "followers": 127834
+  },
+  {
+    "rank": 548,
+    "name": "Larry the Cat",
+    "handle": "number10cat.bsky.social",
+    "followers": 127594
+  },
+  {
+    "rank": 549,
+    "name": "Central do Braga",
+    "handle": "centraldobraga.bsky.social",
+    "followers": 127346
+  },
+  {
+    "rank": 550,
+    "name": "Led By Donkeys",
+    "handle": "ledbydonkeys.org",
+    "followers": 127204
+  },
+  {
+    "rank": 551,
+    "name": "Axios",
+    "handle": "axios.com",
+    "followers": 127194
+  },
+  {
+    "rank": 552,
+    "name": "Pippa Crerar",
+    "handle": "pippacrerar.bsky.social",
+    "followers": 127039
+  },
+  {
+    "rank": 553,
+    "name": "Bryan Dawson",
+    "handle": "bryandawsonusa.bsky.social",
+    "followers": 126984
+  },
+  {
+    "rank": 554,
+    "name": "Margaret Sullivan",
+    "handle": "sulliview.bsky.social",
+    "followers": 126969
+  },
+  {
+    "rank": 555,
+    "name": "The Nation Magazine",
+    "handle": "thenation.com",
+    "followers": 126550
+  },
+  {
+    "rank": 556,
+    "name": "Keith Olbermann",
+    "handle": "olbermann.bsky.social",
+    "followers": 126549
+  },
+  {
+    "rank": 557,
+    "name": "Abigail Thorn",
+    "handle": "theabigailthorn.bsky.social",
+    "followers": 126487
+  },
+  {
+    "rank": 558,
+    "name": "Dr Susan Oliver (PhD)",
+    "handle": "drsusanoliver.bsky.social",
+    "followers": 126480
+  },
+  {
+    "rank": 559,
+    "name": "Matt Binder",
+    "handle": "mattbinder.bsky.social",
+    "followers": 126468
+  },
+  {
+    "rank": 560,
+    "name": "Darth Putin",
+    "handle": "darthputinkgb.bsky.social",
+    "followers": 126363
+  },
+  {
+    "rank": 561,
+    "name": "Rolling Stone",
+    "handle": "rollingstone.com",
+    "followers": 126291
+  },
+  {
+    "rank": 562,
+    "name": "Auschwitz Memorial",
+    "handle": "auschwitzmemorial.bsky.social",
+    "followers": 126219
+  },
+  {
+    "rank": 563,
+    "name": "The Weekly Show with Jon Stewart",
+    "handle": "weeklyshowpodcast.bsky.social",
+    "followers": 126214
+  },
+  {
+    "rank": 564,
+    "name": "Rose 🌹",
+    "handle": "rose.bsky.team",
+    "followers": 126178
+  },
+  {
+    "rank": 565,
+    "name": "Der Volksverpetzer",
+    "handle": "volksverpetzer.de",
+    "followers": 126119
+  },
+  {
+    "rank": 566,
+    "name": "D. Earl Stephens",
+    "handle": "dearlstephens.bsky.social",
+    "followers": 126026
+  },
+  {
+    "rank": 567,
+    "name": "Protect Democracy",
+    "handle": "protectdemocracy.org",
+    "followers": 125574
+  },
+  {
+    "rank": 568,
+    "name": "Daisy D ✌️💙🇺🇸🇺🇦",
+    "handle": "daisyd.bsky.social",
+    "followers": 125504
+  },
+  {
+    "rank": 569,
+    "name": "PlayStation",
+    "handle": "playstation.com",
+    "followers": 125494
+  },
+  {
+    "rank": 570,
+    "name": "lauren",
+    "handle": "lauren.rotatingsandwiches.com",
+    "followers": 125428
+  },
+  {
+    "rank": 571,
+    "name": "Rebecca Traister",
+    "handle": "rtraister.bsky.social",
+    "followers": 125423
+  },
+  {
+    "rank": 572,
+    "name": "Sam Stein",
+    "handle": "samsteindc.bsky.social",
+    "followers": 125331
+  },
+  {
+    "rank": 573,
+    "name": "🇺🇸Boston Brian🇺🇦",
+    "handle": "bostonbrian.com",
+    "followers": 125221
+  },
+  {
+    "rank": 574,
+    "name": "🦋❄️🍁Baron🍁❄️🦋",
+    "handle": "baron333.bsky.social",
+    "followers": 125213
+  },
+  {
+    "rank": 575,
+    "name": "Captain Mark Kelly",
+    "handle": "captmarkkelly.bsky.social",
+    "followers": 124651
+  },
+  {
+    "rank": 576,
+    "name": "Beks",
+    "handle": "antifaoperative.bsky.social",
+    "followers": 124486
+  },
+  {
+    "rank": 577,
+    "name": "Brendan Nyhan",
+    "handle": "brendannyhan.bsky.social",
+    "followers": 124371
+  },
+  {
+    "rank": 578,
+    "name": "Matthew Mercer",
+    "handle": "matthewmercer.bsky.social",
+    "followers": 124361
+  },
+  {
+    "rank": 579,
+    "name": "Ally Sammarco",
+    "handle": "allysammarco.bsky.social",
+    "followers": 124217
+  },
+  {
+    "rank": 580,
+    "name": "Charles Fourier",
+    "handle": "charlesfourier.bsky.social",
+    "followers": 124074
+  },
+  {
+    "rank": 581,
+    "name": "Jill Lawrence",
+    "handle": "jilldlawrence.bsky.social",
+    "followers": 124021
+  },
+  {
+    "rank": 582,
+    "name": "Rena Korb",
+    "handle": "renakorb.bsky.social",
+    "followers": 124006
+  },
+  {
+    "rank": 583,
+    "name": "Michael Ian Black",
+    "handle": "michaelianblack.bsky.social",
+    "followers": 123981
+  },
+  {
+    "rank": 584,
+    "name": "The Daily Beans Podcast",
+    "handle": "dailybeanspod.com",
+    "followers": 123878
+  },
+  {
+    "rank": 585,
+    "name": "KSlatteryResist",
+    "handle": "kslatteryresist.bsky.social",
+    "followers": 123815
+  },
+  {
+    "rank": 586,
+    "name": "LunaLuvgood2020",
+    "handle": "lunaluvgood2020.bsky.social",
+    "followers": 123707
+  },
+  {
+    "rank": 587,
+    "name": "faby jurídico modern family",
+    "handle": "fabyollaveras.bsky.social",
+    "followers": 123627
+  },
+  {
+    "rank": 588,
+    "name": "Adam Klasfeld",
+    "handle": "klasfeldreports.com",
+    "followers": 123406
+  },
+  {
+    "rank": 589,
+    "name": "The USA Singers",
+    "handle": "theusasingers.bsky.social",
+    "followers": 123384
+  },
+  {
+    "rank": 590,
+    "name": "Bridget123goooo 🌊🦋🏃🏻‍♀️⛰️",
+    "handle": "bridget123goooo.bsky.social",
+    "followers": 123366
+  },
+  {
+    "rank": 591,
+    "name": "Ezra Levin ❌👑",
+    "handle": "ezralevin.bsky.social",
+    "followers": 123325
+  },
+  {
+    "rank": 592,
+    "name": "Dana Goldberg",
+    "handle": "dgcomedy.bsky.social",
+    "followers": 123323
+  },
+  {
+    "rank": 593,
+    "name": "Shen Comix",
+    "handle": "shenanigansen.bsky.social",
+    "followers": 123216
+  },
+  {
+    "rank": 594,
+    "name": "Senator Chris Van Hollen",
+    "handle": "vanhollen.senate.gov",
+    "followers": 122831
+  },
+  {
+    "rank": 595,
+    "name": "Aaron McCall",
+    "handle": "aaronmccall.bsky.social",
+    "followers": 122472
+  },
+  {
+    "rank": 596,
+    "name": "Nash Is Here For It",
+    "handle": "nashishereforit.bsky.social",
+    "followers": 122211
+  },
+  {
+    "rank": 597,
+    "name": "🗽LOLGOP🗽",
+    "handle": "thefarce.org",
+    "followers": 122131
+  },
+  {
+    "rank": 598,
+    "name": "Vivienne M",
+    "handle": "vivziepop.bsky.social",
+    "followers": 122091
+  },
+  {
+    "rank": 599,
+    "name": "Laerte",
+    "handle": "laertecoutinho.bsky.social",
+    "followers": 121883
+  },
+  {
+    "rank": 600,
+    "name": "kate conger",
+    "handle": "kateconger.com",
+    "followers": 121758
+  },
+  {
+    "rank": 601,
+    "name": "The Daily Beast",
+    "handle": "thedailybeast.bsky.social",
+    "followers": 121534
+  },
+  {
+    "rank": 602,
+    "name": "The Economist",
+    "handle": "economist.com",
+    "followers": 121417
+  },
+  {
+    "rank": 603,
+    "name": "Nikki Fried",
+    "handle": "nikkifried.bsky.social",
+    "followers": 121155
+  },
+  {
+    "rank": 604,
+    "name": "Monterey Bay Aquarium",
+    "handle": "montereybayaquarium.org",
+    "followers": 121133
+  },
+  {
+    "rank": 605,
+    "name": "Agolf Twitler Slayer",
+    "handle": "slayeragolf.bsky.social",
+    "followers": 120940
+  },
+  {
+    "rank": 606,
+    "name": "Brendel",
+    "handle": "brendelbored.bsky.social",
+    "followers": 120922
+  },
+  {
+    "rank": 607,
+    "name": "Rian Johnson",
+    "handle": "rianjohnson.bsky.social",
+    "followers": 120747
+  },
+  {
+    "rank": 608,
+    "name": "Michael Podhorzer",
+    "handle": "mikepod.bsky.social",
+    "followers": 120580
+  },
+  {
+    "rank": 609,
+    "name": "Jerry Chen",
+    "handle": "jcsalterego.bsky.social",
+    "followers": 120521
+  },
+  {
+    "rank": 610,
+    "name": "Sam Schwartz",
+    "handle": "samuelschwartz.bsky.social",
+    "followers": 120415
+  },
+  {
+    "rank": 611,
+    "name": "Owen Jones",
+    "handle": "owenjones.bsky.social",
+    "followers": 120392
+  },
+  {
+    "rank": 612,
+    "name": "Adam Ellis",
+    "handle": "adamtots.bsky.social",
+    "followers": 120312
+  },
+  {
+    "rank": 613,
+    "name": "Comfortably Away ⛔",
+    "handle": "numb.comfortab.ly",
+    "followers": 120297
+  },
+  {
+    "rank": 614,
+    "name": "HuffPost",
+    "handle": "huffpost.com",
+    "followers": 120224
+  },
+  {
+    "rank": 615,
+    "name": "The Briefing with Jen Psaki",
+    "handle": "briefingwithpsaki.bsky.social",
+    "followers": 120221
+  },
+  {
+    "rank": 616,
+    "name": "Olga Lautman 🇺🇦",
+    "handle": "olgalautman.bsky.social",
+    "followers": 120096
+  },
+  {
+    "rank": 617,
+    "name": "g1 - O portal de notícias da Globo",
+    "handle": "g1portal.bsky.social",
+    "followers": 120082
+  },
+  {
+    "rank": 618,
+    "name": "The Boston Globe",
+    "handle": "bostonglobe.com",
+    "followers": 119949
+  },
+  {
+    "rank": 619,
+    "name": "Ade",
+    "handle": "debayoorr.bsky.social",
+    "followers": 119937
+  },
+  {
+    "rank": 620,
+    "name": "Melissa Nadia Viviana 🐸",
+    "handle": "resistrebelrevolt.net",
+    "followers": 119807
+  },
+  {
+    "rank": 621,
+    "name": "Justin Wolfers",
+    "handle": "justinwolfers.bsky.social",
+    "followers": 119411
+  },
+  {
+    "rank": 622,
+    "name": "Sarah Szalavitz💡",
+    "handle": "dearsarah.bsky.social",
+    "followers": 119189
+  },
+  {
+    "rank": 623,
+    "name": "Rogue Citizen One",
+    "handle": "roguecitizenone.bsky.social",
+    "followers": 119064
+  },
+  {
+    "rank": 624,
+    "name": "Human Rights Watch",
+    "handle": "hrw.org",
+    "followers": 118960
+  },
+  {
+    "rank": 625,
+    "name": "Illia Ponomarenko",
+    "handle": "ioponomarenko.bsky.social",
+    "followers": 118707
+  },
+  {
+    "rank": 626,
+    "name": "David Rothkopf",
+    "handle": "djrothkopf.bsky.social",
+    "followers": 118625
+  },
+  {
+    "rank": 627,
+    "name": "Bug Enthusiast 🐝❤️",
+    "handle": "idolomantises.bsky.social",
+    "followers": 118597
+  },
+  {
+    "rank": 628,
+    "name": "Arnold Schwarzenegger",
+    "handle": "schwarzenegger.bsky.social",
+    "followers": 118574
+  },
+  {
+    "rank": 629,
+    "name": "Buitengebieden",
+    "handle": "buitengebieden.bsky.social",
+    "followers": 118535
+  },
+  {
+    "rank": 630,
+    "name": "Zoe Tillman",
+    "handle": "zoetillman.bsky.social",
+    "followers": 118471
+  },
+  {
+    "rank": 631,
+    "name": "Anton Gerashchenko",
+    "handle": "antongerashchenko.bsky.social",
+    "followers": 118433
+  },
+  {
+    "rank": 632,
+    "name": "Natalie Wynn",
+    "handle": "contrapoints.bsky.social",
+    "followers": 118352
+  },
+  {
+    "rank": 633,
+    "name": "The Ken Harbaugh Show",
+    "handle": "thekenharbaughshow.bsky.social",
+    "followers": 118306
+  },
+  {
+    "rank": 634,
+    "name": "Chris Packham",
+    "handle": "chrisgpackham.bsky.social",
+    "followers": 118162
+  },
+  {
+    "rank": 635,
+    "name": "Stonekettle",
+    "handle": "stonekettle.bsky.social",
+    "followers": 117474
+  },
+  {
+    "rank": 636,
+    "name": "Ursula von der Leyen",
+    "handle": "vonderleyen.ec.europa.eu",
+    "followers": 117325
+  },
+  {
+    "rank": 637,
+    "name": "Ailani 🌺 Brown Eye Girl",
+    "handle": "browneyegirlhi.bsky.social",
+    "followers": 117216
+  },
+  {
+    "rank": 638,
+    "name": "N. K. Jemisin",
+    "handle": "nkjemisin.bsky.social",
+    "followers": 116928
+  },
+  {
+    "rank": 639,
+    "name": "John Burn-Murdoch",
+    "handle": "jburnmurdoch.ft.com",
+    "followers": 116794
+  },
+  {
+    "rank": 640,
+    "name": "🪷MsGrumpyBunny🪷",
+    "handle": "msgrumpybunny.bsky.social",
+    "followers": 116733
+  },
+  {
+    "rank": 641,
+    "name": "Michael Beschloss",
+    "handle": "beschlossdc1776.bsky.social",
+    "followers": 116664
+  },
+  {
+    "rank": 642,
+    "name": "AT Protocol Developers",
+    "handle": "atproto.com",
+    "followers": 116526
+  },
+  {
+    "rank": 643,
+    "name": "Jorts (and Jean)",
+    "handle": "jortsthecat.bsky.social",
+    "followers": 116464
+  },
+  {
+    "rank": 644,
+    "name": "StrictlyChristo 🇺🇦🌻🚫👑",
+    "handle": "strictlychristo.bsky.social",
+    "followers": 116459
+  },
+  {
+    "rank": 645,
+    "name": "Merriam-Webster",
+    "handle": "merriam-webster.com",
+    "followers": 116434
+  },
+  {
+    "rank": 646,
+    "name": "David Shiffman, Ph.D. 🦈",
+    "handle": "whysharksmatter.bsky.social",
+    "followers": 116305
+  },
+  {
+    "rank": 647,
+    "name": "The MAGA Trigger",
+    "handle": "magatrigger.bsky.social",
+    "followers": 116297
+  },
+  {
+    "rank": 648,
+    "name": "Jennifer C",
+    "handle": "thejenniwren.teamlh.social",
+    "followers": 116076
+  },
+  {
+    "rank": 649,
+    "name": "Marina Purkiss",
+    "handle": "marina-purkiss.bsky.social",
+    "followers": 116045
+  },
+  {
+    "rank": 650,
+    "name": "U.S. Consumer Product Safety Commission",
+    "handle": "cpsc.gov",
+    "followers": 116036
+  },
+  {
+    "rank": 651,
+    "name": "Kirk Acevedo",
+    "handle": "realkidvicious.bsky.social",
+    "followers": 115941
+  },
+  {
+    "rank": 652,
+    "name": "Larry Tenney ❌👑",
+    "handle": "larrytenney.bsky.social",
+    "followers": 115926
+  },
+  {
+    "rank": 653,
+    "name": "Nintendo of America [Unofficial]",
+    "handle": "nintendousa.bsky.social",
+    "followers": 115885
+  },
+  {
+    "rank": 654,
+    "name": "God",
+    "handle": "skeetofgod.bsky.social",
+    "followers": 115835
+  },
+  {
+    "rank": 655,
+    "name": "Viral Porno Gay +18 🔞🍼110k",
+    "handle": "viralpornbr.bsky.social",
+    "followers": 115707
+  },
+  {
+    "rank": 656,
+    "name": "FIVE MINUTE NEWS",
+    "handle": "fiveminutenews.bsky.social",
+    "followers": 115678
+  },
+  {
+    "rank": 657,
+    "name": "Gail Simone",
+    "handle": "gailsimone.bsky.social",
+    "followers": 115634
+  },
+  {
+    "rank": 658,
+    "name": "Rob Delaney",
+    "handle": "robdelaney.bsky.social",
+    "followers": 115519
+  },
+  {
+    "rank": 659,
+    "name": "kim ☼",
+    "handle": "web.kim",
+    "followers": 115375
+  },
+  {
+    "rank": 660,
+    "name": "Stephen Wolf",
+    "handle": "stephenwolf.bsky.social",
+    "followers": 115265
+  },
+  {
+    "rank": 661,
+    "name": "undefined",
+    "handle": "infjx.bsky.social",
+    "followers": 115046
+  },
+  {
+    "rank": 662,
+    "name": "Vivian Jenna Wilson",
+    "handle": "thevivllainous.bsky.social",
+    "followers": 114856
+  },
+  {
+    "rank": 663,
+    "name": "Natalie Louise Shorter (Lucas)",
+    "handle": "natalielshorter.bsky.social",
+    "followers": 114767
+  },
+  {
+    "rank": 664,
+    "name": "Pod Save America",
+    "handle": "podsaveamerica.crooked.com",
+    "followers": 114673
+  },
+  {
+    "rank": 665,
+    "name": "Cold War Steve",
+    "handle": "coldwarsteve.bsky.social",
+    "followers": 114520
+  },
+  {
+    "rank": 666,
+    "name": "Carole King",
+    "handle": "carolekingofficial.bsky.social",
+    "followers": 114312
+  },
+  {
+    "rank": 667,
+    "name": "BCharts",
+    "handle": "bcharts.com.br",
+    "followers": 113983
+  },
+  {
+    "rank": 668,
+    "name": "David Ho",
+    "handle": "davidho.bsky.social",
+    "followers": 113927
+  },
+  {
+    "rank": 669,
+    "name": "Dr. Lucky Tran",
+    "handle": "luckytran.com",
+    "followers": 113917
+  },
+  {
+    "rank": 670,
+    "name": "Rep. Ted Lieu",
+    "handle": "reptedlieu.bsky.social",
+    "followers": 113872
+  },
+  {
+    "rank": 671,
+    "name": "Jimmy Fallon",
+    "handle": "jimmyfallon.bsky.social",
+    "followers": 113817
+  },
+  {
+    "rank": 672,
+    "name": "Michelle Fowle",
+    "handle": "mmanire.bsky.social",
+    "followers": 113612
+  },
+  {
+    "rank": 673,
+    "name": "rafael lange",
+    "handle": "cellbitos.bsky.social",
+    "followers": 113507
+  },
+  {
+    "rank": 674,
+    "name": "Amy Klobuchar",
+    "handle": "amyklobuchar.com",
+    "followers": 113430
+  },
+  {
+    "rank": 675,
+    "name": "Lev Parnas",
+    "handle": "levparnas.bsky.social",
+    "followers": 113352
+  },
+  {
+    "rank": 676,
+    "name": "SwiftOnSecurity",
+    "handle": "swiftonsecurity.com",
+    "followers": 113219
+  },
+  {
+    "rank": 677,
+    "name": "Ashley Kuckelman",
+    "handle": "ashleyvotesblue.bsky.social",
+    "followers": 113165
+  },
+  {
+    "rank": 678,
+    "name": "LittleMissVrb",
+    "handle": "littlemissvrb.bsky.social",
+    "followers": 113056
+  },
+  {
+    "rank": 679,
+    "name": "Rosanna",
+    "handle": "rosannaarquette.bsky.social",
+    "followers": 112938
+  },
+  {
+    "rank": 680,
+    "name": "🌺🌺  Cynbad  🌺🌺",
+    "handle": "cyynbadd.bsky.social",
+    "followers": 112927
+  },
+  {
+    "rank": 681,
+    "name": "JonBowzerBauman.bsky.social",
+    "handle": "jonbowzerbauman.bsky.social",
+    "followers": 112875
+  },
+  {
+    "rank": 682,
+    "name": "Mallory McMorrow",
+    "handle": "mallorymcmorrow.bsky.social",
+    "followers": 112832
+  },
+  {
+    "rank": 683,
+    "name": "Kristin Rowe-Finkbeiner",
+    "handle": "rowefinkbeiner.bsky.social",
+    "followers": 112570
+  },
+  {
+    "rank": 684,
+    "name": "Ciara Torres-Spelliscy",
+    "handle": "profciara.bsky.social",
+    "followers": 112544
+  },
+  {
+    "rank": 685,
+    "name": "Mr. Spock 🖖",
+    "handle": "spockresists.bsky.social",
+    "followers": 112335
+  },
+  {
+    "rank": 686,
+    "name": "Bookshelfie",
+    "handle": "bookshelfie.bsky.social",
+    "followers": 112331
+  },
+  {
+    "rank": 687,
+    "name": "Ronan Farrow",
+    "handle": "ronanfarrow.bsky.social",
+    "followers": 112288
+  },
+  {
+    "rank": 688,
+    "name": "The Secret Barrister",
+    "handle": "barristersecret.bsky.social",
+    "followers": 112270
+  },
+  {
+    "rank": 689,
+    "name": "The Democratic Coalition",
+    "handle": "thedemcoalition.bsky.social",
+    "followers": 112187
+  },
+  {
+    "rank": 690,
+    "name": "U.S. Senator John Fetterman",
+    "handle": "fetterman.senate.gov",
+    "followers": 111988
+  },
+  {
+    "rank": 691,
+    "name": "Jon Lovett",
+    "handle": "jonlovett.bsky.social",
+    "followers": 111982
+  },
+  {
+    "rank": 692,
+    "name": "Mediapart",
+    "handle": "mediapart.fr",
+    "followers": 111937
+  },
+  {
+    "rank": 693,
+    "name": "Jemele Hill",
+    "handle": "jemelehill.bsky.social",
+    "followers": 111739
+  },
+  {
+    "rank": 694,
+    "name": "Michael McKean",
+    "handle": "mjmckean.bsky.social",
+    "followers": 111647
+  },
+  {
+    "rank": 695,
+    "name": "Mariana Z",
+    "handle": "mariana057.bsky.social",
+    "followers": 111621
+  },
+  {
+    "rank": 696,
+    "name": "Tom Watson",
+    "handle": "guitarwatson.bsky.social",
+    "followers": 111577
+  },
+  {
+    "rank": 697,
+    "name": "Stephanie Ruhle",
+    "handle": "stephruhle.bsky.social",
+    "followers": 111563
+  },
+  {
+    "rank": 698,
+    "name": "Agence France-Presse",
+    "handle": "afp.com",
+    "followers": 111339
+  },
+  {
+    "rank": 699,
+    "name": "Steven Martin",
+    "handle": "stevenmartin.bsky.social",
+    "followers": 111215
+  },
+  {
+    "rank": 700,
+    "name": "Molly Knight",
+    "handle": "mollyknight.bsky.social",
+    "followers": 111147
+  },
+  {
+    "rank": 701,
+    "name": "ryan cooper",
+    "handle": "ryanlcooper.com",
+    "followers": 111025
+  },
+  {
+    "rank": 702,
+    "name": "NOELREPORTS",
+    "handle": "noelreports.com",
+    "followers": 110980
+  },
+  {
+    "rank": 703,
+    "name": "MadeInDex 📰 🌎",
+    "handle": "madeindex.bsky.social",
+    "followers": 110927
+  },
+  {
+    "rank": 704,
+    "name": "Heidi Przybyla 🎤✍️",
+    "handle": "heidireports.bsky.social",
+    "followers": 110615
+  },
+  {
+    "rank": 705,
+    "name": "Mitch Kates",
+    "handle": "mitchkates.bsky.social",
+    "followers": 110547
+  },
+  {
+    "rank": 706,
+    "name": "Noel Casler Comedy",
+    "handle": "noelcaslercomedy.bsky.social",
+    "followers": 110463
+  },
+  {
+    "rank": 707,
+    "name": "The Times & Sunday Times",
+    "handle": "thetimes.com",
+    "followers": 110378
+  },
+  {
+    "rank": 708,
+    "name": "Dr. Vin Gupta",
+    "handle": "vinguptamd.bsky.social",
+    "followers": 110195
+  },
+  {
+    "rank": 709,
+    "name": "Aaron Reichlin-Melnick",
+    "handle": "reichlinmelnick.bsky.social",
+    "followers": 110157
+  },
+  {
+    "rank": 710,
+    "name": "Kim Kelly",
+    "handle": "kimkelly.bsky.social",
+    "followers": 110077
+  },
+  {
+    "rank": 711,
+    "name": "Melissa Jo  Peltier",
+    "handle": "melissjpeltier.bsky.social",
+    "followers": 109907
+  },
+  {
+    "rank": 712,
+    "name": "Sahil Kapur",
+    "handle": "sahilkapur.bsky.social",
+    "followers": 109873
+  },
+  {
+    "rank": 713,
+    "name": "Jan Böhmermann 🤨",
+    "handle": "janboehm.bsky.social",
+    "followers": 109719
+  },
+  {
+    "rank": 714,
+    "name": "Alexandra Petri",
+    "handle": "petridishes.bsky.social",
+    "followers": 109700
+  },
+  {
+    "rank": 715,
+    "name": "Sonaar Luthra 💧❄️🌧️🧊🌊",
+    "handle": "sonaar.bsky.social",
+    "followers": 109615
+  },
+  {
+    "rank": 716,
+    "name": "🌊Sandy #GunReformNow",
+    "handle": "cynthiaharless.bsky.social",
+    "followers": 109520
+  },
+  {
+    "rank": 717,
+    "name": "Mark Ruffalo",
+    "handle": "markruffalo.bsky.social",
+    "followers": 109519
+  },
+  {
+    "rank": 718,
+    "name": "Brenley",
+    "handle": "brenley.bsky.social",
+    "followers": 109398
+  },
+  {
+    "rank": 719,
+    "name": "Isidor",
+    "handle": "isidor.rs",
+    "followers": 109390
+  },
+  {
+    "rank": 720,
+    "name": "Soraya Nadia McDonald",
+    "handle": "sorayanadiamcdonald.com",
+    "followers": 109308
+  },
+  {
+    "rank": 721,
+    "name": "Dara O Briain",
+    "handle": "daraobriain.bsky.social",
+    "followers": 109253
+  },
+  {
+    "rank": 722,
+    "name": "Hala Ayala",
+    "handle": "halaayala.bsky.social",
+    "followers": 109247
+  },
+  {
+    "rank": 723,
+    "name": "Maitlis",
+    "handle": "maitlis.bsky.social",
+    "followers": 109121
+  },
+  {
+    "rank": 724,
+    "name": "Sarah O’Connell",
+    "handle": "sarahoconnellshow.com",
+    "followers": 109007
+  },
+  {
+    "rank": 725,
+    "name": "Kashana",
+    "handle": "kashana.blacksky.app",
+    "followers": 108843
+  },
+  {
+    "rank": 726,
+    "name": "Jamie Gangel",
+    "handle": "jamiegangel.bsky.social",
+    "followers": 108835
+  },
+  {
+    "rank": 727,
+    "name": "RJ Palmer",
+    "handle": "rj-palmer.com",
+    "followers": 108742
+  },
+  {
+    "rank": 728,
+    "name": "Guilherme Boulos",
+    "handle": "guilhermeboulos.bsky.social",
+    "followers": 108584
+  },
+  {
+    "rank": 729,
+    "name": "Chiitan🌈ちぃたん☆",
+    "handle": "chiitan.love",
+    "followers": 108368
+  },
+  {
+    "rank": 730,
+    "name": "Sam Reich",
+    "handle": "samreich.bsky.social",
+    "followers": 108352
+  },
+  {
+    "rank": 731,
+    "name": "Lilly Wachowski",
+    "handle": "lillywachowski.bsky.social",
+    "followers": 108203
+  },
+  {
+    "rank": 732,
+    "name": "CREW",
+    "handle": "citizensforethics.org",
+    "followers": 108168
+  },
+  {
+    "rank": 733,
+    "name": "Bolts",
+    "handle": "boltsmag.org",
+    "followers": 107981
+  },
+  {
+    "rank": 734,
+    "name": "Mike Levin",
+    "handle": "mikelevin.org",
+    "followers": 107891
+  },
+  {
+    "rank": 735,
+    "name": "Mark Hertling",
+    "handle": "markhertling.bsky.social",
+    "followers": 107731
+  },
+  {
+    "rank": 736,
+    "name": "Xbox",
+    "handle": "xbox.com",
+    "followers": 107707
+  },
+  {
+    "rank": 737,
+    "name": "Max Berger",
+    "handle": "maxberger.bsky.social",
+    "followers": 107669
+  },
+  {
+    "rank": 738,
+    "name": "💫Foxy💫",
+    "handle": "getyourfoxyback.bsky.social",
+    "followers": 107662
+  },
+  {
+    "rank": 739,
+    "name": "Kimberley Johnson",
+    "handle": "kimberleyjohnson.bsky.social",
+    "followers": 107544
+  },
+  {
+    "rank": 740,
+    "name": "Reggie Hubbard",
+    "handle": "oreggieglobal.bsky.social",
+    "followers": 107499
+  },
+  {
+    "rank": 741,
+    "name": "Charlie Warzel",
+    "handle": "cwarzel.bsky.social",
+    "followers": 107347
+  },
+  {
+    "rank": 742,
+    "name": "the Mountain Goats",
+    "handle": "themountaingoats.bsky.social",
+    "followers": 107309
+  },
+  {
+    "rank": 743,
+    "name": "Ricky Davila",
+    "handle": "therickydavila.bsky.social",
+    "followers": 107039
+  },
+  {
+    "rank": 744,
+    "name": "Jeremy",
+    "handle": "jeremy8.bsky.social",
+    "followers": 106838
+  },
+  {
+    "rank": 745,
+    "name": "John W Dean",
+    "handle": "johnwdean.bsky.social",
+    "followers": 106515
+  },
+  {
+    "rank": 746,
+    "name": "Stephen Fry",
+    "handle": "stephenfry.bsky.social",
+    "followers": 106511
+  },
+  {
+    "rank": 747,
+    "name": "Jessica Tarlov",
+    "handle": "jessicatarlov.bsky.social",
+    "followers": 106348
+  },
+  {
+    "rank": 748,
+    "name": "Nath Finanças 💰",
+    "handle": "nathfinancas.com.br",
+    "followers": 106258
+  },
+  {
+    "rank": 749,
+    "name": "undefined",
+    "handle": "judithbolyard.bsky.social",
+    "followers": 105948
+  },
+  {
+    "rank": 750,
+    "name": "Rep. Malcolm Kenyatta",
+    "handle": "malcolmkenyatta.bsky.social",
+    "followers": 105855
+  },
+  {
+    "rank": 751,
+    "name": "Suri Crowe 🥷7️⃣",
+    "handle": "suricrowe.bsky.social",
+    "followers": 105830
+  },
+  {
+    "rank": 752,
+    "name": "Dan Pfeiffer",
+    "handle": "danpfeiffer.bsky.social",
+    "followers": 105756
+  },
+  {
+    "rank": 753,
+    "name": "Paulette Feeney ❌️👑",
+    "handle": "pauletteparis1.bsky.social",
+    "followers": 105660
+  },
+  {
+    "rank": 754,
+    "name": "Alicia Menendez",
+    "handle": "aliciamenendez.bsky.social",
+    "followers": 105518
+  },
+  {
+    "rank": 755,
+    "name": "Martin Lewis",
+    "handle": "martinlewis.moneysavingexpert.com",
+    "followers": 105467
+  },
+  {
+    "rank": 756,
+    "name": "Debra Wexler",
+    "handle": "debrawexler.bsky.social",
+    "followers": 105441
+  },
+  {
+    "rank": 757,
+    "name": "scha·den·freu·de",
+    "handle": "blisterpearl.bsky.social",
+    "followers": 105189
+  },
+  {
+    "rank": 758,
+    "name": "Ezra Klein",
+    "handle": "ezrakleinbot.bsky.social",
+    "followers": 105162
+  },
+  {
+    "rank": 759,
+    "name": "Jordan Uhl",
+    "handle": "jordanuhl.com",
+    "followers": 105146
+  },
+  {
+    "rank": 760,
+    "name": "Elli Anderson 🌊💙🇺🇸",
+    "handle": "ellilanderson.bsky.social",
+    "followers": 105109
+  },
+  {
+    "rank": 761,
+    "name": "Celeste Ng",
+    "handle": "pronounced-ing.bsky.social",
+    "followers": 105021
+  },
+  {
+    "rank": 762,
+    "name": "Adam Schefter - Mirror",
+    "handle": "adamschefter-mirror.bluesky.bot",
+    "followers": 104995
+  },
+  {
+    "rank": 763,
+    "name": "Sylvia at Tono Latino",
+    "handle": "tonolatino.bsky.social",
+    "followers": 104863
+  },
+  {
+    "rank": 764,
+    "name": "David_j_roth",
+    "handle": "davidjroth.bsky.social",
+    "followers": 104727
+  },
+  {
+    "rank": 765,
+    "name": "Bill Barnwell",
+    "handle": "billbarnwell.com",
+    "followers": 104718
+  },
+  {
+    "rank": 766,
+    "name": "JoCat",
+    "handle": "jocat.net",
+    "followers": 104712
+  },
+  {
+    "rank": 767,
+    "name": "Raw Story",
+    "handle": "rawstory.com",
+    "followers": 104629
+  },
+  {
+    "rank": 768,
+    "name": "Congressman Eugene Vindman (VA-07)",
+    "handle": "gene4va.bsky.social",
+    "followers": 104603
+  },
+  {
+    "rank": 769,
+    "name": "🕊️~KK~🕊️~On the turning away~Pink Floyd",
+    "handle": "katarinakriz.bsky.social",
+    "followers": 104597
+  },
+  {
+    "rank": 770,
+    "name": "Democracy Forward",
+    "handle": "democracyforward.org",
+    "followers": 104581
+  },
+  {
+    "rank": 771,
+    "name": "Colin Oreilly",
+    "handle": "colin0reilly.bsky.social",
+    "followers": 104234
+  },
+  {
+    "rank": 772,
+    "name": "Mark Jacob",
+    "handle": "markjacob.bsky.social",
+    "followers": 104201
+  },
+  {
+    "rank": 773,
+    "name": "Brian J. Karem",
+    "handle": "briankarem.bsky.social",
+    "followers": 104159
+  },
+  {
+    "rank": 774,
+    "name": "Mike Drucker",
+    "handle": "mikedrucker.bsky.social",
+    "followers": 104114
+  },
+  {
+    "rank": 775,
+    "name": "Riz🔞",
+    "handle": "rizdraws.bsky.social",
+    "followers": 104070
+  },
+  {
+    "rank": 776,
+    "name": "Iyan Velji",
+    "handle": "iyanvelji.bsky.social",
+    "followers": 103927
+  },
+  {
+    "rank": 777,
+    "name": "Dana Terrace",
+    "handle": "danaterrace.bsky.social",
+    "followers": 103872
+  },
+  {
+    "rank": 778,
+    "name": "Meidas Sassy™ 🐬",
+    "handle": "filosia.bsky.social",
+    "followers": 103827
+  },
+  {
+    "rank": 779,
+    "name": "Fifty Shades of Whey",
+    "handle": "fiftyshadesofwhey.bsky.social",
+    "followers": 103799
+  },
+  {
+    "rank": 780,
+    "name": "Dean Obeidallah",
+    "handle": "deanobeidallah.bsky.social",
+    "followers": 103707
+  },
+  {
+    "rank": 781,
+    "name": "Vi & Reese Papa 🐶",
+    "handle": "brettbobculbert.bsky.social",
+    "followers": 103702
+  },
+  {
+    "rank": 782,
+    "name": "Little aliens forever",
+    "handle": "lilalienz4ever.bsky.social",
+    "followers": 103431
+  },
+  {
+    "rank": 783,
+    "name": "Stardust 🌏🎬",
+    "handle": "stardustbluepr.com",
+    "followers": 103422
+  },
+  {
+    "rank": 784,
+    "name": "Ted Corcoran (RedTRaccoon)",
+    "handle": "redtraccoon.bsky.social",
+    "followers": 103064
+  },
+  {
+    "rank": 785,
+    "name": "Dina Sayegh Doll",
+    "handle": "askdinadoll.bsky.social",
+    "followers": 103051
+  },
+  {
+    "rank": 786,
+    "name": "Renato Mariotti",
+    "handle": "renatomariotti.bsky.social",
+    "followers": 102938
+  },
+  {
+    "rank": 787,
+    "name": "Ann Telnaes",
+    "handle": "anntelnaes.bsky.social",
+    "followers": 102899
+  },
+  {
+    "rank": 788,
+    "name": "lore",
+    "handle": "lorenaaorsi.bsky.social",
+    "followers": 102683
+  },
+  {
+    "rank": 789,
+    "name": "Melissa Gira Grant",
+    "handle": "melissagiragrant.com",
+    "followers": 102676
+  },
+  {
+    "rank": 790,
+    "name": "MysterySolvent",
+    "handle": "mysterysolvent.bsky.social",
+    "followers": 102543
+  },
+  {
+    "rank": 791,
+    "name": "datcravat クラバット🍷",
+    "handle": "datcravat.bsky.social",
+    "followers": 102531
+  },
+  {
+    "rank": 792,
+    "name": "undefined",
+    "handle": "politicaldude.bsky.social",
+    "followers": 102115
+  },
+  {
+    "rank": 793,
+    "name": "Chris D. Jackson",
+    "handle": "chrisdjackson.bsky.social",
+    "followers": 102058
+  },
+  {
+    "rank": 794,
+    "name": "KIM F-M",
+    "handle": "kimf-m.bsky.social",
+    "followers": 102055
+  },
+  {
+    "rank": 795,
+    "name": "United Farm Workers",
+    "handle": "ufw.bsky.social",
+    "followers": 101993
+  },
+  {
+    "rank": 796,
+    "name": "Po Murray",
+    "handle": "pomurray.bsky.social",
+    "followers": 101978
+  },
+  {
+    "rank": 797,
+    "name": "Scottacular",
+    "handle": "scottcrates.bsky.social",
+    "followers": 101936
+  },
+  {
+    "rank": 798,
+    "name": "All In with Chris Hayes",
+    "handle": "allinwithchris.bsky.social",
+    "followers": 101890
+  },
+  {
+    "rank": 799,
+    "name": "Ted Lieu",
+    "handle": "tedlieu.bsky.social",
+    "followers": 101847
+  },
+  {
+    "rank": 800,
+    "name": "Roy Wood Jr- Ex Jedi",
+    "handle": "roywoodjr.bsky.social",
+    "followers": 101826
+  },
+  {
+    "rank": 801,
+    "name": "Tokyo Sand",
+    "handle": "dhstokyo.bsky.social",
+    "followers": 101772
+  },
+  {
+    "rank": 802,
+    "name": "Kyle Clark",
+    "handle": "kylec.bsky.social",
+    "followers": 101716
+  },
+  {
+    "rank": 803,
+    "name": "Prof Jeffrey S Morris",
+    "handle": "jsm2334.bsky.social",
+    "followers": 101635
+  },
+  {
+    "rank": 804,
+    "name": "Anthony Michael Kreis",
+    "handle": "anthonymkreis.bsky.social",
+    "followers": 101498
+  },
+  {
+    "rank": 805,
+    "name": "Connie Schultz",
+    "handle": "connieschultz.bsky.social",
+    "followers": 101485
+  },
+  {
+    "rank": 806,
+    "name": "Dr. Jen Gunter",
+    "handle": "drjengunter.bsky.social",
+    "followers": 101477
+  },
+  {
+    "rank": 807,
+    "name": "David French",
+    "handle": "davidfrenchjag.bsky.social",
+    "followers": 101363
+  },
+  {
+    "rank": 808,
+    "name": "Secret Agent Number Six",
+    "handle": "designationsix.bsky.social",
+    "followers": 101361
+  },
+  {
+    "rank": 809,
+    "name": "Liz (or Lizzie) Kim 김혜성 💫",
+    "handle": "lizzielizliz.bsky.social",
+    "followers": 101277
+  },
+  {
+    "rank": 810,
+    "name": "BigBlueWaveUSA2026®                  ….. 🇺🇸🌊🇺🇦🦋🏳️‍🌈",
+    "handle": "bigbluewaveusa.bsky.social",
+    "followers": 101263
+  },
+  {
+    "rank": 811,
+    "name": "The Dangerous Ones",
+    "handle": "thedangerousones.com",
+    "followers": 101256
+  },
+  {
+    "rank": 812,
+    "name": "Phil Williams",
+    "handle": "philinvestigates.com",
+    "followers": 101242
+  },
+  {
+    "rank": 813,
+    "name": "Joanne Freeman",
+    "handle": "jbf1755.bsky.social",
+    "followers": 101222
+  },
+  {
+    "rank": 814,
+    "name": "Alex Cole",
+    "handle": "acnewsitics.com",
+    "followers": 101113
+  },
+  {
+    "rank": 815,
+    "name": "Hayden 🇺🇸🦅",
+    "handle": "wright.wiki",
+    "followers": 101091
+  },
+  {
+    "rank": 816,
+    "name": "MiaMarie",
+    "handle": "mmkresge.bsky.social",
+    "followers": 101089
+  },
+  {
+    "rank": 817,
+    "name": "Brad Bo",
+    "handle": "bradbo.bsky.social",
+    "followers": 101078
+  },
+  {
+    "rank": 818,
+    "name": "A Blue View",
+    "handle": "ablueview.bsky.social",
+    "followers": 101014
+  },
+  {
+    "rank": 819,
+    "name": "Jessica Valenti",
+    "handle": "jessicavalenti.bsky.social",
+    "followers": 100977
+  },
+  {
+    "rank": 820,
+    "name": "Salty",
+    "handle": "salty.bsky.social",
+    "followers": 100881
+  },
+  {
+    "rank": 821,
+    "name": "Ida Bae Wells",
+    "handle": "nhannahjones.bsky.social",
+    "followers": 100800
+  },
+  {
+    "rank": 822,
+    "name": "fesshole 🧻",
+    "handle": "fesshole.bsky.social",
+    "followers": 100687
+  },
+  {
+    "rank": 823,
+    "name": "The Real Truther",
+    "handle": "therealtruther.bsky.social",
+    "followers": 100441
+  },
+  {
+    "rank": 824,
+    "name": "Foxes In Love",
+    "handle": "foxes-in-love.bsky.social",
+    "followers": 100341
+  },
+  {
+    "rank": 825,
+    "name": "Chuck Schumer",
+    "handle": "schumer.senate.gov",
+    "followers": 100292
+  },
+  {
+    "rank": 826,
+    "name": "Isaac Dovere",
+    "handle": "isaacdovere.bsky.social",
+    "followers": 100222
+  },
+  {
+    "rank": 827,
+    "name": "Elad Nehorai",
+    "handle": "eladn.bsky.social",
+    "followers": 100068
+  },
+  {
+    "rank": 828,
+    "name": "Critical Role",
+    "handle": "criticalrole.bsky.social",
+    "followers": 100005
+  },
+  {
+    "rank": 829,
+    "name": "Congresswoman Ayanna Pressley",
+    "handle": "pressley.house.gov",
+    "followers": 99955
+  },
+  {
+    "rank": 830,
+    "name": "60 Minutes",
+    "handle": "60minutes.bsky.social",
+    "followers": 99921
+  },
+  {
+    "rank": 831,
+    "name": "David Roberts",
+    "handle": "volts.wtf",
+    "followers": 99768
+  },
+  {
+    "rank": 832,
+    "name": "Ed Markey",
+    "handle": "edmarkey.bsky.social",
+    "followers": 99749
+  },
+  {
+    "rank": 833,
+    "name": "Emily Liu",
+    "handle": "emilyliu.me",
+    "followers": 99735
+  },
+  {
+    "rank": 834,
+    "name": "Defend The Vote",
+    "handle": "wedefendthevote.org",
+    "followers": 99704
+  },
+  {
+    "rank": 835,
+    "name": "Radley Balko",
+    "handle": "radleybalko.bsky.social",
+    "followers": 99692
+  },
+  {
+    "rank": 836,
+    "name": "Olivier Knox",
+    "handle": "oknox.bsky.social",
+    "followers": 99597
+  },
+  {
+    "rank": 837,
+    "name": "Alice Roberts",
+    "handle": "profaliceroberts.bsky.social",
+    "followers": 99394
+  },
+  {
+    "rank": 838,
+    "name": "Fishtopher and Friends",
+    "handle": "fishtopher.bsky.social",
+    "followers": 99387
+  },
+  {
+    "rank": 839,
+    "name": "Steve Pierson",
+    "handle": "bluesboysteve.bsky.social",
+    "followers": 99351
+  },
+  {
+    "rank": 840,
+    "name": "Jacob Soboroff",
+    "handle": "jacobsoboroff.bsky.social",
+    "followers": 99329
+  },
+  {
+    "rank": 841,
+    "name": "Sally Deal - 📞 Call your legislators @ (202)224-3121    ⏰24/7!",
+    "handle": "sallydeal4.bsky.social",
+    "followers": 99129
+  },
+  {
+    "rank": 842,
+    "name": "Gabrien Gregory",
+    "handle": "gabriengregory.bsky.social",
+    "followers": 99113
+  },
+  {
+    "rank": 843,
+    "name": "Chanda Prescod-Weinstein 🌌",
+    "handle": "chanda.blacksky.app",
+    "followers": 99062
+  },
+  {
+    "rank": 844,
+    "name": "Stacy Pinkston",
+    "handle": "stacypinkston.bsky.social",
+    "followers": 98935
+  },
+  {
+    "rank": 845,
+    "name": "Jornal Nacional",
+    "handle": "jnoficial.bsky.social",
+    "followers": 98881
+  },
+  {
+    "rank": 846,
+    "name": "Science Magazine",
+    "handle": "science.org",
+    "followers": 98872
+  },
+  {
+    "rank": 847,
+    "name": "Melanie D’Arrigo",
+    "handle": "darrigomelanie.bsky.social",
+    "followers": 98658
+  },
+  {
+    "rank": 848,
+    "name": "Julius Kim",
+    "handle": "juliuskim.bsky.social",
+    "followers": 98621
+  },
+  {
+    "rank": 849,
+    "name": "Meredith Whittaker",
+    "handle": "meredithmeredith.bsky.social",
+    "followers": 98562
+  },
+  {
+    "rank": 850,
+    "name": "GoBlue",
+    "handle": "blu2b4u.bsky.social",
+    "followers": 98536
+  },
+  {
+    "rank": 851,
+    "name": "Jonathan V. Last",
+    "handle": "jvl.bsky.social",
+    "followers": 98444
+  },
+  {
+    "rank": 852,
+    "name": "Your Internet Friend Tom Tomorrow",
+    "handle": "tomtomorrow.bsky.social",
+    "followers": 98307
+  },
+  {
+    "rank": 853,
+    "name": "Michael Steele",
+    "handle": "michaelsteele.bsky.social",
+    "followers": 98286
+  },
+  {
+    "rank": 854,
+    "name": "San Diego Zoo Wildlife Alliance",
+    "handle": "sandiegozoo.bsky.social",
+    "followers": 98247
+  },
+  {
+    "rank": 855,
+    "name": "Moira Donegan",
+    "handle": "moiradonegan.bsky.social",
+    "followers": 98200
+  },
+  {
+    "rank": 856,
+    "name": "Brian Guest",
+    "handle": "brguest20.bsky.social",
+    "followers": 98160
+  },
+  {
+    "rank": 857,
+    "name": "Ken Martin",
+    "handle": "kenmartin.bsky.social",
+    "followers": 98137
+  },
+  {
+    "rank": 858,
+    "name": "Otto English",
+    "handle": "ottoenglish.bsky.social",
+    "followers": 97994
+  },
+  {
+    "rank": 859,
+    "name": "Edgar Wright",
+    "handle": "edgarwright.bsky.social",
+    "followers": 97984
+  },
+  {
+    "rank": 860,
+    "name": "Bock Sam",
+    "handle": "bocksam.bsky.social",
+    "followers": 97885
+  },
+  {
+    "rank": 861,
+    "name": "Tara Dublin, Rock Star Author📚❤️‍🔥🤘🏻",
+    "handle": "taradublinrocks.bsky.social",
+    "followers": 97795
+  },
+  {
+    "rank": 862,
+    "name": "John Ales AF",
+    "handle": "johnales.bsky.social",
+    "followers": 97747
+  },
+  {
+    "rank": 863,
+    "name": "L’Etat C’est Moi",
+    "handle": "letatcestmoi.bsky.social",
+    "followers": 97524
+  },
+  {
+    "rank": 864,
+    "name": "Laura Helmuth",
+    "handle": "laurahelmuth.bsky.social",
+    "followers": 97500
+  },
+  {
+    "rank": 865,
+    "name": "Kinley 🦋 Brenda",
+    "handle": "bluthrunthru.bsky.social",
+    "followers": 97481
+  },
+  {
+    "rank": 866,
+    "name": "Eddie Smith",
+    "handle": "eddsmitty.bsky.social",
+    "followers": 97382
+  },
+  {
+    "rank": 867,
+    "name": "Anil Dash",
+    "handle": "anildash.com",
+    "followers": 97381
+  },
+  {
+    "rank": 868,
+    "name": "Abbi Lichtenstein",
+    "handle": "abbij1961.bsky.social",
+    "followers": 97351
+  },
+  {
+    "rank": 869,
+    "name": "Michael Harriot",
+    "handle": "michaelharriot.bsky.social",
+    "followers": 97349
+  },
+  {
+    "rank": 870,
+    "name": "Hakeem Jefferson",
+    "handle": "hakeemjefferson.bsky.social",
+    "followers": 97235
+  },
+  {
+    "rank": 871,
+    "name": "RubberRoss",
+    "handle": "rubberross.bsky.social",
+    "followers": 97051
+  },
+  {
+    "rank": 872,
+    "name": "Kyle",
+    "handle": "kyleshivers.bsky.social",
+    "followers": 96898
+  },
+  {
+    "rank": 873,
+    "name": "Doctors Without Borders / Médecins Sans Frontières (MSF)",
+    "handle": "msf.ca",
+    "followers": 96895
+  },
+  {
+    "rank": 874,
+    "name": "Monica",
+    "handle": "softtail65.bsky.social",
+    "followers": 96882
+  },
+  {
+    "rank": 875,
+    "name": "Monte_Santo 💙🇧🇷",
+    "handle": "montesanto.bsky.social",
+    "followers": 96773
+  },
+  {
+    "rank": 876,
+    "name": "Wolf Conservation Center 🐺",
+    "handle": "nywolforg.bsky.social",
+    "followers": 96693
+  },
+  {
+    "rank": 877,
+    "name": "CajunBlue 🇺🇸 🇺🇦",
+    "handle": "cajunblue.bsky.social",
+    "followers": 96645
+  },
+  {
+    "rank": 878,
+    "name": "Joel Rubin",
+    "handle": "joelmrubin.bsky.social",
+    "followers": 96617
+  },
+  {
+    "rank": 879,
+    "name": "Garrett M. Graff",
+    "handle": "vermontgmg.bsky.social",
+    "followers": 96608
+  },
+  {
+    "rank": 880,
+    "name": "CHOAM Nomsky",
+    "handle": "samthielman.com",
+    "followers": 96593
+  },
+  {
+    "rank": 881,
+    "name": "Eixo Político",
+    "handle": "eixopolitico.com.br",
+    "followers": 96561
+  },
+  {
+    "rank": 882,
+    "name": "Kurt",
+    "handle": "kaatokunart.bsky.social",
+    "followers": 96529
+  },
+  {
+    "rank": 883,
+    "name": "Los Angeles Times",
+    "handle": "latimes.com",
+    "followers": 96514
+  },
+  {
+    "rank": 884,
+    "name": "Charlie Angus",
+    "handle": "charlieangus104.bsky.social",
+    "followers": 96368
+  },
+  {
+    "rank": 885,
+    "name": "Anne Caprara",
+    "handle": "annecaprara.bsky.social",
+    "followers": 96352
+  },
+  {
+    "rank": 886,
+    "name": "Institute for the Study of War",
+    "handle": "thestudyofwar.bsky.social",
+    "followers": 96287
+  },
+  {
+    "rank": 887,
+    "name": "Jessica Denson",
+    "handle": "jessicadenson07.bsky.social",
+    "followers": 96285
+  },
+  {
+    "rank": 888,
+    "name": "Elizabeth Warren",
+    "handle": "elizabeth-warren.bsky.social",
+    "followers": 96231
+  },
+  {
+    "rank": 889,
+    "name": "Lisa Guerrero",
+    "handle": "lisaguerrero.bsky.social",
+    "followers": 96130
+  },
+  {
+    "rank": 890,
+    "name": "Adam Bienkov",
+    "handle": "adambienkov.bsky.social",
+    "followers": 96128
+  },
+  {
+    "rank": 891,
+    "name": "Republican Accountability",
+    "handle": "accountablegop.bsky.social",
+    "followers": 96100
+  },
+  {
+    "rank": 892,
+    "name": "Olga Nesterova",
+    "handle": "onestpress.onestnetwork.com",
+    "followers": 95574
+  },
+  {
+    "rank": 893,
+    "name": "CINEMA 505",
+    "handle": "cinema505.bsky.social",
+    "followers": 95513
+  },
+  {
+    "rank": 894,
+    "name": "Erika Ishii",
+    "handle": "erikaishii.bsky.social",
+    "followers": 95442
+  },
+  {
+    "rank": 895,
+    "name": "Adam Conover",
+    "handle": "adamconover.net",
+    "followers": 95398
+  },
+  {
+    "rank": 896,
+    "name": "Rubicon1313  💕Safe 4 LGTBQ💕Vets 🚫DMs!",
+    "handle": "rubicon1313.bsky.social",
+    "followers": 95285
+  },
+  {
+    "rank": 897,
+    "name": "Arriadna 🇺🇸🗽🌻",
+    "handle": "arriadna.bsky.social",
+    "followers": 95119
+  },
+  {
+    "rank": 898,
+    "name": "Alien Super Show",
+    "handle": "aliensupershow.bsky.social",
+    "followers": 94997
+  },
+  {
+    "rank": 899,
+    "name": "Tom Joad™️",
+    "handle": "theoriginaltomjoad.bsky.social",
+    "followers": 94969
+  },
+  {
+    "rank": 900,
+    "name": "👑Maricella Brooks🌊🦅",
+    "handle": "fireeyebooks.bsky.social",
+    "followers": 94936
+  },
+  {
+    "rank": 901,
+    "name": "Loish",
+    "handle": "loish.bsky.social",
+    "followers": 94879
+  },
+  {
+    "rank": 902,
+    "name": "2000s",
+    "handle": "popculture2000s.bsky.social",
+    "followers": 94799
+  },
+  {
+    "rank": 903,
+    "name": "Faine Greenwood",
+    "handle": "faineg.bsky.social",
+    "followers": 94758
+  },
+  {
+    "rank": 904,
+    "name": "Lil A 🐴💙",
+    "handle": "lilatheofficial.bsky.social",
+    "followers": 94735
+  },
+  {
+    "rank": 905,
+    "name": "Karma & Chaos",
+    "handle": "karma-chaos.bsky.social",
+    "followers": 94702
+  },
+  {
+    "rank": 906,
+    "name": "Angry Buni",
+    "handle": "angrybuni.bsky.social",
+    "followers": 94376
+  },
+  {
+    "rank": 907,
+    "name": "Puff the Magic Hater",
+    "handle": "mskellymhayes.bsky.social",
+    "followers": 94332
+  },
+  {
+    "rank": 908,
+    "name": "Jared Yates Sexton",
+    "handle": "jysexton.bsky.social",
+    "followers": 94277
+  },
+  {
+    "rank": 909,
+    "name": "Michael E. Mann",
+    "handle": "michaelemann.bsky.social",
+    "followers": 94259
+  },
+  {
+    "rank": 910,
+    "name": "Josh Gerstein",
+    "handle": "joshgerstein.bsky.social",
+    "followers": 94071
+  },
+  {
+    "rank": 911,
+    "name": "Live and Learn",
+    "handle": "liveandlearn.bsky.social",
+    "followers": 94064
+  },
+  {
+    "rank": 912,
+    "name": "Wagatwe Wanjuki",
+    "handle": "wagatwe.com",
+    "followers": 94060
+  },
+  {
+    "rank": 913,
+    "name": "Lydia Polgreen",
+    "handle": "polgreen.bsky.social",
+    "followers": 94029
+  },
+  {
+    "rank": 914,
+    "name": "PSX Bunlith 🪄 BLM ACAB 🇵🇸",
+    "handle": "b0tster.yeag.gay",
+    "followers": 94026
+  },
+  {
+    "rank": 915,
+    "name": "Ars Technica",
+    "handle": "arstechnica.com",
+    "followers": 93961
+  },
+  {
+    "rank": 916,
+    "name": "Micah",
+    "handle": "rincewind.run",
+    "followers": 93913
+  },
+  {
+    "rank": 917,
+    "name": "CoachD_Speaks",
+    "handle": "coachdspeaks.bsky.social",
+    "followers": 93909
+  },
+  {
+    "rank": 918,
+    "name": "The Astute Galoot ™️ 🏴‍☠️",
+    "handle": "theastutegaloot.bsky.social",
+    "followers": 93871
+  },
+  {
+    "rank": 919,
+    "name": "undefined",
+    "handle": "normanroots.bsky.social",
+    "followers": 93740
+  },
+  {
+    "rank": 920,
+    "name": "Victor Shi",
+    "handle": "victorshi.bsky.social",
+    "followers": 93732
+  },
+  {
+    "rank": 921,
+    "name": "jenny tightpants",
+    "handle": "jtp.bsky.social",
+    "followers": 93544
+  },
+  {
+    "rank": 922,
+    "name": "🦋💔🇺🇸SEB🇺🇸💔🦋",
+    "handle": "sebastiangarof5.bsky.social",
+    "followers": 93526
+  },
+  {
+    "rank": 923,
+    "name": "masturbe o cérebro e goze ideias 🍊",
+    "handle": "laranja.bsky.social",
+    "followers": 93324
+  },
+  {
+    "rank": 924,
+    "name": "Julie",
+    "handle": "julie3500.bsky.social",
+    "followers": 93283
+  },
+  {
+    "rank": 925,
+    "name": "Andrew Lawrence",
+    "handle": "ndrew.bsky.social",
+    "followers": 93223
+  },
+  {
+    "rank": 926,
+    "name": "Inequality Media",
+    "handle": "inequalitymedia.bsky.social",
+    "followers": 93187
+  },
+  {
+    "rank": 927,
+    "name": "Arve Aksnes",
+    "handle": "arveaksnes75.bsky.social",
+    "followers": 93137
+  },
+  {
+    "rank": 928,
+    "name": "Casey",
+    "handle": "mamasissiesays.bsky.social",
+    "followers": 93081
+  },
+  {
+    "rank": 929,
+    "name": "Jenn Liu",
+    "handle": "jennkliu.bsky.social",
+    "followers": 93050
+  },
+  {
+    "rank": 930,
+    "name": "Shayan Sardarizadeh",
+    "handle": "shayan86.bsky.social",
+    "followers": 93039
+  },
+  {
+    "rank": 931,
+    "name": "Hugo Lowell",
+    "handle": "hugolowell.bsky.social",
+    "followers": 92942
+  },
+  {
+    "rank": 932,
+    "name": "Matt Novak",
+    "handle": "paleofuture.bsky.social",
+    "followers": 92932
+  },
+  {
+    "rank": 933,
+    "name": "KD📚🌎🌊🇺🇸",
+    "handle": "kdnerak33.bsky.social",
+    "followers": 92922
+  },
+  {
+    "rank": 934,
+    "name": "Greg Pak",
+    "handle": "gregpak.net",
+    "followers": 92896
+  },
+  {
+    "rank": 935,
+    "name": "Gillian Branstetter",
+    "handle": "gbbranstetter.bsky.social",
+    "followers": 92884
+  },
+  {
+    "rank": 936,
+    "name": "Bic Müller",
+    "handle": "bicmuller.bsky.social",
+    "followers": 92833
+  },
+  {
+    "rank": 937,
+    "name": "Kimberly Atkins Stohr",
+    "handle": "kimberlyeatkins.bsky.social",
+    "followers": 92681
+  },
+  {
+    "rank": 938,
+    "name": "Trevor Henderson 🍉",
+    "handle": "slimyswampghost.bsky.social",
+    "followers": 92631
+  },
+  {
+    "rank": 939,
+    "name": "Susan Glasser",
+    "handle": "sbg1.bsky.social",
+    "followers": 92592
+  },
+  {
+    "rank": 940,
+    "name": "Folha de S.Paulo",
+    "handle": "folha.com",
+    "followers": 92573
+  },
+  {
+    "rank": 941,
+    "name": "Garry Kasparov",
+    "handle": "garrykasparov.bsky.social",
+    "followers": 92554
+  },
+  {
+    "rank": 942,
+    "name": "The Real Zanetta",
+    "handle": "therealzanetta.bsky.social",
+    "followers": 92538
+  },
+  {
+    "rank": 943,
+    "name": "Coral City Camera",
+    "handle": "coralcitycamera.bsky.social",
+    "followers": 92538
+  },
+  {
+    "rank": 944,
+    "name": "Margaret Atwood",
+    "handle": "margaretatwood.bsky.social",
+    "followers": 92389
+  },
+  {
+    "rank": 945,
+    "name": "News Eye",
+    "handle": "newseye.bsky.social",
+    "followers": 92303
+  },
+  {
+    "rank": 946,
+    "name": "Katie Notopoulos",
+    "handle": "katienotopoulos.bsky.social",
+    "followers": 92287
+  },
+  {
+    "rank": 947,
+    "name": "Jeremy Corbyn",
+    "handle": "jeremycorbyn.bsky.social",
+    "followers": 92083
+  },
+  {
+    "rank": 948,
+    "name": "Rachel Gilmore",
+    "handle": "rachelgilmore.bsky.social",
+    "followers": 92039
+  },
+  {
+    "rank": 949,
+    "name": "Jill Wine-Banks",
+    "handle": "jillwine-banks.bsky.social",
+    "followers": 92016
+  },
+  {
+    "rank": 950,
+    "name": "European Commission",
+    "handle": "ec.europa.eu",
+    "followers": 92005
+  },
+  {
+    "rank": 951,
+    "name": "Julie K. Brown",
+    "handle": "jkbjournalist.bsky.social",
+    "followers": 91851
+  },
+  {
+    "rank": 952,
+    "name": "pikat",
+    "handle": "pikat.io",
+    "followers": 91834
+  },
+  {
+    "rank": 953,
+    "name": "Michael sisto",
+    "handle": "sistosterone.bsky.social",
+    "followers": 91828
+  },
+  {
+    "rank": 954,
+    "name": "cats being weird little guys",
+    "handle": "weirdlilguys.bsky.social",
+    "followers": 91618
+  },
+  {
+    "rank": 955,
+    "name": "AFT",
+    "handle": "aft.org",
+    "followers": 91495
+  },
+  {
+    "rank": 956,
+    "name": "SarahBCalif",
+    "handle": "sarahbca.bsky.social",
+    "followers": 91489
+  },
+  {
+    "rank": 957,
+    "name": "Coach Finstock",
+    "handle": "coachfinstock.bsky.social",
+    "followers": 91468
+  },
+  {
+    "rank": 958,
+    "name": "𝕲𝖔𝖉𝖎𝖛𝖆 𝕲𝖍𝖔𝖚𝖑",
+    "handle": "godivaghoul.bsky.social",
+    "followers": 91450
+  },
+  {
+    "rank": 959,
+    "name": "Xiao Tong 🦋 CTC",
+    "handle": "velinxi.bsky.social",
+    "followers": 91441
+  },
+  {
+    "rank": 960,
+    "name": "BladeoftheSun",
+    "handle": "bladeofthes.bsky.social",
+    "followers": 91167
+  },
+  {
+    "rank": 961,
+    "name": "Mark Harris",
+    "handle": "markharris.bsky.social",
+    "followers": 91069
+  },
+  {
+    "rank": 962,
+    "name": "Newsweek",
+    "handle": "newsweek.com",
+    "followers": 91026
+  },
+  {
+    "rank": 963,
+    "name": "Mika Pikazo",
+    "handle": "mikapikazompz.bsky.social",
+    "followers": 90940
+  },
+  {
+    "rank": 964,
+    "name": "Joaquin Castro",
+    "handle": "joaquincastrotx.bsky.social",
+    "followers": 90920
+  },
+  {
+    "rank": 965,
+    "name": "Sonya Sloan, M.D.",
+    "handle": "sonyasloanmd.bsky.social",
+    "followers": 90871
+  },
+  {
+    "rank": 966,
+    "name": "Kat  🕊️💙🦋🇺🇦🌻🌊🟧🟦🌈🏳️‍🌈🏳️‍⚧️🎭💖",
+    "handle": "smith83k.bsky.social",
+    "followers": 90844
+  },
+  {
+    "rank": 967,
+    "name": "Bill Simmons",
+    "handle": "billsimmons.bsky.social",
+    "followers": 90800
+  },
+  {
+    "rank": 968,
+    "name": "Unusual Whales",
+    "handle": "unusualwhales.bsky.social",
+    "followers": 90716
+  },
+  {
+    "rank": 969,
+    "name": "beetle moses",
+    "handle": "beetlemoses.bsky.social",
+    "followers": 90672
+  },
+  {
+    "rank": 970,
+    "name": "Malcolm Connecting🏳️‍🌈🏳️‍⚧️👬👭🌊💙LGBTQ+ Democrat Resistance",
+    "handle": "therainbownavy.bsky.social",
+    "followers": 90668
+  },
+  {
+    "rank": 971,
+    "name": "Shiv Ramdas Mens Rice Activist",
+    "handle": "nameshiv.bsky.social",
+    "followers": 90549
+  },
+  {
+    "rank": 972,
+    "name": "Nancy Levine Stearns",
+    "handle": "nancylevinestearns.bsky.social",
+    "followers": 90523
+  },
+  {
+    "rank": 973,
+    "name": "Katelyn Burns",
+    "handle": "katelynburns.com",
+    "followers": 90473
+  },
+  {
+    "rank": 974,
+    "name": "MAKS 25 👀🇺🇦",
+    "handle": "maks23.bsky.social",
+    "followers": 90288
+  },
+  {
+    "rank": 975,
+    "name": "Shams Charania Tweets",
+    "handle": "shamsbot.bsky.social",
+    "followers": 90288
+  },
+  {
+    "rank": 976,
+    "name": "Cortinas ao Contrário",
+    "handle": "snaihtniroccccc.bsky.social",
+    "followers": 90277
+  },
+  {
+    "rank": 977,
+    "name": "Sarah Andersen",
+    "handle": "sarahseeandersen.bsky.social",
+    "followers": 90197
+  },
+  {
+    "rank": 978,
+    "name": "Freddie_Rose🌹 🇨🇦 ⚕️",
+    "handle": "freddierose.bsky.social",
+    "followers": 90143
+  },
+  {
+    "rank": 979,
+    "name": "Senator Mark Warner",
+    "handle": "markwarner.bsky.social",
+    "followers": 89991
+  },
+  {
+    "rank": 980,
+    "name": "Babi",
+    "handle": "babi.net.br",
+    "followers": 89921
+  },
+  {
+    "rank": 981,
+    "name": "chopped unc crisis hotline",
+    "handle": "milesklee.bsky.social",
+    "followers": 89886
+  },
+  {
+    "rank": 982,
+    "name": "Read the book Read Raising Expectations (and Raising Hell)",
+    "handle": "jphillll.bsky.social",
+    "followers": 89858
+  },
+  {
+    "rank": 983,
+    "name": "Claire McCaskill",
+    "handle": "clairecmc.bsky.social",
+    "followers": 89823
+  },
+  {
+    "rank": 984,
+    "name": "Franklin Leonard",
+    "handle": "franklinleonard.bsky.social",
+    "followers": 89819
+  },
+  {
+    "rank": 985,
+    "name": "ZiggyStardust",
+    "handle": "grancracker.bsky.social",
+    "followers": 89810
+  },
+  {
+    "rank": 986,
+    "name": "We all need to make this world better NOT SPAM!",
+    "handle": "aseanbusiness13.bsky.social",
+    "followers": 89769
+  },
+  {
+    "rank": 987,
+    "name": "Field Yates",
+    "handle": "fieldyates.bsky.social",
+    "followers": 89664
+  },
+  {
+    "rank": 988,
+    "name": "itch.io",
+    "handle": "itch.io",
+    "followers": 89664
+  },
+  {
+    "rank": 989,
+    "name": "Anonymous ⩜",
+    "handle": "youranona.bsky.social",
+    "followers": 89632
+  },
+  {
+    "rank": 990,
+    "name": "Kate Starbird",
+    "handle": "katestarbird.bsky.social",
+    "followers": 89576
+  },
+  {
+    "rank": 991,
+    "name": "Elon Musk's Jet Tracking",
+    "handle": "elonjet.net",
+    "followers": 89568
+  },
+  {
+    "rank": 992,
+    "name": "molly conger",
+    "handle": "socialistdogmom.bsky.social",
+    "followers": 89467
+  },
+  {
+    "rank": 993,
+    "name": "Schooley",
+    "handle": "schooley.bsky.social",
+    "followers": 89440
+  },
+  {
+    "rank": 994,
+    "name": "meyo 🌸",
+    "handle": "meyoco.bsky.social",
+    "followers": 89243
+  },
+  {
+    "rank": 995,
+    "name": "Mark Zaid, Esq",
+    "handle": "markzaidesq.bsky.social",
+    "followers": 89206
+  },
+  {
+    "rank": 996,
+    "name": "Private Eye Magazine",
+    "handle": "privateeyenews.bsky.social",
+    "followers": 89159
+  },
+  {
+    "rank": 997,
+    "name": "The News Agents",
+    "handle": "newsagents.bsky.social",
+    "followers": 89120
+  }
+]

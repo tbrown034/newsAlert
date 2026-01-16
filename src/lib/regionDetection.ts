@@ -118,7 +118,7 @@ const regionPatterns: Record<Exclude<WatchpointId, 'all'>, RegionPatterns> = {
     ],
   },
 
-  'ukraine-russia': {
+  'ukraine': {
     high: [
       // Ukraine
       /\bukrain(?:e|ian)\b/i,
@@ -243,32 +243,91 @@ const regionPatterns: Record<Exclude<WatchpointId, 'all'>, RegionPatterns> = {
     ],
   },
 
-  'venezuela': {
+  'latam': {
     high: [
+      // Venezuela
       /\bvenezuela(?:n)?\b/i,
       /\bcaracas\b/i,
       /\bmaduro\b/i,
-      /\bguaid[oóò]/i,  // Word boundary at end doesn't work with accents
+      /\bguaid[oóò]/i,
       /\bjuan\s+guaid/i,
       /\bchavez\b/i,
       /\bchavista/i,
-      /\bpdvsa\b/i,  // State oil company
+      /\bpdvsa\b/i,
       /\bmaracaibo\b/i,
-      /\bvalencia\b/i,
-      /\bbarquisimeto\b/i,
+      // Brazil
+      /\bbrazil(?:ian)?\b/i,
+      /\bbrasilia\b/i,
+      /\blula\b/i,
+      /\bbolsonaro\b/i,
+      /\bsao\s+paulo\b/i,
+      /\brio\s+de\s+janeiro\b/i,
+      // Argentina
+      /\bargentina\b/i,
+      /\bbuenos\s+aires\b/i,
+      /\bmilei\b/i,
+      // Mexico
+      /\bmexico\b/i,
+      /\bmexican\b/i,
+      /\bmexic[oa]n?\b/i,
+      /\bmexico\s+city\b/i,
+      /\bamlo\b/i,
+      /\bsheinbaum\b/i,
+      /\bcartel\b/i,
+      // Colombia
+      /\bcolombia(?:n)?\b/i,
+      /\bbogota\b/i,
+      /\bpetro\b/i,
+      /\bfarc\b/i,
+      /\bmedellin\b/i,
+      // Chile
+      /\bchile(?:an)?\b/i,
+      /\bsantiago\b/i,
+      /\bboric\b/i,
+      // Peru
+      /\bperu(?:vian)?\b/i,
+      /\blima\b/i,
+      // Cuba
+      /\bcuba(?:n)?\b/i,
+      /\bhavana\b/i,
+      /\bcastro\b/i,
+      // Caribbean
+      /\bhaiti(?:an)?\b/i,
+      /\bport.au.prince\b/i,
+      /\bjamaica(?:n)?\b/i,
+      /\bpuerto\s+rico\b/i,
+      /\bdominican\s+republic\b/i,
+      /\bsanto\s+domingo\b/i,
     ],
     medium: [
-      /\bessequibo\b/i,  // Disputed region with Guyana
-      /\bguyana\b/i,     // Often in Venezuela context now
-      /\bcolombia(?:n)?\b.*\bborder\b/i,
-      /\bbrazil(?:ian)?\b.*\bborder\b/i,
+      /\bessequibo\b/i,
+      /\bguyana\b/i,
       /\borinoco\b/i,
-      /\bopposition\b.*\bvenezuela\b/i,
+      /\becuador\b/i,
+      /\bquito\b/i,
+      /\bbolivia(?:n)?\b/i,
+      /\bla\s+paz\b/i,
+      /\bparaguay\b/i,
+      /\buruguay\b/i,
+      /\bpanama\b/i,
+      /\bcosta\s+rica\b/i,
+      /\bnicaragua\b/i,
+      /\bortega\b/i,
+      /\bhonduras\b/i,
+      /\bel\s+salvador\b/i,
+      /\bbukele\b/i,
+      /\bguatemala\b/i,
+      /\bbahamas\b/i,
+      /\btrinidad\b/i,
+      /\bbarbados\b/i,
     ],
     low: [
       /\blatin\s+america\b/i,
       /\bsouth\s+america\b/i,
       /\bcaribbean\b/i,
+      /\bcentral\s+america\b/i,
+      /\blatam\b/i,
+      /\bmercosur\b/i,
     ],
   },
 
@@ -409,9 +468,9 @@ export function detectRegion(
 ): RegionDetectionResult {
   const regions: Exclude<WatchpointId, 'all'>[] = [
     'middle-east',
-    'ukraine-russia',
+    'ukraine',
     'china-taiwan',
-    'venezuela',
+    'latam',
     'us-domestic',
   ];
 
@@ -480,9 +539,9 @@ export function getMessageRegion(
 
 export const regionDisplayNames: Record<WatchpointId, string> = {
   'middle-east': 'Middle East',
-  'ukraine-russia': 'Ukraine',
+  'ukraine': 'Ukraine',
   'china-taiwan': 'Taiwan',
-  'venezuela': 'Venezuela',
+  'latam': 'Latin America',
   'us-domestic': 'US',
   'seismic': 'Seismic Activity',
   'all': 'All Regions',
@@ -490,9 +549,9 @@ export const regionDisplayNames: Record<WatchpointId, string> = {
 
 export const regionEmojis: Record<WatchpointId, string> = {
   'middle-east': '🇮🇱',
-  'ukraine-russia': '🇺🇦',
+  'ukraine': '🇺🇦',
   'china-taiwan': '🇹🇼',
-  'venezuela': '🇻🇪',
+  'latam': '🌎',
   'us-domestic': '🇺🇸',
   'seismic': '🌍',
   'all': '🌍',

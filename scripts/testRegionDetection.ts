@@ -67,47 +67,47 @@ const testCases: TestCase[] = [
   // ===== UKRAINE-RUSSIA =====
   {
     text: "BREAKING: Massive drone attack on Kyiv overnight",
-    expectedRegion: 'ukraine-russia',
+    expectedRegion: 'ukraine',
     description: "Kyiv reference",
   },
   {
     text: "Russian forces advance near Bakhmut, ISW reports",
-    expectedRegion: 'ukraine-russia',
+    expectedRegion: 'ukraine',
     description: "Russia + Bakhmut",
   },
   {
     text: "Zelensky: We need more air defense systems from NATO allies",
-    expectedRegion: 'ukraine-russia',
+    expectedRegion: 'ukraine',
     description: "Zelensky reference",
   },
   {
     text: "Putin orders partial mobilization in border regions",
-    expectedRegion: 'ukraine-russia',
+    expectedRegion: 'ukraine',
     description: "Putin + mobilization",
   },
   {
     text: "Explosions reported at Russian airbase in Crimea",
-    expectedRegion: 'ukraine-russia',
+    expectedRegion: 'ukraine',
     description: "Russia + Crimea",
   },
   {
     text: "Ukrainian forces repel assault near Avdiivka",
-    expectedRegion: 'ukraine-russia',
+    expectedRegion: 'ukraine',
     description: "Ukraine + Avdiivka",
   },
   {
     text: "Shahed drones launched from Belarus toward Kharkiv",
-    expectedRegion: 'ukraine-russia',
+    expectedRegion: 'ukraine',
     description: "Shahed + Belarus + Kharkiv",
   },
   {
     text: "Wagner Group forces seen moving toward Belgorod",
-    expectedRegion: 'ukraine-russia',
+    expectedRegion: 'ukraine',
     description: "Wagner + Belgorod",
   },
   {
     text: "Black Sea Fleet vessel reportedly hit by Ukrainian drone",
-    expectedRegion: 'ukraine-russia',
+    expectedRegion: 'ukraine',
     description: "Black Sea + Ukrainian",
   },
 
@@ -151,22 +151,22 @@ const testCases: TestCase[] = [
   // ===== VENEZUELA =====
   {
     text: "Maduro government arrests opposition leaders in Caracas",
-    expectedRegion: 'venezuela',
+    expectedRegion: 'latam',
     description: "Maduro + Caracas",
   },
   {
     text: "Venezuela mobilizes troops near Essequibo border with Guyana",
-    expectedRegion: 'venezuela',
+    expectedRegion: 'latam',
     description: "Venezuela + Essequibo + Guyana",
   },
   {
     text: "Opposition leader Guaidó calls for international pressure",
-    expectedRegion: 'venezuela',
+    expectedRegion: 'latam',
     description: "Guaidó reference",
   },
   {
     text: "PDVSA reports decline in oil production amid sanctions",
-    expectedRegion: 'venezuela',
+    expectedRegion: 'latam',
     description: "PDVSA reference",
   },
 
@@ -216,7 +216,7 @@ const testCases: TestCase[] = [
   },
   {
     text: "Pentagon announces new weapons package for Ukraine",
-    expectedRegion: 'ukraine-russia',
+    expectedRegion: 'ukraine',
     sourceDefault: 'all',
     description: "Pentagon + Ukraine - should detect UA",
   },
@@ -230,8 +230,8 @@ const testCases: TestCase[] = [
   // ===== FALLBACK CASES =====
   {
     text: "Update: death toll rises to 15 in overnight attack",
-    expectedRegion: 'ukraine-russia',
-    sourceDefault: 'ukraine-russia',
+    expectedRegion: 'ukraine',
+    sourceDefault: 'ukraine',
     description: "Ambiguous - should use source default",
   },
   {
@@ -250,8 +250,8 @@ const testCases: TestCase[] = [
   // ===== REGION-SPECIFIC SOURCE =====
   {
     text: "Pentagon announces new policy on recruitment",
-    expectedRegion: 'ukraine-russia',
-    sourceDefault: 'ukraine-russia',
+    expectedRegion: 'ukraine',
+    sourceDefault: 'ukraine',
     isRegionSpecific: true,
     description: "Euromaidan-style source - always use source region",
   },

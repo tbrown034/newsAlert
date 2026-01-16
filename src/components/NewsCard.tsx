@@ -3,19 +3,18 @@
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import { CheckBadgeIcon as CheckBadgeSolid } from '@heroicons/react/24/solid';
 import { NewsItem } from '@/types';
-import { getActivityIndicator } from '@/lib/activityDetection';
 import { PlatformIcon, platformColors } from './PlatformIcon';
 
 interface NewsCardProps {
   item: NewsItem;
 }
 
-// Source type colors - Light theme
+// Source type colors - Light/Dark theme
 const tierColors: Record<string, string> = {
-  official: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-  osint: 'bg-amber-100 text-amber-700 border-amber-200',
-  reporter: 'bg-blue-100 text-blue-700 border-blue-200',
-  ground: 'bg-orange-100 text-orange-700 border-orange-200',
+  official: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50',
+  osint: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/50',
+  reporter: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800/50',
+  ground: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/50',
 };
 
 function formatTimeAgo(date: Date): string {
@@ -35,9 +34,6 @@ export function NewsCard({ item }: NewsCardProps) {
 
   // Check if content likely has media (images, video links)
   const hasMedia = /\.(jpg|jpeg|png|gif|webp|mp4|webm)|youtube\.com|youtu\.be|twitter\.com\/.*\/(photo|video)/i.test(item.url || item.content);
-
-  // Activity detection
-  const activityIndicator = item.sourceActivity ? getActivityIndicator(item.sourceActivity) : null;
 
   const handleOpenSource = () => {
     if (item.url) {
@@ -70,7 +66,7 @@ export function NewsCard({ item }: NewsCardProps) {
       {/* Two-column layout: Source on left, Content on right */}
       <div className="flex gap-2 sm:gap-3">
         {/* Left column: Source info */}
-        <div className="flex-shrink-0 w-24 sm:w-28">
+        <div className="flex-shrink-0 w-28 sm:w-36">
           <div className="flex flex-col gap-1.5">
             {/* Platform icon + name */}
             <div className="flex items-center gap-1.5">
@@ -86,7 +82,7 @@ export function NewsCard({ item }: NewsCardProps) {
             </div>
             {/* Source name on its own line */}
             <div className="flex items-center gap-1">
-              <span className="text-xs font-semibold text-slate-700 dark:text-[#e7e9ea] line-clamp-1">
+              <span className="text-xs font-semibold text-slate-700 dark:text-[#e7e9ea] line-clamp-2 leading-tight">
                 {item.source.name}
               </span>
             </div>
@@ -100,14 +96,6 @@ export function NewsCard({ item }: NewsCardProps) {
                 {formatTimeAgo(item.timestamp)}
               </span>
             </div>
-
-            {/* Activity indicator */}
-            {activityIndicator && (
-              <div className={`flex items-center gap-1 text-2xs ${activityIndicator.color}`}>
-                <span>{activityIndicator.icon}</span>
-                <span className="font-medium">{activityIndicator.multiplier}× active</span>
-              </div>
-            )}
           </div>
         </div>
 
@@ -118,14 +106,17 @@ export function NewsCard({ item }: NewsCardProps) {
             {item.title}
           </p>
 
-          {/* Footer row: Media + Link */}
+          {/* Footer row: Media + External Link */}
           <div className="flex items-center justify-end gap-2 mt-2">
             {hasMedia && (
-              <span className="text-2xs text-purple-500" title="Contains media">
+              <span className="text-2xs text-purple-500" title="Contains media" aria-label="Contains media">
                 🖼
               </span>
             )}
-            <ArrowTopRightOnSquareIcon className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600" />
+            <span className="inline-flex items-center gap-1 text-2xs text-slate-400 dark:text-[#71767b] group-hover:text-blue-500 dark:group-hover:text-[#1d9bf0] transition-colors">
+              <span className="sr-only">Opens in new tab</span>
+              <ArrowTopRightOnSquareIcon className="w-3.5 h-3.5" aria-hidden="true" />
+            </span>
           </div>
         </div>
       </div>

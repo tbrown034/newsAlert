@@ -1,0 +1,39 @@
+22,Heather Cox Richardson (TDPR),@hcrichardson.bsky.social,750186
+23,Pete Buttigieg,@petebuttigieg.bsky.social,741854
+24,The Lincoln Project,@lincolnproject.us,734380
+25,The Guardian,@theguardian.com,734127
+26,Marc Elias,@marcelias.bsky.social,725307
+27,Mueller She Wrote,@muellershewrote.com,722002
+28,Adam Kinzinger,@adamkinzinger.substack.com,721693
+110,David Corn,@davidcorn.bsky.social,320127
+111,Kumail Nanjiani,@kumail.bsky.social,318656
+112,James Gunn,@jamesgunn.bsky.social,318228
+113,Jen Rubin,@jenrubin.bsky.social,318025
+114,Shitpost so que de verdade,@shitpostverdade2.bsky.social,317568
+115,Neil Gaiman,@neilhimself.neilgaiman.com,315186
+116,Kyle Griffin,@kylegriffin1.bsky.social,313966
+117,Andrew Weissmann,@weissmann.substack.com,313800
+430,Helen Kennedy,@helenkennedy.bsky.social,151331
+431,Skyleigh Uhrich,@skylee1.bsky.social,150989
+432,Alastair Campbell,@alastaircampbell2.bsky.social,150474
+433,TPM,@talkingpointsmemo.com,150427
+434,Jason Schreier,@jasonschreier.bsky.social,150012
+435,Senator Sheldon Whitehouse,@whitehouse.senate.gov,149615
+436,Sandi Bachom,@sandibachom.bsky.social,149363
+437,Tris,@trisresists.bsky.social,148937
+438,Best of Dying Twitter,@bestofdyingtwit.bsky.social,148875
+439,AntifaPuddinPop,@antifapuddinpop.bsky.social,147940
+984,Franklin Leonard,@franklinleonard.bsky.social,89819
+985,ZiggyStardust,@grancracker.bsky.social,89810
+986,We all need to make this world better,@aseanbusiness13.bsky.social,89769
+987,Field Yates,@fieldyates.bsky.social,89664
+988,itch.io,@itch.io,89664
+989,Anonymous,@youranona.bsky.social,89632
+990,Kate Starbird,@katestarbird.bsky.social,89576
+991,Elon Musks Jet Tracking,@elonjet.net,89568
+992,molly conger,@socialistdogmom.bsky.social,89467
+993,Schooley,@schooley.bsky.social,89440
+994,meyo,@meyoco.bsky.social,89243
+995,Mark Zaid Esq,@markzaidesq.bsky.social,89206
+996,Private Eye Magazine,@privateeyenews.bsky.social,89159
+997,The News Agents,@newsagents.bsky.social,89120

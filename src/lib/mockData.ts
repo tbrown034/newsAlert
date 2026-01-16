@@ -3,15 +3,15 @@ import { Watchpoint, NewsItem, Source } from '@/types';
 export const watchpoints: Watchpoint[] = [
   {
     id: 'middle-east',
-    name: 'Middle East (Iran)',
-    shortName: 'Iran',
+    name: 'Middle East',
+    shortName: 'M. East',
     priority: 1,
     activityLevel: 'elevated',
     color: '#ef4444',
   },
   {
-    id: 'ukraine-russia',
-    name: 'Ukraine-Russia',
+    id: 'ukraine',
+    name: 'Ukraine & Eastern Europe',
     shortName: 'Ukraine',
     priority: 2,
     activityLevel: 'high',
@@ -26,16 +26,16 @@ export const watchpoints: Watchpoint[] = [
     color: '#3b82f6',
   },
   {
-    id: 'venezuela',
-    name: 'Venezuela',
-    shortName: 'Venezuela',
+    id: 'latam',
+    name: 'Latin America & Caribbean',
+    shortName: 'LatAm',
     priority: 4,
     activityLevel: 'low',
     color: '#10b981',
   },
   {
     id: 'us-domestic',
-    name: 'US Domestic',
+    name: 'United States',
     shortName: 'US',
     priority: 5,
     activityLevel: 'normal',
@@ -81,7 +81,7 @@ const sources: Record<string, Source> = {
     platform: 'twitter',
     tier: 'osint',
     confidence: 82,
-    region: 'ukraine-russia',
+    region: 'ukraine',
     url: 'https://twitter.com/AuroraIntel',
   },
   bbc: {
@@ -90,7 +90,7 @@ const sources: Record<string, Source> = {
     platform: 'rss',
     tier: 'reporter',
     confidence: 90,
-    region: 'ukraine-russia',
+    region: 'ukraine',
   },
   warmonitor: {
     id: 'warmonitor',
@@ -98,7 +98,7 @@ const sources: Record<string, Source> = {
     platform: 'telegram',
     tier: 'osint',
     confidence: 70,
-    region: 'ukraine-russia',
+    region: 'ukraine',
   },
   localreporter: {
     id: 'localreporter',
@@ -153,7 +153,7 @@ export const mockNewsItems: NewsItem[] = [
       'Ukrainian Air Force reports interception of 28 out of 35 Shahed drones targeting energy infrastructure in central and western Ukraine overnight.',
     source: sources.aurora,
     timestamp: new Date(Date.now() - 45 * 60 * 1000), // 45 minutes ago
-    region: 'ukraine-russia',
+    region: 'ukraine',
     verificationStatus: 'multiple-sources',
     isBreaking: true,
   },
@@ -164,7 +164,7 @@ export const mockNewsItems: NewsItem[] = [
       'BBC sources indicate Ukrainian forces have made tactical gains in the southern Zaporizhzhia region. Russian military bloggers acknowledge loss of several positions.',
     source: sources.bbc,
     timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-    region: 'ukraine-russia',
+    region: 'ukraine',
     verificationStatus: 'confirmed',
     url: 'https://bbc.com/news/world-europe-123',
   },
@@ -175,7 +175,7 @@ export const mockNewsItems: NewsItem[] = [
       'Telegram channels reporting intense artillery exchanges and infantry clashes in the Bakhmut sector. Both sides claiming successful defensive operations.',
     source: sources.warmonitor,
     timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago
-    region: 'ukraine-russia',
+    region: 'ukraine',
     verificationStatus: 'multiple-sources',
   },
   {
