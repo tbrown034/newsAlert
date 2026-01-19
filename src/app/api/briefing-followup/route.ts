@@ -10,6 +10,7 @@ import { WatchpointId } from '@/types';
 import { regionDisplayNames } from '@/lib/regionDetection';
 
 export const dynamic = 'force-dynamic';
+export const maxDuration = 30; // Allow up to 30 seconds for AI response
 
 // Model pricing per 1M tokens
 const MODEL_PRICING = {

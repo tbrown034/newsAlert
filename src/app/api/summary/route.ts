@@ -8,6 +8,7 @@ import { WatchpointId } from '@/types';
 const VALID_REGIONS: WatchpointId[] = ['all', 'middle-east', 'ukraine', 'china-taiwan', 'latam', 'us-domestic', 'seismic'];
 
 export const dynamic = 'force-dynamic';
+export const maxDuration = 60; // Allow up to 60 seconds for AI generation (requires Vercel Pro)
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
