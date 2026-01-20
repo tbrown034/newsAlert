@@ -31,7 +31,7 @@ src/
 ```
 
 ## Key Features
-- **380+ OSINT sources** (Bluesky + RSS)
+- **580+ OSINT sources** (437 RSS + 150+ Bluesky)
 - **Source tiers**: OFFICIAL, OSINT, REPORTER, GROUND
 - **Severity detection**: CRITICAL, HIGH, MODERATE
 - **Multi-layer maps**: Main, Seismic, Weather, Fires, Outages, Travel
@@ -67,3 +67,4 @@ The app fetches from 150+ Bluesky accounts. Error handling in `src/lib/rss.ts`:
 - KISS - Keep It Simple
 - Mobile-first, dark theme
 - Work autonomously
+- **Update dev log** (`docs/devjournal.md`) after every significant or long-running action
