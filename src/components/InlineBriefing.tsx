@@ -281,7 +281,7 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
       </div>
 
       {/* Footer - stats with tokens, latency, cost */}
-      <div className="px-4 py-2 bg-slate-50 dark:bg-[#16181c] border-t border-slate-100 dark:border-[#2f3336] text-2xs text-slate-400 dark:text-[#536471] flex justify-between flex-wrap gap-1">
+      <div className="px-4 py-2 bg-slate-50 dark:bg-[#16181c] border-t border-slate-100 dark:border-[#2f3336] text-2xs text-slate-400 dark:text-[#536471] flex flex-col xs:flex-row xs:justify-between gap-1">
         <div className="flex items-center gap-2">
           <span>{briefing.sourcesAnalyzed} posts</span>
           {(briefing.pending || briefing.limited) && (
@@ -295,7 +295,7 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
           {briefing.fromCache && <span>cached</span>}
           {briefing.usage && (
             <>
-              <span>{briefing.usage.inputTokens + briefing.usage.outputTokens} tok</span>
+              <span className="hidden xs:inline">{briefing.usage.inputTokens + briefing.usage.outputTokens} tok</span>
               <span>{briefing.usage.latencyMs > 1000 ? `${(briefing.usage.latencyMs / 1000).toFixed(1)}s` : `${briefing.usage.latencyMs}ms`}</span>
               <span>${briefing.usage.costUsd.toFixed(4)}</span>
             </>

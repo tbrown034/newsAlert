@@ -319,32 +319,33 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
         <div className="absolute top-2 sm:top-4 left-2 sm:left-4 flex flex-col gap-1 z-10" role="group" aria-label="Map zoom controls">
           <button
             onClick={handleZoomIn}
-            className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-gray-300 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-w-[40px] min-h-[40px] flex items-center justify-center"
+            className="p-2.5 bg-black/60 hover:bg-black/80 rounded-lg text-gray-300 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Zoom in"
           >
-            <PlusIcon className="w-4 h-4" />
+            <PlusIcon className="w-5 h-5" />
           </button>
           <button
             onClick={handleZoomOut}
-            className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-gray-300 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-w-[40px] min-h-[40px] flex items-center justify-center"
+            className="p-2.5 bg-black/60 hover:bg-black/80 rounded-lg text-gray-300 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Zoom out"
           >
-            <MinusIcon className="w-4 h-4" />
+            <MinusIcon className="w-5 h-5" />
           </button>
           <button
             onClick={handleReset}
-            className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-gray-300 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-w-[40px] min-h-[40px] flex items-center justify-center"
+            className="p-2.5 bg-black/60 hover:bg-black/80 rounded-lg text-gray-300 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Reset map view"
           >
-            <ArrowPathIcon className="w-4 h-4" />
+            <ArrowPathIcon className="w-5 h-5" />
           </button>
         </div>
 
         {/* "All Regions" button */}
         <button
           onClick={() => onSelect('all')}
+          aria-pressed={selected === 'all'}
           className={`
-            absolute bottom-4 left-4 px-4 py-2 rounded-full text-sm font-medium
+            absolute bottom-4 left-4 px-4 py-2.5 rounded-full text-sm font-medium min-h-[44px]
             transition-all duration-200 z-10
             ${selected === 'all'
               ? 'bg-blue-500 text-white'
@@ -373,7 +374,7 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
       </div>
 
       {/* Activity Status Bar - Always visible */}
-      <div className="pl-28 sm:pl-32 pr-3 sm:pr-4 py-2.5 sm:py-3 bg-slate-900/90 backdrop-blur-sm border-t border-slate-700/50 flex items-center justify-between">
+      <div className="px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900/90 backdrop-blur-sm border-t border-slate-700/50 flex items-center justify-between">
         {selected === 'all' ? (
           // Global view
           <>

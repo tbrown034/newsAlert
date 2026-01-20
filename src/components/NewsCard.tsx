@@ -107,7 +107,7 @@ export function NewsCard({ item }: NewsCardProps) {
             <span className="text-2xs text-slate-400 dark:text-[#71767b]" suppressHydrationWarning>
               · {formatTimeAgo(item.timestamp)}
             </span>
-            <span className="text-2xs text-slate-400 dark:text-[#71767b]" suppressHydrationWarning>
+            <span className="hidden sm:inline text-2xs text-slate-400 dark:text-[#71767b]" suppressHydrationWarning>
               · {item.timestamp.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
             </span>
           </div>

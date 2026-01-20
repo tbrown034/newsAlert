@@ -403,8 +403,10 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                   <button
                     key={tab.id}
                     onClick={() => setHeroView(tab.id)}
+                    aria-label={tab.label}
+                    aria-pressed={heroView === tab.id}
                     className={`
-                      flex items-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-2.5 rounded-md text-xs font-medium transition-colors
+                      flex items-center gap-1 sm:gap-1.5 px-3 py-2.5 sm:px-3.5 rounded-md text-xs font-medium transition-colors min-h-[44px]
                       ${heroView === tab.id
                         ? 'bg-blue-600 text-white'
                         : 'text-slate-300 hover:text-white hover:bg-slate-700'
@@ -412,7 +414,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                     `}
                   >
                     <tab.icon className="w-4 h-4" />
-                    <span className="hidden sm:inline">{tab.label}</span>
+                    <span className="hidden xs:inline sm:inline">{tab.label}</span>
                   </button>
                 ))}
 
@@ -420,7 +422,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                   <button
                     onClick={() => setShowMoreTabs(!showMoreTabs)}
                     className={`
-                      flex items-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-2.5 rounded-md text-xs font-medium transition-colors
+                      flex items-center gap-1 sm:gap-1.5 px-3 py-2.5 sm:px-3.5 rounded-md text-xs font-medium transition-colors min-h-[44px]
                       focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
                       ${secondaryTabs.some(t => t.id === heroView)
                         ? 'bg-blue-600 text-white'
@@ -432,12 +434,12 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                     aria-label="More map layers"
                   >
                     <EllipsisHorizontalIcon className="w-4 h-4" />
-                    <span className="hidden sm:inline">More</span>
+                    <span className="hidden xs:inline sm:inline">More</span>
                   </button>
 
                   {showMoreTabs && (
                     <div
-                      className="absolute top-full right-0 mt-2 bg-slate-800 rounded-lg shadow-xl border border-slate-700 py-1.5 min-w-[140px] z-50"
+                      className="absolute top-full right-0 mt-2 bg-slate-800 rounded-lg shadow-xl border border-slate-700 py-1 min-w-[160px] z-50"
                       role="menu"
                       aria-orientation="vertical"
                     >
@@ -450,7 +452,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                             setShowMoreTabs(false);
                           }}
                           className={`
-                            w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-left transition-colors
+                            w-full flex items-center gap-2.5 px-4 py-3 text-sm font-medium text-left transition-colors min-h-[44px]
                             focus:outline-none focus-visible:bg-slate-600
                             ${heroView === tab.id ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white'}
                           `}

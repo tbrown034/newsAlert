@@ -586,6 +586,8 @@ a.link:hover {
 @media (min-width: 400px) {
   .xs\:block { display: block; }
   .xs\:inline { display: inline; }
+  .xs\:flex-row { flex-direction: row; }
+  .xs\:justify-between { justify-content: space-between; }
   .hidden.xs\:block { display: block; }
   .hidden.xs\:inline { display: inline; }
 }

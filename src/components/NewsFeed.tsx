@@ -478,7 +478,7 @@ export function NewsFeed({
                             setMoreDropdownOpen(false);
                           }}
                           className={`
-                            px-3 py-2 text-sm font-medium rounded-md transition-colors text-left
+                            px-3 py-3 text-sm font-medium rounded-md transition-colors text-left min-h-[44px]
                             ${isSelected
                               ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
                               : 'text-slate-600 dark:text-[#e7e9ea] hover:bg-slate-100 dark:hover:bg-[#2f3336]'
