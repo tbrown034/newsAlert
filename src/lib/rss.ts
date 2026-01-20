@@ -1,4 +1,4 @@
-import { NewsItem, Source, VerificationStatus, WatchpointId } from '@/types';
+import { NewsItem, Source, VerificationStatus } from '@/types';
 import { classifyRegion, isBreakingNews } from './sources';
 import { createHash } from 'crypto';
 
@@ -110,33 +110,6 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, '').trim();
 }
 
-// Truncate text to a clean sentence boundary for use as title
-function truncateToSentence(text: string, maxLength: number): string {
-  if (!text) return '';
-  const cleaned = stripHtml(text).trim();
-  if (cleaned.length <= maxLength) return cleaned;
-
-  // Try to find a sentence boundary (. ! ?)
-  const truncated = cleaned.substring(0, maxLength);
-  const lastSentence = Math.max(
-    truncated.lastIndexOf('. '),
-    truncated.lastIndexOf('! '),
-    truncated.lastIndexOf('? ')
-  );
-
-  if (lastSentence > maxLength * 0.5) {
-    return truncated.substring(0, lastSentence + 1);
-  }
-
-  // Fall back to word boundary
-  const lastSpace = truncated.lastIndexOf(' ');
-  if (lastSpace > maxLength * 0.7) {
-    return truncated.substring(0, lastSpace) + '...';
-  }
-
-  return truncated + '...';
-}
-
 // Decode HTML entities
 function decodeHtmlEntities(text: string): string {
   const entities: Record<string, string> = {
@@ -182,13 +155,22 @@ interface BlueskyPost {
     record: {
       text: string;
       createdAt: string;
-      embed?: {
-        external?: {
-          uri: string;
-          title?: string;
-          description?: string;
-        };
+    };
+    // Embed data is at the post level, not record level
+    embed?: {
+      $type?: string;
+      images?: Array<{
+        alt?: string;
+        thumb?: string;
+      }>;
+      external?: {
+        uri?: string;
+        title?: string;
+        description?: string;
       };
+      // For video embeds
+      playlist?: string;
+      thumbnail?: string;
     };
   };
 }
@@ -340,10 +322,31 @@ async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<R
     }
 
     return data.feed.map((item) => {
-      const text = item.post.record.text;
+      let text = item.post.record.text;
       const createdAt = item.post.record.createdAt;
       const postId = item.post.uri.split('/').pop() || item.post.cid;
       const link = `https://bsky.app/profile/${item.post.author.handle}/post/${postId}`;
+      const embed = item.post.embed;
+
+      // Handle media-only posts (empty text but has embed)
+      if (!text || text.trim() === '') {
+        if (embed) {
+          const embedType = embed.$type || '';
+          if (embedType.includes('video')) {
+            text = '📹 [Video]';
+          } else if (embedType.includes('images') || embed.images?.length) {
+            // Try to use image alt text if available
+            const altText = embed.images?.[0]?.alt;
+            text = altText ? `🖼 ${altText}` : '🖼 [Image]';
+          } else if (embed.external?.title) {
+            text = embed.external.title;
+          } else {
+            text = '📎 [Media attachment]';
+          }
+        } else {
+          text = '[No content]';
+        }
+      }
 
       return {
         title: text,
@@ -410,7 +413,7 @@ export async function fetchRssFeed(
         source,
         timestamp: new Date(item.pubDate),
         region,
-        verificationStatus: getVerificationStatus(source.tier, source.confidence),
+        verificationStatus: getVerificationStatus(source.sourceType, source.confidence),
         url: item.link,
         alertStatus: null,
         isBreaking: isBreakingNews(item.title, item.description),
@@ -453,7 +456,7 @@ export async function fetchRssFeed(
         source,
         timestamp: new Date(item.pubDate),
         region,
-        verificationStatus: getVerificationStatus(source.tier, source.confidence),
+        verificationStatus: getVerificationStatus(source.sourceType, source.confidence),
         url: item.link,
         alertStatus: null, // Will be set by processAlertStatuses in API
         isBreaking: isBreakingNews(item.title, item.description), // Deprecated, kept for compatibility
@@ -470,13 +473,13 @@ export async function fetchRssFeed(
   }
 }
 
-// Determine verification status based on source tier and confidence
+// Determine verification status based on source type and confidence
 function getVerificationStatus(
-  tier: Source['tier'],
+  sourceType: Source['sourceType'],
   confidence: number
 ): VerificationStatus {
-  if (tier === 'official' || confidence >= 90) return 'confirmed';
-  if (tier === 'reporter' || confidence >= 75) return 'multiple-sources';
+  if (sourceType === 'official' || confidence >= 90) return 'confirmed';
+  if (sourceType === 'reporter' || sourceType === 'news-org' || confidence >= 75) return 'multiple-sources';
   return 'unverified';
 }
 

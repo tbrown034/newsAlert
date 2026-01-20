@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { NewsItem, WatchpointId } from '@/types';
 import { NewsCard } from './NewsCard';
 import { InlineBriefing } from './InlineBriefing';
-import { ArrowPathIcon, ExclamationTriangleIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, ExclamationTriangleIcon, GlobeAltIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { regionDisplayNames } from '@/lib/regionDetection';
 
 interface ActivityData {
@@ -16,6 +16,9 @@ interface ActivityData {
   vsNormal?: string;
   percentChange?: number;
 }
+
+// Extended type for tab selection (includes 'main' which isn't a region)
+type SelectedTab = WatchpointId | 'main';
 
 interface NewsFeedProps {
   items: NewsItem[];
@@ -112,14 +115,35 @@ function VolumeIndicator({ activity }: { activity: ActivityData }) {
   );
 }
 
-// Region tab configuration
-const regionTabs: { id: WatchpointId; label: string; icon?: string }[] = [
-  { id: 'all', label: 'All' },
+// Tab configuration
+// 'main' is a special filter (high-impact stories), not a region
+type TabId = WatchpointId | 'main';
+
+interface TabConfig {
+  id: TabId;
+  label: string;
+  alwaysVisible?: boolean; // Show on all screen sizes
+  minScreen?: 'sm' | 'md' | 'lg'; // Minimum screen size to show inline
+}
+
+// All tabs in order - Main and All always visible, regions in More dropdown
+const allTabs: TabConfig[] = [
+  { id: 'main', label: 'Main', alwaysVisible: true },
+  { id: 'all', label: 'All', alwaysVisible: true },
+  // Regional tabs - all go in More dropdown
+  { id: 'us', label: 'US' },
   { id: 'middle-east', label: 'Middle East' },
-  { id: 'ukraine', label: 'Ukraine' },
-  { id: 'china-taiwan', label: 'Taiwan' },
-  { id: 'latam', label: 'LatAm' },
-  { id: 'us-domestic', label: 'US' },
+  { id: 'europe-russia', label: 'Europe-Russia' },
+  { id: 'asia', label: 'Asia' },
+  { id: 'latam', label: 'Americas' },
+];
+
+// Platform filter options
+type PlatformFilter = 'all' | 'bluesky' | 'rss';
+const platformFilters: { id: PlatformFilter; label: string }[] = [
+  { id: 'all', label: 'All' },
+  { id: 'bluesky', label: 'Bluesky' },
+  { id: 'rss', label: 'RSS' },
 ];
 
 // Format relative time for last updated
@@ -153,13 +177,81 @@ export function NewsFeed({
   // Track previously seen item IDs to animate new ones
   const [seenIds, setSeenIds] = useState<Set<string>>(new Set());
   const [newItemIds, setNewItemIds] = useState<Set<string>>(new Set());
+  const [platformFilter, setPlatformFilter] = useState<PlatformFilter>('all');
+  const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
+  const [selectedTab, setSelectedTab] = useState<SelectedTab>('main'); // Local tab state, defaults to Main
+  const moreDropdownRef = useRef<HTMLDivElement>(null);
   const isInitialLoadRef = useRef(true);
 
+  // Handle tab selection - 'main' and 'all' stay local, regions propagate up
+  const handleTabSelect = useCallback((tabId: TabId) => {
+    setSelectedTab(tabId);
+    // For region tabs, also update parent state
+    if (tabId !== 'main' && onSelectWatchpoint) {
+      onSelectWatchpoint(tabId as WatchpointId);
+    }
+  }, [onSelectWatchpoint]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (moreDropdownRef.current && !moreDropdownRef.current.contains(event.target as Node)) {
+        setMoreDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Keywords that boost items into Main feed
+  const MAIN_FEED_KEYWORDS_HIGH = ['breaking', 'attack', 'invasion', 'war', 'missile', 'nuclear', 'coup', 'killed'];
+  const MAIN_FEED_KEYWORDS_MED = ['strike', 'explosion', 'protest', 'emergency', 'casualties', 'troops'];
+  const MAIN_FEED_KEYWORDS_LOW = ['military', 'sanctions', 'tensions', 'ceasefire', 'diplomatic'];
+
+  // Calculate Main Feed score for an item
+  const getMainFeedScore = useCallback((item: NewsItem): number => {
+    // Base value from source confidence (map 0-100 to 1-5)
+    const baseValue = Math.min(5, Math.max(1, Math.ceil(item.source.confidence / 20)));
+
+    // Keyword modifier
+    const titleLower = item.title.toLowerCase();
+    let keywordMod = 0;
+    if (MAIN_FEED_KEYWORDS_HIGH.some(kw => titleLower.includes(kw))) keywordMod = 3;
+    else if (MAIN_FEED_KEYWORDS_MED.some(kw => titleLower.includes(kw))) keywordMod = 2;
+    else if (MAIN_FEED_KEYWORDS_LOW.some(kw => titleLower.includes(kw))) keywordMod = 1;
+
+    // Region activity modifier
+    let regionMod = 0;
+    const regionActivity = activity?.[item.region];
+    if (regionActivity?.level === 'critical') regionMod = 2;
+    else if (regionActivity?.level === 'elevated') regionMod = 1;
+
+    return baseValue + keywordMod + regionMod;
+  }, [activity]);
+
   const filteredItems = useMemo(() => {
-    return selectedWatchpoint === 'all'
-      ? items
-      : items.filter((item) => item.region === selectedWatchpoint);
-  }, [items, selectedWatchpoint]);
+    let filtered = items;
+
+    // Apply tab filter
+    if (selectedTab === 'main') {
+      // Main feed: score >= 5 OR base value >= 4 (high-value sources always qualify)
+      filtered = items.filter(item => {
+        const score = getMainFeedScore(item);
+        const baseValue = Math.min(5, Math.max(1, Math.ceil(item.source.confidence / 20)));
+        return score >= 5 || baseValue >= 4;
+      });
+    } else if (selectedTab !== 'all') {
+      // Region filter
+      filtered = items.filter((item) => item.region === selectedTab);
+    }
+
+    // Apply platform filter
+    if (platformFilter !== 'all') {
+      filtered = filtered.filter((item) => item.source.platform === platformFilter);
+    }
+
+    return filtered;
+  }, [items, selectedTab, platformFilter, getMainFeedScore]);
 
   const sortedItems = useMemo(() => {
     return [...filteredItems].sort(
@@ -204,19 +296,61 @@ export function NewsFeed({
     }
   }, [sortedItems, seenIds]);
 
-  // Reset seen items when region changes
+  // Reset seen items when tab changes
   useEffect(() => {
     isInitialLoadRef.current = true;
     setSeenIds(new Set());
     setNewItemIds(new Set());
-  }, [selectedWatchpoint]);
+  }, [selectedTab]);
 
+  // Count items by region
   const regionCounts = useMemo(() => {
     return items.reduce((acc, item) => {
       acc[item.region] = (acc[item.region] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
   }, [items]);
+
+  // Count Main feed items
+  const mainFeedCount = useMemo(() => {
+    return items.filter(item => {
+      const score = getMainFeedScore(item);
+      const baseValue = Math.min(5, Math.max(1, Math.ceil(item.source.confidence / 20)));
+      return score >= 5 || baseValue >= 4;
+    }).length;
+  }, [items, getMainFeedScore]);
+
+  // Count items by platform (respects current filter)
+  const platformCounts = useMemo(() => {
+    return filteredItems.reduce((acc, item) => {
+      const platform = item.source.platform;
+      acc[platform] = (acc[platform] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+  }, [filteredItems]);
+
+  // Determine which tabs go in More dropdown based on screen size
+  // For simplicity, we'll show overflow tabs in More on mobile
+  const getTabCount = (tabId: TabId): number => {
+    if (tabId === 'main') return mainFeedCount;
+    if (tabId === 'all') return items.length;
+    return regionCounts[tabId] || 0;
+  };
+
+  // Check if a tab is in the More dropdown (not visible inline)
+  const isInMoreDropdown = (tab: TabConfig): boolean => {
+    if (tab.alwaysVisible) return false;
+    // Without JS media queries, we'll put non-alwaysVisible tabs in More
+    // The responsive classes will show/hide them appropriately
+    return !tab.minScreen;
+  };
+
+  // Tabs that always show inline
+  const inlineTabs = allTabs.filter(t => t.alwaysVisible || t.minScreen);
+  // Tabs that go in More dropdown
+  const dropdownTabs = allTabs.filter(t => !t.alwaysVisible && !t.minScreen);
+  // Check if selected tab is in dropdown
+  const isDropdownTabSelected = dropdownTabs.some(t => t.id === selectedTab);
 
   // Get animation class for an item
   const getItemAnimationClass = (itemId: string, index: number): string => {
@@ -233,78 +367,138 @@ export function NewsFeed({
   };
 
   return (
-    <div className="flex flex-col bg-white dark:bg-black rounded-xl">
+    <div className="flex flex-col bg-white dark:bg-black rounded-2xl overflow-hidden">
       {/* Region Tabs + Volume Indicator (sticky header) */}
       <div className="sticky top-14 sm:top-16 z-30 bg-white dark:bg-black">
         <div className="flex items-center border-b border-slate-200 dark:border-[#2f3336]">
-          {/* Scroll fade indicator - left */}
-          <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-white dark:from-black to-transparent pointer-events-none z-10 sm:hidden" />
-
           <div
-            className="flex-1 overflow-x-auto scrollbar-hide scroll-smooth"
+            className="flex-1 flex items-center overflow-x-auto scrollbar-hide"
             role="tablist"
-            aria-label="Region filters"
-            onKeyDown={(e) => {
-              const tabs = regionTabs;
-              const currentIndex = tabs.findIndex(t => t.id === selectedWatchpoint);
-              if (e.key === 'ArrowRight' && currentIndex < tabs.length - 1) {
-                e.preventDefault();
-                onSelectWatchpoint?.(tabs[currentIndex + 1].id);
-              } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
-                e.preventDefault();
-                onSelectWatchpoint?.(tabs[currentIndex - 1].id);
-              }
-            }}
+            aria-label="Feed filters"
           >
-            <div className="flex">
-              {regionTabs.map((tab, index) => {
-                const isSelected = selectedWatchpoint === tab.id;
-                const count = tab.id === 'all' ? items.length : (regionCounts[tab.id] || 0);
+            {/* Inline tabs - responsive visibility */}
+            {inlineTabs.map((tab) => {
+              const isSelected = selectedTab === tab.id;
+              const count = getTabCount(tab.id);
 
-                return (
-                  <button
-                    key={tab.id}
-                    role="tab"
-                    aria-selected={isSelected}
-                    aria-controls="feed-panel"
-                    tabIndex={isSelected ? 0 : -1}
-                    onClick={() => onSelectWatchpoint?.(tab.id)}
-                    className={`
-                      relative flex-shrink-0 px-3 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-medium
-                      transition-colors duration-200 whitespace-nowrap min-h-[44px]
-                      focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset
+              // Responsive visibility classes
+              let visibilityClass = '';
+              if (tab.minScreen === 'sm') visibilityClass = 'hidden sm:flex';
+              else if (tab.minScreen === 'md') visibilityClass = 'hidden md:flex';
+              else if (tab.minScreen === 'lg') visibilityClass = 'hidden lg:flex';
+
+              return (
+                <button
+                  key={tab.id}
+                  role="tab"
+                  aria-selected={isSelected}
+                  aria-controls="feed-panel"
+                  tabIndex={isSelected ? 0 : -1}
+                  onClick={() => handleTabSelect(tab.id)}
+                  className={`
+                    relative flex-shrink-0 px-3 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-medium
+                    transition-colors duration-200 whitespace-nowrap min-h-[44px]
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset
+                    ${visibilityClass || 'flex'}
+                    ${isSelected
+                      ? 'text-slate-900 dark:text-[#e7e9ea]'
+                      : 'text-slate-500 dark:text-[#71767b] hover:text-slate-700 dark:hover:text-[#e7e9ea] hover:bg-slate-50 dark:hover:bg-[#16181c]'
+                    }
+                  `}
+                >
+                  {tab.label}
+
+                  {count > 0 && tab.id !== 'all' && (
+                    <span className={`
+                      ml-1.5 px-1.5 py-0.5 text-2xs sm:text-xs rounded-full
                       ${isSelected
-                        ? 'text-slate-900 dark:text-[#e7e9ea]'
-                        : 'text-slate-500 dark:text-[#71767b] hover:text-slate-700 dark:hover:text-[#e7e9ea] hover:bg-slate-50 dark:hover:bg-[#16181c]'
+                        ? 'bg-blue-100 dark:bg-[#031018] text-blue-700 dark:text-[#1d9bf0]'
+                        : 'bg-slate-100 dark:bg-[#2f3336] text-slate-500 dark:text-[#71767b]'
                       }
-                    `}
-                  >
-                    {tab.icon && <span className="mr-1">{tab.icon}</span>}
-                    {tab.label}
+                    `}>
+                      {count}
+                    </span>
+                  )}
 
-                    {count > 0 && tab.id !== 'all' && tab.id !== 'seismic' && (
-                      <span className={`
-                        ml-1.5 px-1.5 py-0.5 text-2xs sm:text-xs rounded-full
-                        ${isSelected
-                          ? 'bg-blue-100 dark:bg-[#031018] text-blue-700 dark:text-[#1d9bf0]'
-                          : 'bg-slate-100 dark:bg-[#2f3336] text-slate-500 dark:text-[#71767b]'
-                        }
-                      `}>
-                        {count}
-                      </span>
-                    )}
+                  {isSelected && (
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-blue-600 rounded-full" />
+                  )}
+                </button>
+              );
+            })}
 
-                    {isSelected && (
-                      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-blue-600 rounded-full" />
-                    )}
-                  </button>
-                );
-              })}
+            {/* More dropdown - always visible */}
+            <div className="relative" ref={moreDropdownRef}>
+              <button
+                onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
+                className={`
+                  relative flex items-center gap-1 px-3 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-medium
+                  transition-colors duration-200 whitespace-nowrap min-h-[44px]
+                  focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset
+                  ${isDropdownTabSelected
+                    ? 'text-slate-900 dark:text-[#e7e9ea]'
+                    : 'text-slate-500 dark:text-[#71767b] hover:text-slate-700 dark:hover:text-[#e7e9ea] hover:bg-slate-50 dark:hover:bg-[#16181c]'
+                  }
+                `}
+                aria-expanded={moreDropdownOpen}
+                aria-haspopup="true"
+              >
+                {isDropdownTabSelected
+                  ? dropdownTabs.find(t => t.id === selectedTab)?.label
+                  : 'Regional'}
+                {/* Count badge for dropdown items */}
+                {!isDropdownTabSelected && (() => {
+                  const moreCount = dropdownTabs.reduce((sum, tab) => sum + getTabCount(tab.id), 0);
+                  return moreCount > 0 ? (
+                    <span className="ml-1.5 px-1.5 py-0.5 text-2xs sm:text-xs rounded-full bg-slate-100 dark:bg-[#2f3336] text-slate-500 dark:text-[#71767b]">
+                      {moreCount}
+                    </span>
+                  ) : null;
+                })()}
+                <ChevronDownIcon className={`w-3.5 h-3.5 transition-transform ${moreDropdownOpen ? 'rotate-180' : ''}`} />
+                {isDropdownTabSelected && (
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-blue-600 rounded-full" />
+                )}
+              </button>
+
+              {/* Dropdown menu */}
+              {moreDropdownOpen && (
+                <div className="absolute top-full right-0 mt-1 py-1 bg-white dark:bg-[#16181c] border border-slate-200 dark:border-[#2f3336] rounded-lg shadow-lg z-50 min-w-[160px]">
+                  <div className="flex flex-col p-1">
+                    {/* Show regional tabs that are hidden on current screen size */}
+                    {allTabs.filter(t => !t.alwaysVisible).map((tab) => {
+                      const isSelected = selectedTab === tab.id;
+                      const count = getTabCount(tab.id);
+
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => {
+                            handleTabSelect(tab.id);
+                            setMoreDropdownOpen(false);
+                          }}
+                          className={`
+                            px-3 py-2 text-sm font-medium rounded-md transition-colors text-left
+                            ${isSelected
+                              ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                              : 'text-slate-600 dark:text-[#e7e9ea] hover:bg-slate-100 dark:hover:bg-[#2f3336]'
+                            }
+                          `}
+                        >
+                          {tab.label}
+                          {count > 0 && (
+                            <span className={`ml-1.5 text-xs ${isSelected ? 'text-blue-500' : 'text-slate-400'}`}>
+                              {count}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-
-          {/* Scroll fade indicator - right */}
-          <div className="absolute right-12 top-0 bottom-0 w-4 bg-gradient-to-l from-white dark:from-black to-transparent pointer-events-none z-10 sm:hidden" />
 
           {onRefresh && (
             <button
@@ -318,19 +512,54 @@ export function NewsFeed({
           )}
         </div>
 
-        {/* Volume indicator - part of sticky header */}
-        {activity?.[selectedWatchpoint] && selectedWatchpoint !== 'all' && (
-          <VolumeIndicator activity={activity[selectedWatchpoint]} />
+        {/* Platform filter pills */}
+        {(platformCounts.bluesky > 0 || platformCounts.rss > 0) && (
+          <div className="px-3 py-2 flex items-center gap-1.5 border-b border-slate-100 dark:border-[#2f3336] bg-slate-50/50 dark:bg-[#16181c]/50">
+            <span className="text-xs text-slate-500 dark:text-[#71767b] mr-1">Source:</span>
+            {platformFilters.map((filter) => {
+              const isSelected = platformFilter === filter.id;
+              const count = filter.id === 'all'
+                ? (platformCounts.bluesky || 0) + (platformCounts.rss || 0)
+                : (platformCounts[filter.id] || 0);
+
+              // Don't show filter if no items for that platform
+              if (filter.id !== 'all' && count === 0) return null;
+
+              return (
+                <button
+                  key={filter.id}
+                  onClick={() => setPlatformFilter(filter.id)}
+                  className={`
+                    px-2.5 py-1 text-xs font-medium rounded-full transition-colors
+                    ${isSelected
+                      ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                      : 'bg-slate-100 dark:bg-[#2f3336] text-slate-600 dark:text-[#71767b] hover:bg-slate-200 dark:hover:bg-[#3a3f44]'
+                    }
+                  `}
+                >
+                  {filter.label}
+                  <span className={`ml-1 ${isSelected ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-[#536471]'}`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Volume indicator - part of sticky header (only for region tabs) */}
+        {selectedTab !== 'main' && selectedTab !== 'all' && activity?.[selectedTab] && (
+          <VolumeIndicator activity={activity[selectedTab]} />
         )}
       </div>
 
-      <div id="feed-panel" role="tabpanel" aria-label={`News for ${selectedWatchpoint === 'all' ? 'all regions' : selectedWatchpoint}`}>
+      <div id="feed-panel" role="tabpanel" aria-label={`News for ${selectedTab === 'main' ? 'main feed' : selectedTab === 'all' ? 'all regions' : selectedTab}`}>
 
         {/* AI Analysis Section - only show after news loads */}
         {!isLoading && sortedItems.length > 0 && (
           <>
             <div className="mt-3" />
-            <InlineBriefing region={selectedWatchpoint} />
+            <InlineBriefing region={selectedTab === 'main' ? 'all' : selectedTab as WatchpointId} />
           </>
         )}
 
@@ -338,7 +567,7 @@ export function NewsFeed({
         {!isLoading && sortedItems.length > 0 && (
           <div className="px-4 py-2 flex items-center justify-between text-xs border-b border-slate-100 dark:border-[#2f3336] bg-slate-50/50 dark:bg-[#16181c]/50">
             <span className="text-slate-500 dark:text-[#71767b]">
-              {sortedItems.length} updates {selectedWatchpoint !== 'all' && `in ${regionDisplayNames[selectedWatchpoint]}`}
+              {sortedItems.length} updates {selectedTab === 'main' ? 'in Main feed' : selectedTab !== 'all' && `in ${regionDisplayNames[selectedTab as WatchpointId]}`}
             </span>
             <div className="flex items-center gap-3">
               {loadTimeMs != null && (
@@ -347,7 +576,7 @@ export function NewsFeed({
                 </span>
               )}
               {lastUpdated && (
-                <span className="text-slate-400 dark:text-[#536471]">
+                <span className="text-slate-400 dark:text-[#536471]" suppressHydrationWarning>
                   {formatLastUpdated(lastUpdated)}
                 </span>
               )}
@@ -374,9 +603,11 @@ export function NewsFeed({
             </div>
             <span className="text-slate-800 dark:text-slate-100 text-base sm:text-lg font-medium mb-1">No updates yet</span>
             <span className="text-slate-500 dark:text-slate-400 text-sm text-center max-w-xs">
-              {selectedWatchpoint === 'all'
+              {selectedTab === 'main'
+                ? 'High-impact stories will appear here'
+                : selectedTab === 'all'
                 ? 'News will appear here as it breaks'
-                : `No news for ${regionDisplayNames[selectedWatchpoint] || 'this region'} yet`}
+                : `No news for ${regionDisplayNames[selectedTab as WatchpointId] || 'this region'} yet`}
             </span>
             {onRefresh && (
               <button
@@ -390,7 +621,7 @@ export function NewsFeed({
           </div>
         )}
 
-        <div className="flex flex-col gap-2 p-2 sm:p-3 news-feed-list">
+        <div className="flex flex-col gap-3 p-3 sm:p-4 news-feed-list">
           {sortedItems.map((item, index) => (
             <div
               key={item.id}

@@ -109,11 +109,11 @@ export function Legend() {
                 </p>
                 <div className="grid grid-cols-2 gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse-subtle" />
                     <span className="text-xs text-slate-500">Critical surge</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-orange-500" />
                     <span className="text-xs text-slate-500">High activity</span>
                   </div>
                   <div className="flex items-center gap-2">

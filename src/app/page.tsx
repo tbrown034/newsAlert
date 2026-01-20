@@ -31,8 +31,7 @@ export default async function Home() {
       // Auto-select hottest region
       if (initialData?.activity) {
         const activityPriority: Record<string, number> = {
-          critical: 4,
-          high: 3,
+          critical: 3,
           elevated: 2,
           normal: 1,
         };

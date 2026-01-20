@@ -9,10 +9,8 @@ interface WatchpointSelectorProps {
 }
 
 const activityDots: Record<string, string> = {
-  low: 'bg-emerald-500',
-  normal: 'bg-blue-500',
-  elevated: 'bg-amber-500',
-  high: 'bg-orange-500',
+  normal: 'bg-green-500',
+  elevated: 'bg-orange-500',
   critical: 'bg-red-500',
 };
 
@@ -30,7 +28,7 @@ export function WatchpointSelector({
     <div className="flex overflow-x-auto scrollbar-hide">
       {allItems.map((wp) => {
         const isSelected = selected === wp.id;
-        const isHot = wp.activityLevel === 'high' || wp.activityLevel === 'critical';
+        const isCritical = wp.activityLevel === 'critical';
 
         return (
           <button
@@ -45,8 +43,8 @@ export function WatchpointSelector({
             <div className="flex items-center justify-center gap-1.5">
               {wp.id !== 'all' && (
                 <span
-                  className={`w-2 h-2 rounded-full ${activityDots[wp.activityLevel]} ${
-                    isHot ? 'animate-pulse' : ''
+                  className={`w-2 h-2 rounded-full ${activityDots[wp.activityLevel] || activityDots.normal} ${
+                    isCritical ? 'animate-pulse-subtle' : ''
                   }`}
                 />
               )}

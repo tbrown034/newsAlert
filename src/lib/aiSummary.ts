@@ -58,7 +58,7 @@ const MODEL_PRICING: Record<string, { input: number; output: number }> = {
 interface StructuredPost {
   id: number;
   source: string;
-  tier: string;
+  sourceType: string;
   minutesAgo: number;
   title: string;
   content?: string;
@@ -78,14 +78,18 @@ function selectAndStructurePosts(posts: NewsItem[], maxPosts: number = 25): Stru
   const scoredPosts = posts.map(post => {
     let score = 0;
 
-    // Tier scoring (official > osint > reporter > ground)
-    const tierScores: Record<string, number> = {
-      official: 4,
-      osint: 3,
-      reporter: 2,
-      ground: 1,
+    // Source type scoring (official > news-org > osint > reporter > analyst > aggregator > ground > bot)
+    const sourceTypeScores: Record<string, number> = {
+      official: 5,
+      'news-org': 4,
+      osint: 4,
+      reporter: 3,
+      analyst: 3,
+      aggregator: 2,
+      ground: 2,
+      bot: 1,
     };
-    score += tierScores[post.source.tier] || 1;
+    score += sourceTypeScores[post.source.sourceType] || 1;
 
     // Recency scoring (more recent = higher)
     const minutesAgo = Math.floor((now - post.timestamp.getTime()) / 60000);
@@ -143,7 +147,7 @@ function selectAndStructurePosts(posts: NewsItem[], maxPosts: number = 25): Stru
     return {
       id: idx + 1,
       source: item.post.source.name,
-      tier: item.post.source.tier,
+      sourceType: item.post.source.sourceType,
       minutesAgo: item.minutesAgo,
       title: item.post.title,
       content: item.post.content !== item.post.title ? item.post.content : undefined,

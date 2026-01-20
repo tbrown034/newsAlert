@@ -23,7 +23,7 @@ export const revalidate = 0;
 export const maxDuration = 60;
 
 // Valid regions and tiers
-const VALID_REGIONS: WatchpointId[] = ['all', 'middle-east', 'ukraine', 'china-taiwan', 'latam', 'us-domestic', 'seismic'];
+const VALID_REGIONS: WatchpointId[] = ['all', 'us', 'latam', 'middle-east', 'europe-russia', 'asia', 'seismic'];
 const VALID_TIERS: FetchTier[] = ['T1', 'T2', 'T3'];
 
 // Time window defaults (in hours)
@@ -78,10 +78,10 @@ function filterByTimeWindow(items: NewsItem[], hours: number): NewsItem[] {
  * 2. Prioritize source diversity - one item per OSINT source first
  * 3. Fill remaining OSINT slots with most recent items
  */
-function balanceFeedByTier(items: NewsItem[], limit: number): NewsItem[] {
-  // Separate OSINT from other tiers
-  const osintItems = items.filter(item => item.source.tier === 'osint');
-  const otherItems = items.filter(item => item.source.tier !== 'osint');
+function balanceFeedBySourceType(items: NewsItem[], limit: number): NewsItem[] {
+  // Separate OSINT from other source types
+  const osintItems = items.filter(item => item.source.sourceType === 'osint');
+  const otherItems = items.filter(item => item.source.sourceType !== 'osint');
 
   // Target: at least 20% OSINT if available (increased from 15%)
   const osintTarget = Math.floor(limit * 0.20);
@@ -323,7 +323,7 @@ export async function GET(request: Request) {
     const sorted = sortByCascadePriority(withAlertStatus);
 
     // Limit results with tier balancing to ensure OSINT representation
-    const limited = balanceFeedByTier(sorted, limit);
+    const limited = balanceFeedBySourceType(sorted, limit);
 
     // Calculate activity levels - O(n)
     const activity = calculateRegionActivity(filtered);

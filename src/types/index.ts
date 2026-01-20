@@ -1,10 +1,10 @@
 // Watchpoint regions
 export type WatchpointId =
-  | 'middle-east'
-  | 'ukraine'      // Ukraine/Russia conflict, Eastern Europe
-  | 'china-taiwan'
-  | 'latam'        // Latin America + Caribbean (formerly Venezuela)
-  | 'us-domestic'  // US politics, breaking news, domestic events
+  | 'us'           // United States
+  | 'latam'        // Latin America + Caribbean
+  | 'middle-east'  // Middle East
+  | 'europe-russia' // Europe & Russia (including Ukraine conflict)
+  | 'asia'         // Asia-Pacific (China, Taiwan, Korea, etc.)
   | 'seismic'
   | 'all';
 
@@ -31,12 +31,27 @@ export interface Watchpoint {
   name: string;
   shortName: string;
   priority: number;
-  activityLevel: 'low' | 'normal' | 'elevated' | 'high' | 'critical';
+  activityLevel: 'normal' | 'elevated' | 'critical';
   color: string;
 }
 
-// Source tiers (information cascade)
-export type SourceTier = 'official' | 'reporter' | 'osint' | 'ground';
+// Source types (what kind of source is this)
+export type SourceType =
+  | 'official'    // Government, military, institutional accounts
+  | 'news-org'    // News organizations (AP, Reuters, etc.)
+  | 'reporter'    // Individual journalists
+  | 'osint'       // Open-source intelligence accounts
+  | 'aggregator'  // News aggregators (BNO, etc.)
+  | 'analyst'     // Expert analysts, think tanks
+  | 'ground'      // On-the-ground sources, local reporters
+  | 'bot';        // Automated feeds
+
+// US subcategory tags for filtering within the US region
+export type USTag =
+  | 'politics'    // Congress, White House, elections, Trump admin, parties
+  | 'defense'     // Pentagon, military, DoD, veterans
+  | 'economy'     // Fed, Treasury, trade, markets
+  | 'domestic';   // Crime, infrastructure, social issues
 
 // =============================================================================
 // SOURCE ACTIVITY TRACKING
@@ -60,12 +75,14 @@ export interface Source {
   name: string;
   handle?: string;
   platform: 'bluesky' | 'rss' | 'twitter' | 'telegram' | 'reddit';
-  tier: SourceTier;
+  sourceType: SourceType;
   confidence: number; // 1-100
   region: WatchpointId;
   url?: string;
   // Expected posting frequency (posts per day, for anomaly detection)
   baselinePostsPerDay?: number;
+  // Optional tags for subcategory filtering (currently used for US region)
+  tags?: USTag[];
 }
 
 // Alert status (deprecated - keeping for backward compatibility)

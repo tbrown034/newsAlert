@@ -62,6 +62,45 @@ function formatTimeAgo(date: Date): string {
   return `${Math.floor(seconds / 86400)}d ago`;
 }
 
+type FilterMode = 'all' | 'major';
+
+// Check if coordinates are in North America (rough bounding box)
+function isNorthAmerica(coords: [number, number]): boolean {
+  const [lon, lat] = coords;
+  return lon >= -170 && lon <= -50 && lat >= 15 && lat <= 72;
+}
+
+// Smart filter: only headline-worthy events (would make international/national news)
+function isNewsworthy(event: WeatherEvent): boolean {
+  // Hurricanes/typhoons are ALWAYS headline news
+  if (event.type === 'hurricane' || event.type === 'typhoon') return true;
+
+  // Tornadoes are headline news
+  if (event.type === 'tornado') return true;
+
+  // Only EXTREME severity for other event types
+  if (event.severity === 'extreme') return true;
+
+  // Wildfires: ONLY show non-US fires (US has routine fires year-round)
+  if (event.type === 'wildfire') {
+    return !isNorthAmerica(event.coordinates);
+  }
+
+  // Floods: only from GDACS (international) or extreme
+  if (event.type === 'flood') {
+    return event.source === 'GDACS';
+  }
+
+  // Storms: skip most - only named tropical systems make headlines
+  if (event.type === 'storm') {
+    const name = event.name.toLowerCase();
+    return name.includes('tropical') || name.includes('cyclone');
+  }
+
+  // Skip routine weather advisories
+  return false;
+}
+
 function WeatherMapComponent({ onEventSelect }: WeatherMapProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [events, setEvents] = useState<WeatherEvent[]>([]);
@@ -69,6 +108,12 @@ function WeatherMapComponent({ onEventSelect }: WeatherMapProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState<any>(null);
   const [position, setPosition] = useState({ coordinates: DEFAULT_CENTER, zoom: DEFAULT_ZOOM });
+  const [filterMode, setFilterMode] = useState<FilterMode>('major'); // Default to major only
+
+  // Smart filter: "major" = newsworthy events only, "all" = everything
+  const filteredEvents = filterMode === 'major'
+    ? events.filter(isNewsworthy)
+    : events;
 
   const handleZoomIn = () => {
     if (position.zoom >= 4) return;
@@ -175,7 +220,7 @@ function WeatherMapComponent({ onEventSelect }: WeatherMapProps) {
           </Geographies>
 
           {/* Weather event markers */}
-          {events.map((event) => {
+          {filteredEvents.map((event) => {
             const isSelected = selected?.id === event.id;
             const style = eventStyles[event.type];
             const baseRadius = event.severity === 'extreme' ? 14 :
@@ -283,9 +328,33 @@ function WeatherMapComponent({ onEventSelect }: WeatherMapProps) {
           </div>
         </div>
 
-        {/* Stats badge */}
-        <div className="absolute top-4 left-4 text-sm text-gray-300 z-10 bg-black/60 px-3 py-2 rounded-lg font-medium">
-          {events.length} active alerts
+        {/* Stats badge with filter toggle */}
+        <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+          <div className="text-sm text-gray-300 bg-black/60 px-3 py-2 rounded-lg font-medium">
+            {filteredEvents.length} active alerts
+          </div>
+          <div className="flex bg-black/60 rounded-lg overflow-hidden">
+            <button
+              onClick={() => setFilterMode('major')}
+              className={`px-2.5 py-2 text-xs font-medium transition-colors ${
+                filterMode === 'major'
+                  ? 'bg-amber-500/80 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              Major
+            </button>
+            <button
+              onClick={() => setFilterMode('all')}
+              className={`px-2.5 py-2 text-xs font-medium transition-colors ${
+                filterMode === 'all'
+                  ? 'bg-amber-500/80 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              All
+            </button>
+          </div>
         </div>
       </div>
 

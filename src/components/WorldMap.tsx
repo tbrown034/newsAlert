@@ -8,8 +8,9 @@ import {
   Marker,
   ZoomableGroup,
 } from 'react-simple-maps';
-import { ArrowPathIcon, PlusIcon, MinusIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { Watchpoint, WatchpointId } from '@/types';
+import { RegionActivity } from '@/lib/activityDetection';
 
 // World map TopoJSON - using a CDN for the geography data
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
@@ -38,33 +39,31 @@ interface WorldMapProps {
   selected: WatchpointId;
   onSelect: (id: WatchpointId) => void;
   regionCounts?: Record<string, number>;
+  activity?: Record<string, RegionActivity>;
 }
 
 // Activity level colors - visual language:
-// Green = Normal (baseline), Orange = Elevated, Red = Critical, Blue = Low (below normal), Gray = No data
+// Green = Normal, Orange = Elevated, Red = Critical
 const activityColors: Record<string, { fill: string; glow: string; text: string }> = {
   critical: { fill: '#ef4444', glow: 'rgba(239, 68, 68, 0.6)', text: 'text-red-400' },      // Red - critical
-  high: { fill: '#f97316', glow: 'rgba(249, 115, 22, 0.5)', text: 'text-orange-400' },      // Orange - high
   elevated: { fill: '#f97316', glow: 'rgba(249, 115, 22, 0.4)', text: 'text-orange-400' },  // Orange - elevated
   normal: { fill: '#22c55e', glow: 'rgba(34, 197, 94, 0.3)', text: 'text-green-400' },      // Green - normal
-  low: { fill: '#3b82f6', glow: 'rgba(59, 130, 246, 0.3)', text: 'text-blue-400' },         // Blue - below normal
-  no_data: { fill: '#6b7280', glow: 'rgba(107, 114, 128, 0.2)', text: 'text-gray-400' },    // Gray - no data
 };
 
-// Region marker positions (longitude, latitude) with representative cities
-const regionMarkers: Record<string, { coordinates: [number, number]; label: string; city: string }> = {
-  'middle-east': { coordinates: [51.4, 32.4], label: 'Middle East', city: 'Tehran' },
-  'ukraine': { coordinates: [37.6, 50.4], label: 'Ukraine', city: 'Kyiv' },
-  'china-taiwan': { coordinates: [121.5, 25.0], label: 'Taiwan', city: 'Taipei' },
-  'latam': { coordinates: [-58.4, -10.0], label: 'Latin America', city: 'São Paulo' },
-  'us-domestic': { coordinates: [-98.5, 39.8], label: 'United States', city: 'DC' },
+// Region marker positions (longitude, latitude) - actual capital city coordinates
+const regionMarkers: Record<string, { coordinates: [number, number]; label: string; city: string; zoom: number }> = {
+  'us': { coordinates: [-77.04, 38.91], label: 'United States', city: 'DC', zoom: 2.2 },
+  'latam': { coordinates: [-46.63, -23.55], label: 'Latin America', city: 'São Paulo', zoom: 1.8 },
+  'middle-east': { coordinates: [51.39, 35.69], label: 'Middle East', city: 'Tehran', zoom: 2.5 },
+  'europe-russia': { coordinates: [30.52, 50.45], label: 'Europe-Russia', city: 'Kyiv', zoom: 2.2 },
+  'asia': { coordinates: [116.41, 39.90], label: 'Asia', city: 'Beijing', zoom: 2 },
 };
 
 // Default zoom settings
 const DEFAULT_CENTER: [number, number] = [40, 25];
 const DEFAULT_ZOOM = 1;
 
-function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} }: WorldMapProps) {
+function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {}, activity = {} }: WorldMapProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [position, setPosition] = useState({ coordinates: DEFAULT_CENTER, zoom: DEFAULT_ZOOM });
@@ -100,9 +99,46 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
     return () => clearInterval(timer);
   }, []);
 
+  // Zoom to selected region
+  useEffect(() => {
+    if (selected === 'all') {
+      setPosition({ coordinates: DEFAULT_CENTER, zoom: DEFAULT_ZOOM });
+    } else if (regionMarkers[selected]) {
+      const marker = regionMarkers[selected];
+      setPosition({ coordinates: marker.coordinates, zoom: marker.zoom });
+    }
+  }, [selected]);
+
   const getActivityLevel = (id: string) => {
     const wp = watchpoints.find(w => w.id === id);
     return wp?.activityLevel || 'normal';
+  };
+
+  // Format activity comparison text
+  const formatActivityText = (regionActivity: RegionActivity | undefined) => {
+    if (!regionActivity) return 'Loading...';
+    const { multiplier } = regionActivity;
+    if (multiplier >= 1) {
+      return `${multiplier.toFixed(1)}x normal`;
+    }
+    return `${multiplier.toFixed(1)}x normal`;
+  };
+
+  // Calculate global activity stats
+  const getGlobalActivity = (): { multiplier: number; level: 'critical' | 'elevated' | 'normal'; totalCount: number } => {
+    const regions = Object.values(activity);
+    if (regions.length === 0) return { multiplier: 1, level: 'normal', totalCount: 0 };
+
+    const totalCount = regions.reduce((sum, r) => sum + r.count, 0);
+    const totalBaseline = regions.reduce((sum, r) => sum + r.baseline, 0);
+    const multiplier = totalBaseline > 0 ? Math.round((totalCount / totalBaseline) * 10) / 10 : 1;
+
+    let level: 'critical' | 'elevated' | 'normal';
+    if (regions.some(r => r.level === 'critical')) level = 'critical';
+    else if (regions.some(r => r.level === 'elevated')) level = 'elevated';
+    else level = 'normal';
+
+    return { multiplier, level, totalCount };
   };
 
   // Show loading placeholder during SSR to avoid hydration mismatch
@@ -160,10 +196,10 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
           {/* Region Markers */}
           {Object.entries(regionMarkers).map(([id, marker]) => {
             const activityLevel = getActivityLevel(id);
-            const colors = activityColors[activityLevel];
+            const colors = activityColors[activityLevel] || activityColors.normal;
             const isSelected = selected === id;
             const isHovered = hoveredMarker === id;
-            const isHot = activityLevel === 'critical' || activityLevel === 'high';
+            const isCritical = activityLevel === 'critical';
             const count = regionCounts[id] || 0;
 
             return (
@@ -188,15 +224,15 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
                   />
                 )}
 
-                {/* Pulse ring for hot regions */}
-                {isHot && (
+                {/* Pulse ring for hot regions - very subdued */}
+                {isCritical && (
                   <circle
-                    r={28}
+                    r={22}
                     fill="none"
                     stroke={colors.fill}
-                    strokeWidth={3}
-                    opacity={0.5}
-                    className="animate-ping"
+                    strokeWidth={1.5}
+                    opacity={0.25}
+                    className="animate-ping-subtle"
                   />
                 )}
 
@@ -214,7 +250,7 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
                   fill={colors.fill}
                   stroke={isSelected ? '#fff' : isHovered ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.3)'}
                   strokeWidth={isSelected ? 3 : isHovered ? 2 : 1}
-                  className={isHot ? 'animate-pulse' : ''}
+                  className={isCritical ? 'animate-pulse-subtle' : ''}
                   style={{ transition: 'r 150ms ease, stroke-width 150ms ease' }}
                 />
 
@@ -322,7 +358,7 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
         {/* Legend */}
         <div className="absolute bottom-4 right-4 flex items-center gap-3 text-xs text-gray-200 z-10 bg-slate-900/80 backdrop-blur-sm px-3 py-2 rounded-lg border border-slate-700/50">
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
+            <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse-subtle" />
             <span>Critical</span>
           </div>
           <div className="flex items-center gap-1.5">
@@ -333,47 +369,55 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {} 
             <span className="w-3 h-3 rounded-full bg-green-500" />
             <span>Normal</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-blue-500" />
-            <span>Low</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-gray-500" />
-            <span>No Data</span>
-          </div>
         </div>
       </div>
 
-      {/* Selected Region Info Bar */}
-      {selected !== 'all' && (
-        <div className="px-3 sm:px-4 py-2.5 sm:py-3 bg-slate-900/90 backdrop-blur-sm border-t border-slate-700/50 flex items-center justify-between animate-fade-up">
-          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-            <span
-              className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full flex-shrink-0 animate-pulse"
-              style={{ backgroundColor: activityColors[getActivityLevel(selected)].fill }}
-            />
-            <span className="text-sm sm:text-base font-semibold text-white truncate">
-              {regionMarkers[selected]?.label || selected}
-            </span>
-            <span className={`text-xs sm:text-sm font-medium ${activityColors[getActivityLevel(selected)].text} hidden xs:inline`}>
-              {getActivityLevel(selected).charAt(0).toUpperCase() + getActivityLevel(selected).slice(1)}
-            </span>
-          </div>
-          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-            <span className="text-xs sm:text-sm text-gray-300">
-              {regionCounts[selected] || 0} updates
-            </span>
-            <button
-              onClick={() => onSelect('all')}
-              className="p-1.5 text-gray-400 hover:text-white hover:bg-slate-700/50 rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-              aria-label="Clear region selection"
-              title="Clear selection"
-            >
-              <XMarkIcon className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Activity Status Bar - Always visible */}
+      <div className="pl-28 sm:pl-32 pr-3 sm:pr-4 py-2.5 sm:py-3 bg-slate-900/90 backdrop-blur-sm border-t border-slate-700/50 flex items-center justify-between">
+        {selected === 'all' ? (
+          // Global view
+          <>
+            <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+              <span
+                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full flex-shrink-0 ${getGlobalActivity().level === 'critical' ? 'animate-pulse-subtle' : ''}`}
+                style={{ backgroundColor: (activityColors[getGlobalActivity().level] || activityColors.normal).fill }}
+              />
+              <span className="text-sm sm:text-base font-semibold text-white">
+                Global Activity
+              </span>
+              <span className={`text-xs sm:text-sm font-medium ${(activityColors[getGlobalActivity().level] || activityColors.normal).text}`}>
+                {getGlobalActivity().level.charAt(0).toUpperCase() + getGlobalActivity().level.slice(1)}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+              <span className="text-xs sm:text-sm font-mono text-gray-300">
+                {getGlobalActivity().multiplier.toFixed(1)}x normal
+              </span>
+            </div>
+          </>
+        ) : (
+          // Regional view
+          <>
+            <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+              <span
+                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full flex-shrink-0 ${getActivityLevel(selected) === 'critical' ? 'animate-pulse-subtle' : ''}`}
+                style={{ backgroundColor: (activityColors[getActivityLevel(selected)] || activityColors.normal).fill }}
+              />
+              <span className="text-sm sm:text-base font-semibold text-white">
+                {regionMarkers[selected]?.label || selected}
+              </span>
+              <span className={`text-xs sm:text-sm font-medium ${(activityColors[getActivityLevel(selected)] || activityColors.normal).text}`}>
+                {getActivityLevel(selected).charAt(0).toUpperCase() + getActivityLevel(selected).slice(1)}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+              <span className="text-xs sm:text-sm font-mono text-gray-300">
+                {formatActivityText(activity[selected])}
+              </span>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

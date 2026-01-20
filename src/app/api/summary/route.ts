@@ -5,7 +5,7 @@ import { regionDisplayNames } from '@/lib/regionDetection';
 import { WatchpointId } from '@/types';
 
 // Valid regions for validation
-const VALID_REGIONS: WatchpointId[] = ['all', 'middle-east', 'ukraine', 'china-taiwan', 'latam', 'us-domestic', 'seismic'];
+const VALID_REGIONS: WatchpointId[] = ['all', 'us', 'latam', 'middle-east', 'europe-russia', 'asia', 'seismic'];
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Allow up to 60 seconds for AI generation (requires Vercel Pro)

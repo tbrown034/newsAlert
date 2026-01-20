@@ -1,4 +1,4 @@
-import { NewsItem, AlertStatus, SourceTier } from '@/types';
+import { NewsItem, AlertStatus, SourceType } from '@/types';
 
 // =============================================================================
 // SIMPLIFIED ALERT STATUS LOGIC
@@ -38,7 +38,7 @@ export function determineAlertStatus(item: NewsItem): AlertStatus {
   }
 
   // OSINT/ground sources with keywords = FIRST
-  if (item.source.tier === 'osint' || item.source.tier === 'ground') {
+  if (item.source.sourceType === 'osint' || item.source.sourceType === 'ground') {
     const ageMs = Date.now() - item.timestamp.getTime();
     const thirtyMinutes = 30 * 60 * 1000;
 
@@ -47,8 +47,8 @@ export function determineAlertStatus(item: NewsItem): AlertStatus {
     }
   }
 
-  // Official/reporter sources with keywords = CONFIRMED
-  if (item.source.tier === 'official' || item.source.tier === 'reporter') {
+  // Official/reporter/news-org sources with keywords = CONFIRMED
+  if (item.source.sourceType === 'official' || item.source.sourceType === 'reporter' || item.source.sourceType === 'news-org') {
     return 'confirmed';
   }
 

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { NewsFeed, Legend, WorldMap, SituationBriefing, SeismicMap, WeatherMap, OutagesMap, TravelMap, FiresMap } from '@/components';
 import { watchpoints as defaultWatchpoints } from '@/lib/mockData';
 import { NewsItem, WatchpointId, Watchpoint, Earthquake } from '@/types';
-import { SparklesIcon, GlobeAltIcon, CloudIcon, SignalIcon, ExclamationTriangleIcon, FireIcon, EllipsisHorizontalIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon, GlobeAltIcon, CloudIcon, SignalIcon, ExclamationTriangleIcon, FireIcon, EllipsisHorizontalIcon, Bars3Icon, XMarkIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { MapPinIcon } from '@heroicons/react/24/solid';
 import { RegionActivity } from '@/lib/activityDetection';
 import { tier1Sources, tier2Sources, tier3Sources } from '@/lib/sources-clean';
@@ -59,6 +59,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
   const [seismicLoading, setSeismicLoading] = useState(false);
   const [showMoreTabs, setShowMoreTabs] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mapCollapsed, setMapCollapsed] = useState(false);
 
   // Ref for dropdown click-outside handling
   const moreDropdownRef = useRef<HTMLDivElement>(null);
@@ -372,100 +373,133 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
       </header>
 
       {/* Hero Map Section */}
-      <section id="map">
-        <div className="relative bg-slate-800 rounded-none sm:rounded-2xl sm:mx-4 xl:mx-8 2xl:mx-16 sm:mt-4 overflow-hidden shadow-xl">
-          <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20">
-            <div className="flex items-center gap-0.5 sm:gap-1 bg-slate-900/90 backdrop-blur-sm rounded-lg p-0.5 sm:p-1 border border-slate-700">
-              {mainTabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setHeroView(tab.id)}
-                  className={`
-                    flex items-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-2.5 rounded-md text-xs font-medium transition-colors
-                    ${heroView === tab.id
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-700'
-                    }
-                  `}
-                >
-                  <tab.icon className="w-4 h-4" />
-                  <span className="hidden sm:inline">{tab.label}</span>
-                </button>
-              ))}
+      <section id="map" className="max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto px-3 sm:px-4 pt-4">
+        <div className="relative bg-slate-800 rounded-2xl overflow-hidden shadow-xl shadow-black/20">
+          {/* Collapse/Expand button - positioned at bottom */}
+          <button
+            onClick={() => setMapCollapsed(!mapCollapsed)}
+            className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 z-20 flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-900/90 backdrop-blur-sm rounded-lg border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700/80 transition-colors text-xs font-medium"
+            aria-expanded={!mapCollapsed}
+            aria-label={mapCollapsed ? 'Expand map' : 'Collapse map'}
+          >
+            {mapCollapsed ? (
+              <>
+                <ChevronUpIcon className="w-4 h-4" />
+                <span className="hidden sm:inline">Show Map</span>
+              </>
+            ) : (
+              <>
+                <ChevronDownIcon className="w-4 h-4" />
+                <span className="hidden sm:inline">Hide Map</span>
+              </>
+            )}
+          </button>
 
-              <div className="relative" ref={moreDropdownRef}>
-                <button
-                  onClick={() => setShowMoreTabs(!showMoreTabs)}
-                  className={`
-                    flex items-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-2.5 rounded-md text-xs font-medium transition-colors
-                    focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-                    ${secondaryTabs.some(t => t.id === heroView)
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-300 hover:text-white hover:bg-slate-700'
-                    }
-                  `}
-                  aria-expanded={showMoreTabs}
-                  aria-haspopup="true"
-                  aria-label="More map layers"
-                >
-                  <EllipsisHorizontalIcon className="w-4 h-4" />
-                  <span className="hidden sm:inline">More</span>
-                </button>
-
-                {showMoreTabs && (
-                  <div
-                    className="absolute top-full right-0 mt-2 bg-slate-800 rounded-lg shadow-xl border border-slate-700 py-1.5 min-w-[140px] z-50"
-                    role="menu"
-                    aria-orientation="vertical"
+          {!mapCollapsed && (
+            <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20">
+              <div className="flex items-center gap-0.5 sm:gap-1 bg-slate-900/90 backdrop-blur-sm rounded-lg p-0.5 sm:p-1 border border-slate-700">
+                {mainTabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setHeroView(tab.id)}
+                    className={`
+                      flex items-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-2.5 rounded-md text-xs font-medium transition-colors
+                      ${heroView === tab.id
+                        ? 'bg-blue-600 text-white'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-700'
+                      }
+                    `}
                   >
-                    {secondaryTabs.map((tab) => (
-                      <button
-                        key={tab.id}
-                        role="menuitem"
-                        onClick={() => {
-                          setHeroView(tab.id);
-                          setShowMoreTabs(false);
-                        }}
-                        className={`
-                          w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-left transition-colors
-                          focus:outline-none focus-visible:bg-slate-600
-                          ${heroView === tab.id ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white'}
-                        `}
-                      >
-                        <tab.icon className="w-4 h-4" />
-                        {tab.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
+                    <tab.icon className="w-4 h-4" />
+                    <span className="hidden sm:inline">{tab.label}</span>
+                  </button>
+                ))}
+
+                <div className="relative" ref={moreDropdownRef}>
+                  <button
+                    onClick={() => setShowMoreTabs(!showMoreTabs)}
+                    className={`
+                      flex items-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-2.5 rounded-md text-xs font-medium transition-colors
+                      focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
+                      ${secondaryTabs.some(t => t.id === heroView)
+                        ? 'bg-blue-600 text-white'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-700'
+                      }
+                    `}
+                    aria-expanded={showMoreTabs}
+                    aria-haspopup="true"
+                    aria-label="More map layers"
+                  >
+                    <EllipsisHorizontalIcon className="w-4 h-4" />
+                    <span className="hidden sm:inline">More</span>
+                  </button>
+
+                  {showMoreTabs && (
+                    <div
+                      className="absolute top-full right-0 mt-2 bg-slate-800 rounded-lg shadow-xl border border-slate-700 py-1.5 min-w-[140px] z-50"
+                      role="menu"
+                      aria-orientation="vertical"
+                    >
+                      {secondaryTabs.map((tab) => (
+                        <button
+                          key={tab.id}
+                          role="menuitem"
+                          onClick={() => {
+                            setHeroView(tab.id);
+                            setShowMoreTabs(false);
+                          }}
+                          className={`
+                            w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-left transition-colors
+                            focus:outline-none focus-visible:bg-slate-600
+                            ${heroView === tab.id ? 'bg-slate-700 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white'}
+                          `}
+                        >
+                          <tab.icon className="w-4 h-4" />
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          {heroView === 'hotspots' && (
-            <WorldMap
-              watchpoints={watchpoints}
-              selected={selectedWatchpoint}
-              onSelect={setSelectedWatchpoint}
-              regionCounts={regionCounts}
-            />
           )}
-          {heroView === 'seismic' && (
-            <SeismicMap
-              earthquakes={earthquakes}
-              selected={selectedQuake}
-              onSelect={setSelectedQuake}
-              isLoading={seismicLoading}
-            />
+
+          {/* Collapsed state indicator */}
+          {mapCollapsed ? (
+            <div className="h-12 flex items-center justify-center">
+              <span className="text-slate-400 text-sm">Map hidden</span>
+            </div>
+          ) : (
+            <>
+              {heroView === 'hotspots' && (
+                <WorldMap
+                  watchpoints={watchpoints}
+                  selected={selectedWatchpoint}
+                  onSelect={setSelectedWatchpoint}
+                  regionCounts={regionCounts}
+                  activity={activityData || undefined}
+                />
+              )}
+              {heroView === 'seismic' && (
+                <SeismicMap
+                  earthquakes={earthquakes}
+                  selected={selectedQuake}
+                  onSelect={setSelectedQuake}
+                  isLoading={seismicLoading}
+                />
+              )}
+              {heroView === 'weather' && <WeatherMap />}
+              {heroView === 'outages' && <OutagesMap />}
+              {heroView === 'travel' && <TravelMap />}
+              {heroView === 'fires' && <FiresMap />}
+            </>
           )}
-          {heroView === 'weather' && <WeatherMap />}
-          {heroView === 'outages' && <OutagesMap />}
-          {heroView === 'travel' && <TravelMap />}
-          {heroView === 'fires' && <FiresMap />}
         </div>
       </section>
 
       {/* Main Content */}
-      <main id="feed" className="max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto px-3 sm:px-6 pb-20 pt-4 sm:pt-6">
+      <main id="feed" className="max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto px-3 sm:px-4 pb-20 pt-4 sm:pt-6">
         <div className="mb-4 sm:mb-5 flex items-end justify-between">
           <div>
             <div className="flex items-center gap-2 mb-1">
@@ -483,7 +517,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
           </p>
         </div>
 
-        <div className="card shadow-lg dark:shadow-none">
+        <div className="card shadow-lg shadow-slate-200/50 dark:shadow-none rounded-2xl overflow-hidden">
           <NewsFeed
             items={newsItems}
             selectedWatchpoint={selectedWatchpoint}

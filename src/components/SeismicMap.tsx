@@ -60,9 +60,17 @@ function formatTimeAgo(date: Date): string {
   return `${Math.floor(seconds / 86400)}d ago`;
 }
 
+type FilterMode = 'all' | 'major';
+
 function SeismicMapComponent({ earthquakes, selected, onSelect, isLoading }: SeismicMapProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [position, setPosition] = useState({ coordinates: DEFAULT_CENTER, zoom: DEFAULT_ZOOM });
+  const [filterMode, setFilterMode] = useState<FilterMode>('major'); // Default to major only
+
+  // Filter earthquakes based on mode
+  const filteredEarthquakes = filterMode === 'major'
+    ? earthquakes.filter(eq => eq.magnitude >= 5.0)
+    : earthquakes;
 
   const handleZoomIn = () => {
     if (position.zoom >= 4) return;
@@ -137,7 +145,7 @@ function SeismicMapComponent({ earthquakes, selected, onSelect, isLoading }: Sei
           </Geographies>
 
           {/* Earthquake markers */}
-          {earthquakes.map((eq) => {
+          {filteredEarthquakes.map((eq) => {
             const isSelected = selected?.id === eq.id;
             const radius = getMagnitudeRadius(eq.magnitude);
             const color = getMagnitudeColor(eq.magnitude);
@@ -240,9 +248,33 @@ function SeismicMapComponent({ earthquakes, selected, onSelect, isLoading }: Sei
           </div>
         </div>
 
-        {/* Stats badge */}
-        <div className="absolute top-4 left-4 text-sm text-gray-300 z-10 bg-black/60 px-3 py-2 rounded-lg font-medium">
-          {earthquakes.length} earthquakes (24h)
+        {/* Stats badge with filter toggle */}
+        <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+          <div className="text-sm text-gray-300 bg-black/60 px-3 py-2 rounded-lg font-medium">
+            {filteredEarthquakes.length} earthquakes (24h)
+          </div>
+          <div className="flex bg-black/60 rounded-lg overflow-hidden">
+            <button
+              onClick={() => setFilterMode('major')}
+              className={`px-2.5 py-2 text-xs font-medium transition-colors ${
+                filterMode === 'major'
+                  ? 'bg-amber-500/80 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              M5+
+            </button>
+            <button
+              onClick={() => setFilterMode('all')}
+              className={`px-2.5 py-2 text-xs font-medium transition-colors ${
+                filterMode === 'all'
+                  ? 'bg-amber-500/80 text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+              }`}
+            >
+              All
+            </button>
+          </div>
         </div>
       </div>
 
