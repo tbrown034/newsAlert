@@ -43,3 +43,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 auth.db
+
+# Telegram session files
+pulse_session.session
+pulse_code_hash.txt
+telegram_code_hash.txt
+
+# Telegram data cache
+data/telegram.json

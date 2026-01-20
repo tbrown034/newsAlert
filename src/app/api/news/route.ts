@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { fetchRssFeed } from '@/lib/rss';
+import { readTelegramPosts } from '@/lib/telegram-reader';
 import {
   tier1Sources,
   tier2Sources,
@@ -185,6 +186,17 @@ async function fetchAllSources(
     if (i + BATCH_SIZE < blueskySources.length) {
       await new Promise(r => setTimeout(r, BATCH_DELAY));
     }
+  }
+
+  // Add Telegram posts from cached JSON
+  try {
+    const telegramPosts = readTelegramPosts();
+    if (telegramPosts.length > 0) {
+      console.log(`[News API] Adding ${telegramPosts.length} Telegram posts`);
+      allItems.push(...telegramPosts);
+    }
+  } catch (error) {
+    console.error('[News API] Error reading Telegram posts:', error);
   }
 
   return allItems;

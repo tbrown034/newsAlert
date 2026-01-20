@@ -137,11 +137,12 @@ const allTabs: TabConfig[] = [
 ];
 
 // Platform filter options
-type PlatformFilter = 'all' | 'bluesky' | 'rss';
+type PlatformFilter = 'all' | 'bluesky' | 'rss' | 'telegram';
 const platformFilters: { id: PlatformFilter; label: string }[] = [
   { id: 'all', label: 'All' },
   { id: 'bluesky', label: 'Bluesky' },
   { id: 'rss', label: 'RSS' },
+  { id: 'telegram', label: 'Telegram' },
 ];
 
 // Format relative time for last updated
@@ -445,14 +446,14 @@ export function NewsFeed({
         </div>
 
         {/* Platform filter + stats bar (combined) */}
-        {(platformCounts.bluesky > 0 || platformCounts.rss > 0) && (
+        {(platformCounts.bluesky > 0 || platformCounts.rss > 0 || platformCounts.telegram > 0) && (
           <div className="px-3 py-2 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
             <div className="flex items-center gap-1.5">
               <span className="text-xs text-slate-500 dark:text-slate-500 mr-1">Source:</span>
               {platformFilters.map((filter) => {
                 const isSelected = platformFilter === filter.id;
                 const count = filter.id === 'all'
-                  ? (platformCounts.bluesky || 0) + (platformCounts.rss || 0)
+                  ? (platformCounts.bluesky || 0) + (platformCounts.rss || 0) + (platformCounts.telegram || 0)
                   : (platformCounts[filter.id] || 0);
 
                 // Don't show filter if no items for that platform
