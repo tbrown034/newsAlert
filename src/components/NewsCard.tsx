@@ -23,7 +23,7 @@ const sourceTypeColors: Record<string, string> = {
   bot: 'bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-400 border-slate-200 dark:border-slate-800/50',
 };
 
-// Source avatar component with fallback to platform icon
+// Source avatar component - simple avatar or platform icon fallback
 function SourceAvatar({
   avatarUrl,
   platform,
@@ -37,18 +37,15 @@ function SourceAvatar({
 }) {
   const [imgError, setImgError] = useState(false);
 
-  // Common container styles for consistent sizing
-  const containerClass = "relative w-6 h-6 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center";
-
   // Show avatar if available and not errored
   if (avatarUrl && !imgError) {
     return (
-      <div className={`${containerClass} bg-slate-200 dark:bg-slate-700 ring-1 ring-slate-300 dark:ring-slate-600`}>
+      <div className="relative w-7 h-7 rounded-full overflow-hidden bg-slate-200 dark:bg-slate-700 ring-1 ring-slate-300 dark:ring-slate-600 flex-shrink-0">
         <Image
           src={avatarUrl}
           alt={`${name} avatar`}
           fill
-          sizes="24px"
+          sizes="28px"
           className="object-cover"
           onError={() => setImgError(true)}
           unoptimized // External images
@@ -57,11 +54,11 @@ function SourceAvatar({
     );
   }
 
-  // Fallback to platform icon in same circular container
+  // Fallback: show platform icon
   return (
-    <div className={`${containerClass} bg-slate-100 dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700`}>
+    <div className="w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center bg-slate-100 dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700">
       <span className={platformColor}>
-        <PlatformIcon platform={platform} className="w-3.5 h-3.5" />
+        <PlatformIcon platform={platform} className="w-4 h-4" />
       </span>
     </div>
   );
@@ -171,11 +168,17 @@ export function NewsCard({ item }: NewsCardProps) {
           {item.title}
         </p>
 
-        {/* Footer: Source type badge + Media + Link */}
+        {/* Footer: Source type badge + Platform + Media + Link */}
         <div className="flex items-center justify-between">
-          <span className={`px-1.5 py-0.5 text-2xs font-medium rounded-md border ${sourceTypeStyle}`}>
-            {item.source.sourceType.toUpperCase()}
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className={`px-1.5 py-0.5 text-2xs font-medium rounded-md border ${sourceTypeStyle}`}>
+              {item.source.sourceType.toUpperCase()}
+            </span>
+            <span className="flex items-center gap-1 text-2xs text-slate-400 dark:text-slate-500">
+              <PlatformIcon platform={item.source.platform} className="w-3 h-3" />
+              <span className="capitalize">{item.source.platform}</span>
+            </span>
+          </div>
           <div className="flex items-center gap-2">
             {hasMedia && (
               <span className="text-2xs text-purple-500" title="Contains media" aria-label="Contains media">
