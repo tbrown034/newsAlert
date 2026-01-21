@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import Image from 'next/image';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import { CheckBadgeIcon as CheckBadgeSolid } from '@heroicons/react/24/solid';
 import { NewsItem, WatchpointId } from '@/types';
@@ -20,6 +22,50 @@ const sourceTypeColors: Record<string, string> = {
   ground: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/50',
   bot: 'bg-slate-100 dark:bg-slate-900/30 text-slate-700 dark:text-slate-400 border-slate-200 dark:border-slate-800/50',
 };
+
+// Source avatar component with fallback to platform icon
+function SourceAvatar({
+  avatarUrl,
+  platform,
+  name,
+  platformColor,
+}: {
+  avatarUrl?: string;
+  platform: string;
+  name: string;
+  platformColor: string;
+}) {
+  const [imgError, setImgError] = useState(false);
+
+  // Common container styles for consistent sizing
+  const containerClass = "relative w-6 h-6 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center";
+
+  // Show avatar if available and not errored
+  if (avatarUrl && !imgError) {
+    return (
+      <div className={`${containerClass} bg-slate-200 dark:bg-slate-700 ring-1 ring-slate-300 dark:ring-slate-600`}>
+        <Image
+          src={avatarUrl}
+          alt={`${name} avatar`}
+          fill
+          sizes="24px"
+          className="object-cover"
+          onError={() => setImgError(true)}
+          unoptimized // External images
+        />
+      </div>
+    );
+  }
+
+  // Fallback to platform icon in same circular container
+  return (
+    <div className={`${containerClass} bg-slate-100 dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700`}>
+      <span className={platformColor}>
+        <PlatformIcon platform={platform} className="w-3.5 h-3.5" />
+      </span>
+    </div>
+  );
+}
 
 // Region badge colors and labels
 const regionBadges: Record<WatchpointId, { label: string; color: string }> = {
@@ -95,9 +141,12 @@ export function NewsCard({ item }: NewsCardProps) {
         {/* Header: Source info + Region badge */}
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0">
-            <span className={platformColor}>
-              <PlatformIcon platform={item.source.platform} className="w-4 h-4" />
-            </span>
+            <SourceAvatar
+              avatarUrl={item.source.avatarUrl}
+              platform={item.source.platform}
+              name={item.source.name}
+              platformColor={platformColor}
+            />
             <span className="text-xs font-semibold text-slate-700 dark:text-slate-100 truncate">
               {item.source.name}
             </span>

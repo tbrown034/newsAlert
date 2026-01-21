@@ -79,6 +79,8 @@ export interface Source {
   confidence: number; // 1-100
   region: WatchpointId;
   url?: string;
+  // Avatar/profile image URL
+  avatarUrl?: string;
   // Expected posting frequency (posts per day, for anomaly detection)
   baselinePostsPerDay?: number;
   // Optional tags for subcategory filtering (currently used for US region)

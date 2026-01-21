@@ -151,6 +151,7 @@ interface BlueskyPost {
     author: {
       handle: string;
       displayName?: string;
+      avatar?: string;
     };
     record: {
       text: string;
@@ -245,20 +246,26 @@ function recordTimeout(handle: string): void {
   }
 }
 
+// Result type for Bluesky feed with avatar
+interface BlueskyFeedResult {
+  items: RssItem[];
+  authorAvatar?: string;
+}
+
 // Fetch posts from Bluesky using their public API
-async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<RssItem[]> {
+async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<BlueskyFeedResult> {
   const handle = extractBlueskyHandle(source.feedUrl);
   if (!handle) {
     console.error(`[Bluesky] Invalid feedUrl format: ${source.feedUrl}`);
-    return [];
+    return { items: [] };
   }
 
   // Skip if handle is cached as invalid or has timed out repeatedly
   if (isHandleCachedAsInvalid(handle)) {
-    return [];
+    return { items: [] };
   }
   if (isHandleTimedOut(handle)) {
-    return []; // Silently skip - already logged on previous timeouts
+    return { items: [] }; // Silently skip - already logged on previous timeouts
   }
 
   const controller = new AbortController();
@@ -311,17 +318,20 @@ async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<R
           console.error(`[Bluesky] ${source.name} (${handle}): HTTP ${response.status} - ${errorType}`);
       }
 
-      return []; // Expected error → return empty result
+      return { items: [] }; // Expected error → return empty result
     }
 
     const data: BlueskyFeedResponse = await response.json();
 
     // Handle empty feed gracefully
     if (!data.feed || !Array.isArray(data.feed)) {
-      return [];
+      return { items: [] };
     }
 
-    return data.feed.map((item) => {
+    // Extract author avatar from first post (all posts in author feed are from same author)
+    const authorAvatar = data.feed[0]?.post.author.avatar;
+
+    const items = data.feed.map((item) => {
       let text = item.post.record.text;
       const createdAt = item.post.record.createdAt;
       const postId = item.post.uri.split('/').pop() || item.post.cid;
@@ -356,6 +366,8 @@ async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<R
         guid: item.post.uri,
       };
     });
+
+    return { items, authorAvatar };
   } catch (error) {
     clearTimeout(timeoutId);
     if (error instanceof Error && error.name === 'AbortError') {
@@ -370,7 +382,7 @@ async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<R
     } else if (error instanceof Error) {
       console.error(`[Bluesky] ${source.name} (${handle}): ${error.message}`);
     }
-    return [];
+    return { items: [] };
   }
 }
 
@@ -394,13 +406,35 @@ export function clearTimeoutCache(): void {
   timeoutCache.clear();
 }
 
+// Extract domain from URL for favicon generation
+function extractDomain(url: string): string | null {
+  try {
+    const parsed = new URL(url);
+    return parsed.hostname;
+  } catch {
+    return null;
+  }
+}
+
+// Generate favicon URL for a domain
+function getFaviconUrl(domain: string): string {
+  return `https://icon.horse/icon/${domain}`;
+}
+
 // Fetch and parse RSS feed (or Bluesky API for Bluesky sources)
 export async function fetchRssFeed(
   source: Source & { feedUrl: string }
 ): Promise<NewsItem[]> {
   // Use Bluesky API for Bluesky sources (they don't have native RSS)
   if (isBlueskySource(source)) {
-    const items = await fetchBlueskyFeed(source);
+    const { items, authorAvatar } = await fetchBlueskyFeed(source);
+
+    // Create source with avatar
+    const sourceWithAvatar = {
+      ...source,
+      avatarUrl: authorAvatar,
+    };
+
     return items.map((item) => {
       const region = source.region !== 'all'
         ? source.region
@@ -410,7 +444,7 @@ export async function fetchRssFeed(
         id: `${source.id}-${hashString(item.guid || item.link)}`,
         title: item.title,
         content: item.description || item.title,
-        source,
+        source: sourceWithAvatar,
         timestamp: new Date(item.pubDate),
         region,
         verificationStatus: getVerificationStatus(source.sourceType, source.confidence),
@@ -444,6 +478,13 @@ export async function fetchRssFeed(
     const xml = await response.text();
     const items = parseRssXml(xml);
 
+    // Generate favicon URL from feed domain
+    const domain = extractDomain(source.feedUrl);
+    const sourceWithAvatar = {
+      ...source,
+      avatarUrl: domain ? getFaviconUrl(domain) : undefined,
+    };
+
     return items.map((item) => {
       const region = source.region !== 'all'
         ? source.region
@@ -453,7 +494,7 @@ export async function fetchRssFeed(
         id: `${source.id}-${hashString(item.guid || item.link)}`,
         title: item.title,
         content: item.description || item.title,
-        source,
+        source: sourceWithAvatar,
         timestamp: new Date(item.pubDate),
         region,
         verificationStatus: getVerificationStatus(source.sourceType, source.confidence),
