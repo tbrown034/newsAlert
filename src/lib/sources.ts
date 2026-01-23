@@ -1174,18 +1174,6 @@ export const reporters: (Source & { feedUrl: string })[] = [
   },
   // --- NEW YORK TIMES REPORTERS ---
   {
-    id: 'jamelle-bouie',
-    name: 'Jamelle Bouie',
-    handle: '@jamellebouie.net',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 90,
-    region: 'us' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/jamellebouie.net/rss',
-    url: 'https://bsky.app/profile/jamellebouie.net',
-    baselinePostsPerDay: 10,
-  },
-  {
     id: 'kate-conger',
     name: 'Kate Conger',
     handle: '@kateconger.com',
@@ -1987,30 +1975,6 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/en.afp.com',
     baselinePostsPerDay: 50,
   },
-  {
-    id: 'nbc-news',
-    name: 'NBC News',
-    handle: '@nbcnews.com',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 90,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/nbcnews.com/rss',
-    url: 'https://bsky.app/profile/nbcnews.com',
-    baselinePostsPerDay: 60,
-  },
-  {
-    id: 'cnn-bsky',
-    name: 'CNN',
-    handle: '@cnn.com',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/cnn.com/rss',
-    url: 'https://bsky.app/profile/cnn.com',
-    baselinePostsPerDay: 80,
-  },
   // --- WIRE SERVICES ---
   {
     id: 'reuters-bsky',
@@ -2552,18 +2516,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
   },
   // REMOVED: eyesonrussia.bsky.social - not on Bluesky
   // --- ADDITIONAL NEWS ORGS ---
-  {
-    id: 'intercept',
-    name: 'The Intercept',
-    handle: '@theintercept.com',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 85,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/theintercept.com/rss',
-    url: 'https://bsky.app/profile/theintercept.com',
-    baselinePostsPerDay: 10,
-  },
+  // REMOVED: theintercept.com - not on Bluesky
   // REMOVED: thedailybeast.com - not on Bluesky
   {
     id: 'mother-jones',
@@ -2589,18 +2542,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/axios.com',
     baselinePostsPerDay: 40,
   },
-  {
-    id: 'npr-news',
-    name: 'NPR News',
-    handle: '@npr.org',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 90,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/npr.org/rss',
-    url: 'https://bsky.app/profile/npr.org',
-    baselinePostsPerDay: 50,
-  },
+  // REMOVED: npr.org - not on Bluesky
   {
     id: 'pbs-news',
     name: 'PBS NewsHour',
@@ -2698,18 +2640,6 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/nature.com',
     baselinePostsPerDay: 15,
   },
-  {
-    id: 'science-mag',
-    name: 'Science Magazine',
-    handle: '@sciencemagazine.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 95,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/sciencemagazine.bsky.social/rss',
-    url: 'https://bsky.app/profile/sciencemagazine.bsky.social',
-    baselinePostsPerDay: 10,
-  },
   // --- ECONOMICS / FINANCE REPORTERS ---
   {
     id: 'financial-times',
@@ -2735,18 +2665,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/bloomberg.com',
     baselinePostsPerDay: 80,
   },
-  {
-    id: 'wsj',
-    name: 'Wall Street Journal',
-    handle: '@wsj.com',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 92,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/wsj.com/rss',
-    url: 'https://bsky.app/profile/wsj.com',
-    baselinePostsPerDay: 60,
-  },
+  // REMOVED: wsj.com - not on Bluesky
   {
     id: 'paul-krugman',
     name: 'Paul Krugman',
@@ -3008,18 +2927,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     baselinePostsPerDay: 5,
   },
   // --- UK NEWS ---
-  {
-    id: 'guardian',
-    name: 'The Guardian',
-    handle: '@theguardian.com',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 90,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/theguardian.com/rss',
-    url: 'https://bsky.app/profile/theguardian.com',
-    baselinePostsPerDay: 80,
-  },
+  // REMOVED: theguardian.com - not on Bluesky
   {
     id: 'telegraph',
     name: 'The Telegraph',
@@ -3175,42 +3083,9 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
   },
   // REMOVED: PolitiFact - not on Bluesky
   // --- ADDITIONAL INTERNATIONAL ---
-  {
-    id: 'new-york-times',
-    name: 'The New York Times',
-    handle: '@nytimes.com',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 95,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/nytimes.com/rss',
-    url: 'https://bsky.app/profile/nytimes.com',
-    baselinePostsPerDay: 100,
-  },
-  {
-    id: 'washington-post',
-    name: 'The Washington Post',
-    handle: '@washingtonpost.com',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 95,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/washingtonpost.com/rss',
-    url: 'https://bsky.app/profile/washingtonpost.com',
-    baselinePostsPerDay: 80,
-  },
-  {
-    id: 'atlantic-magazine',
-    name: 'The Atlantic',
-    handle: '@theatlantic.com',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 90,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/theatlantic.com/rss',
-    url: 'https://bsky.app/profile/theatlantic.com',
-    baselinePostsPerDay: 30,
-  },
+  // REMOVED: nytimes.com - not on Bluesky
+  // REMOVED: washingtonpost.com - not on Bluesky
+  // REMOVED: theatlantic.com - not on Bluesky
   {
     id: 'new-yorker',
     name: 'The New Yorker',
