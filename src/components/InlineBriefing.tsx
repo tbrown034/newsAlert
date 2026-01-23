@@ -26,12 +26,22 @@ function setCachedBriefing(region: WatchpointId, data: BriefingData): void {
   briefingCache.set(region, { data, cachedAt: Date.now() });
 }
 
+interface KeyDevelopment {
+  headline: string;
+  detail: string;
+  sources: string[];
+  severity: 'critical' | 'high' | 'moderate' | 'routine';
+  confidence?: 'high' | 'medium' | 'low';
+}
+
 interface BriefingData {
   region: WatchpointId;
   timeWindowHours: number;
   generatedAt: string;
   summary: string;
   tensionScore?: number;
+  keyDevelopments?: KeyDevelopment[];
+  watchIndicators?: string[];
   sourcesAnalyzed: number;
   topSources: string[];
   fromCache?: boolean;
@@ -58,6 +68,14 @@ function getTensionStyle(score: number): { label: string; color: string; bgColor
   if (score >= 2) return { label: 'WATCHFUL', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30' };
   return { label: 'STABLE', color: 'text-emerald-600', bgColor: 'bg-emerald-100 dark:bg-emerald-900/30' };
 }
+
+// Severity styling for key developments
+const severityConfig: Record<KeyDevelopment['severity'], { dot: string; text: string; bg: string }> = {
+  critical: { dot: 'bg-red-500', text: 'text-red-600 dark:text-red-400', bg: 'bg-red-50 dark:bg-red-900/20' },
+  high: { dot: 'bg-orange-500', text: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-900/20' },
+  moderate: { dot: 'bg-amber-500', text: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-900/20' },
+  routine: { dot: 'bg-slate-400', text: 'text-slate-600 dark:text-slate-400', bg: 'bg-slate-50 dark:bg-slate-800/50' },
+};
 
 export function InlineBriefing({ region }: InlineBriefingProps) {
   const [briefing, setBriefing] = useState<BriefingData | null>(null);
@@ -266,11 +284,63 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
         </div>
       </div>
 
-      {/* Body - Clean summary only */}
-      <div className="px-4 py-3">
+      {/* Body - Summary + Key Developments */}
+      <div className="px-4 py-3 space-y-4">
+        {/* Executive Summary */}
         <p className="text-sm text-slate-700 dark:text-slate-100 leading-relaxed">
           {briefing.summary}
         </p>
+
+        {/* Key Developments */}
+        {briefing.keyDevelopments && briefing.keyDevelopments.length > 0 && (
+          <div className="space-y-2">
+            <h4 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+              Key Developments
+            </h4>
+            <div className="space-y-2">
+              {briefing.keyDevelopments.map((dev, i) => {
+                const style = severityConfig[dev.severity] || severityConfig.routine;
+                return (
+                  <div key={i} className={`rounded-lg p-3 ${style.bg} border border-slate-200/50 dark:border-slate-700/50`}>
+                    <div className="flex items-start gap-2">
+                      <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${style.dot}`} />
+                      <div className="flex-1 min-w-0">
+                        <h5 className={`text-sm font-medium ${style.text}`}>
+                          {dev.headline}
+                        </h5>
+                        <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                          {dev.detail}
+                        </p>
+                        {dev.sources && dev.sources.length > 0 && (
+                          <p className="text-2xs text-slate-400 dark:text-slate-500 mt-1.5">
+                            Sources: {dev.sources.join(', ')}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Watch Indicators */}
+        {briefing.watchIndicators && briefing.watchIndicators.length > 0 && (
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+            <h4 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">
+              Watch For
+            </h4>
+            <ul className="space-y-1">
+              {briefing.watchIndicators.map((indicator, i) => (
+                <li key={i} className="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-300">
+                  <span className="text-blue-500 mt-0.5">→</span>
+                  <span>{indicator}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       {/* Footer - stats with tokens, latency, cost */}

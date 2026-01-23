@@ -336,7 +336,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               className="flex items-center gap-2 sm:gap-4 hover:opacity-80 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-lg"
-              aria-label="News Alert home - reset to all regions"
+              aria-label="Pulse Alert home - reset to all regions"
             >
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-slate-700 to-slate-900 rounded-xl flex items-center justify-center shadow-md shadow-black/30 border border-slate-600">
                 <svg viewBox="0 0 32 32" className="w-5 h-5 sm:w-6 sm:h-6">
@@ -358,7 +358,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
               </div>
               <div className="text-left">
                 <h1 className="text-xl sm:text-2xl font-bold headline text-slate-900 dark:text-white">
-                  News Alert
+                  Pulse Alert
                 </h1>
                 <p className="text-2xs sm:text-xs font-medium tracking-wide uppercase hidden xs:block text-cyan-600 dark:text-cyan-400">
                   News Before Its News

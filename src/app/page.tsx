@@ -2,6 +2,9 @@ import HomeClient from './HomeClient';
 import { WatchpointId, NewsItem } from '@/types';
 import { RegionActivity } from '@/lib/activityDetection';
 
+// Don't statically generate - this page fetches live data
+export const dynamic = 'force-dynamic';
+
 interface ApiResponse {
   items: NewsItem[];
   activity: Record<string, RegionActivity>;
