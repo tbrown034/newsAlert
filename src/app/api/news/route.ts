@@ -146,28 +146,12 @@ async function fetchAllSources(
 
   const allItems: NewsItem[] = [];
 
-  // Fetch all RSS sources in parallel (they're fast)
-  const rssPromises = rssSources.map(async (source) => {
-    try {
-      return await fetchRssFeed(source);
-    } catch {
-      return [];
-    }
-  });
+  // Fetch RSS sources in batches to avoid network saturation
+  const RSS_BATCH_SIZE = 30;
+  const RSS_BATCH_DELAY = 100;
 
-  const rssResults = await Promise.allSettled(rssPromises);
-  for (const result of rssResults) {
-    if (result.status === 'fulfilled') {
-      allItems.push(...result.value);
-    }
-  }
-
-  // Fetch Bluesky in batches
-  const BATCH_SIZE = 50;
-  const BATCH_DELAY = 50;
-
-  for (let i = 0; i < blueskySources.length; i += BATCH_SIZE) {
-    const batch = blueskySources.slice(i, i + BATCH_SIZE);
+  for (let i = 0; i < rssSources.length; i += RSS_BATCH_SIZE) {
+    const batch = rssSources.slice(i, i + RSS_BATCH_SIZE);
 
     const batchPromises = batch.map(async (source) => {
       try {
@@ -184,8 +168,35 @@ async function fetchAllSources(
       }
     }
 
-    if (i + BATCH_SIZE < blueskySources.length) {
-      await new Promise(r => setTimeout(r, BATCH_DELAY));
+    if (i + RSS_BATCH_SIZE < rssSources.length) {
+      await new Promise(r => setTimeout(r, RSS_BATCH_DELAY));
+    }
+  }
+
+  // Fetch Bluesky in batches
+  const BSKY_BATCH_SIZE = 30;
+  const BSKY_BATCH_DELAY = 100;
+
+  for (let i = 0; i < blueskySources.length; i += BSKY_BATCH_SIZE) {
+    const batch = blueskySources.slice(i, i + BSKY_BATCH_SIZE);
+
+    const batchPromises = batch.map(async (source) => {
+      try {
+        return await fetchRssFeed(source);
+      } catch {
+        return [];
+      }
+    });
+
+    const batchResults = await Promise.allSettled(batchPromises);
+    for (const result of batchResults) {
+      if (result.status === 'fulfilled') {
+        allItems.push(...result.value);
+      }
+    }
+
+    if (i + BSKY_BATCH_SIZE < blueskySources.length) {
+      await new Promise(r => setTimeout(r, BSKY_BATCH_DELAY));
     }
   }
 
