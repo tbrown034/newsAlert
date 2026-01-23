@@ -3697,18 +3697,6 @@ export const tier1Sources: TieredSource[] = [
     postsPerDay: 5,
   },
   {
-    id: 'aspi-strategist-rss',
-    name: 'ASPI Strategist',
-    platform: 'rss',
-    sourceType: 'analyst',
-    fetchTier: 'T1',
-    confidence: 90,
-    region: 'asia' as WatchpointId,
-    feedUrl: 'https://www.aspistrategist.org.au/feed/',
-    url: 'https://www.aspistrategist.org.au/',
-    postsPerDay: 5,
-  },
-  {
     id: 'lowy-interpreter-rss',
     name: 'Lowy Interpreter',
     platform: 'rss',

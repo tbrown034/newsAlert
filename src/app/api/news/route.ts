@@ -18,6 +18,7 @@ import {
   isCacheFresh,
 } from '@/lib/newsCache';
 import { WatchpointId, NewsItem } from '@/types';
+import { checkRateLimit, getClientIp, rateLimitHeaders } from '@/lib/rateLimit';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -264,6 +265,23 @@ async function fetchNewsWithCache(
 }
 
 export async function GET(request: Request) {
+  // Rate limiting: 120 requests per minute per IP
+  const clientIp = getClientIp(request);
+  const rateLimitResult = checkRateLimit(`news:${clientIp}`, {
+    windowMs: 60000,
+    maxRequests: 120,
+  });
+
+  if (!rateLimitResult.allowed) {
+    return NextResponse.json(
+      { error: 'Rate limit exceeded. Please try again later.' },
+      {
+        status: 429,
+        headers: rateLimitHeaders(rateLimitResult),
+      }
+    );
+  }
+
   const { searchParams } = new URL(request.url);
   const regionParam = searchParams.get('region') || 'all';
   const tierParam = searchParams.get('tier') || 'T1,T2'; // Default: T1 and T2

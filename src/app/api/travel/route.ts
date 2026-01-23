@@ -5,8 +5,15 @@
  */
 
 import { NextResponse } from 'next/server';
+import { XMLParser } from 'fast-xml-parser';
 
 export const dynamic = 'force-dynamic';
+
+// XML parser instance
+const xmlParser = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: '@_',
+});
 
 interface TravelAdvisory {
   id: string;
@@ -211,25 +218,31 @@ export async function GET() {
     if (response.ok) {
       const rssText = await response.text();
 
-      // Parse RSS items
-      const items = rssText.match(/<item>[\s\S]*?<\/item>/g) || [];
+      // Parse RSS using fast-xml-parser
+      const parsed = xmlParser.parse(rssText);
+      const items = parsed?.rss?.channel?.item || [];
+      const itemArray = Array.isArray(items) ? items : [items];
 
-      for (const item of items) {
-        const titleMatch = item.match(/<title>([^<]+)<\/title>/);
-        const linkMatch = item.match(/<link>([^<]+)<\/link>/);
-        const descMatch = item.match(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/);
-        const dateMatch = item.match(/<pubDate>([^<]+)<\/pubDate>/);
-        const countryCodeMatch = item.match(/<category domain="Country-Tag">([^<]+)<\/category>/);
+      for (const item of itemArray) {
+        const title = item.title;
+        const link = item.link;
+        const desc = item.description;
+        const pubDate = item.pubDate;
+        // Category can be array or single object
+        const categories = Array.isArray(item.category) ? item.category : [item.category];
+        const countryTag = categories.find((c: any) => c?.['@_domain'] === 'Country-Tag');
 
-        if (!titleMatch || !countryCodeMatch) continue;
+        if (!title || !countryTag) continue;
 
-        const countryCode = countryCodeMatch[1].toUpperCase();
+        // Extract country code from category value
+        const countryCode = (typeof countryTag === 'object' ? countryTag['#text'] : countryTag)?.toUpperCase();
+        if (!countryCode) continue;
+
         const countryInfo = COUNTRY_COORDS[countryCode];
-
         if (!countryInfo) continue;
 
-        const { level, levelText } = parseLevel(titleMatch[1]);
-        const description = descMatch ? descMatch[1].replace(/<[^>]+>/g, ' ').substring(0, 300) : '';
+        const { level, levelText } = parseLevel(String(title));
+        const description = desc ? String(desc).replace(/<[^>]+>/g, ' ').substring(0, 300) : '';
         const risks = extractRisks(description);
 
         advisories.push({
@@ -238,10 +251,10 @@ export async function GET() {
           countryCode,
           level,
           levelText,
-          title: titleMatch[1],
+          title: String(title),
           description: description.trim(),
-          url: linkMatch?.[1] || '',
-          updatedAt: dateMatch ? new Date(dateMatch[1]) : new Date(),
+          url: link ? String(link) : '',
+          updatedAt: pubDate ? new Date(String(pubDate)) : new Date(),
           coordinates: countryInfo.coords,
           risks,
         });

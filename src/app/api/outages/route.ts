@@ -6,8 +6,15 @@
  */
 
 import { NextResponse } from 'next/server';
+import { XMLParser } from 'fast-xml-parser';
 
 export const dynamic = 'force-dynamic';
+
+// XML parser instance
+const xmlParser = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: '@_',
+});
 
 interface CountryOutage {
   id: string;
@@ -147,21 +154,23 @@ export async function GET() {
 
         if (response.ok) {
           const text = await response.text();
-          // Parse RSS for recent outage reports
-          const items = text.match(/<item>[\s\S]*?<\/item>/g) || [];
+          // Parse RSS using fast-xml-parser
+          const parsed = xmlParser.parse(text);
+          const items = parsed?.rss?.channel?.item || [];
+          const itemArray = Array.isArray(items) ? items : [items];
 
-          for (const item of items.slice(0, 10)) {
-            const titleMatch = item.match(/<title>([^<]+)<\/title>/);
-            const descMatch = item.match(/<description>([^<]+)<\/description>/);
-            const dateMatch = item.match(/<pubDate>([^<]+)<\/pubDate>/);
+          for (const item of itemArray.slice(0, 10)) {
+            const title = item.title;
+            const desc = item.description;
+            const pubDateStr = item.pubDate;
 
-            if (titleMatch && descMatch) {
-              const fullText = `${titleMatch[1]} ${descMatch[1]}`;
+            if (title && desc) {
+              const fullText = `${title} ${desc}`;
               const countryCode = detectCountryInText(fullText);
 
               if (countryCode && hasOutageKeywords(fullText) && CAPITAL_COORDS[countryCode]) {
                 const info = CAPITAL_COORDS[countryCode];
-                const pubDate = dateMatch ? new Date(dateMatch[1]) : now;
+                const pubDate = pubDateStr ? new Date(String(pubDateStr)) : now;
 
                 // Only include if within last 7 days
                 const daysAgo = (now.getTime() - pubDate.getTime()) / (1000 * 60 * 60 * 24);
@@ -175,7 +184,7 @@ export async function GET() {
                     severity: 'severe',
                     percentDown: 60,
                     startTime: pubDate,
-                    description: titleMatch[1].substring(0, 200),
+                    description: String(title).substring(0, 200),
                     source: 'NetBlocks',
                     url: 'https://netblocks.org',
                   });

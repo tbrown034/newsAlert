@@ -8,7 +8,7 @@ import {
   Marker,
   ZoomableGroup,
 } from 'react-simple-maps';
-import { ArrowPathIcon, PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, PlusIcon, MinusIcon, ChevronUpIcon, ChevronDownIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 import { Watchpoint, WatchpointId, Earthquake } from '@/types';
 import { RegionActivity } from '@/lib/activityDetection';
 
@@ -42,6 +42,7 @@ interface WorldMapProps {
   activity?: Record<string, RegionActivity>;
   significantQuakes?: Earthquake[]; // 6.0+ earthquakes for Main view
   hoursWindow?: number; // Time window in hours
+  hotspotsOnly?: boolean; // Only show elevated/critical regions
 }
 
 // Activity level colors - visual language:
@@ -65,12 +66,13 @@ const regionMarkers: Record<string, { coordinates: [number, number]; label: stri
 const DEFAULT_CENTER: [number, number] = [40, 25];
 const DEFAULT_ZOOM = 1;
 
-function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {}, activity = {}, significantQuakes = [], hoursWindow = 12 }: WorldMapProps) {
+function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {}, activity = {}, significantQuakes = [], hoursWindow = 12, hotspotsOnly = false }: WorldMapProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [position, setPosition] = useState({ coordinates: DEFAULT_CENTER, zoom: DEFAULT_ZOOM });
   const [hoveredMarker, setHoveredMarker] = useState<string | null>(null);
   const [hoveredQuake, setHoveredQuake] = useState<string | null>(null);
+  const [legendExpanded, setLegendExpanded] = useState(false);
 
   const handleMoveEnd = (position: { coordinates: [number, number]; zoom: number }) => {
     setPosition(position);
@@ -154,7 +156,7 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
   // Show loading placeholder during SSR to avoid hydration mismatch
   if (!isMounted) {
     return (
-      <div className="relative w-full bg-[#0a0d12] overflow-hidden">
+      <div className="relative w-full bg-[#1e3a5f] overflow-hidden">
         <div className="relative h-[200px] sm:h-[260px] flex items-center justify-center">
           <div className="text-gray-600 text-sm">Loading map...</div>
         </div>
@@ -163,7 +165,7 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
   }
 
   return (
-    <div className="relative w-full bg-[#0a0d12] overflow-hidden">
+    <div className="relative w-full bg-[#1e3a5f] overflow-hidden">
       {/* Map Container */}
       <div className="relative h-[200px] sm:h-[260px]">
         <ComposableMap
@@ -190,12 +192,12 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill="#1a1f2e"
-                  stroke="#2d3748"
-                  strokeWidth={0.4}
+                  fill="#4a6274"
+                  stroke="#5d7486"
+                  strokeWidth={0.5}
                   style={{
                     default: { outline: 'none' },
-                    hover: { outline: 'none', fill: '#252d3d' },
+                    hover: { outline: 'none', fill: '#5d7486' },
                     pressed: { outline: 'none' },
                   }}
                 />
@@ -204,7 +206,16 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
           </Geographies>
 
           {/* Region Markers */}
-          {Object.entries(regionMarkers).map(([id, marker]) => {
+          {Object.entries(regionMarkers)
+            .filter(([id]) => {
+              // In hotspots mode, only show elevated or critical regions
+              if (hotspotsOnly) {
+                const level = getActivityLevel(id);
+                return level === 'elevated' || level === 'critical';
+              }
+              return true;
+            })
+            .map(([id, marker]) => {
             const activityLevel = getActivityLevel(id);
             const colors = activityColors[activityLevel] || activityColors.normal;
             const isSelected = selected === id;
@@ -331,21 +342,30 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
               onMouseEnter={() => setHoveredQuake(quake.id)}
               onMouseLeave={() => setHoveredQuake(null)}
             >
-              {/* Pulse effect for major quakes */}
+              {/* Outer pulse ring */}
               <circle
-                r={8}
+                r={16}
+                fill="none"
+                stroke={getQuakeColor(quake.magnitude)}
+                strokeWidth={2}
+                opacity={0.3}
+                className="animate-ping-subtle"
+              />
+              {/* Inner pulse ring */}
+              <circle
+                r={10}
                 fill="none"
                 stroke={getQuakeColor(quake.magnitude)}
                 strokeWidth={1.5}
-                opacity={0.4}
-                className="animate-ping-subtle"
+                opacity={0.5}
+                className="animate-pulse"
               />
               {/* Main marker */}
               <circle
-                r={hoveredQuake === quake.id ? 6 : 5}
+                r={hoveredQuake === quake.id ? 7 : 6}
                 fill={getQuakeColor(quake.magnitude)}
                 stroke="#fff"
-                strokeWidth={1.5}
+                strokeWidth={2}
                 style={{ cursor: 'pointer', transition: 'r 150ms ease' }}
               />
               {/* Tooltip on hover */}
@@ -401,21 +421,101 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
           </button>
         </div>
 
-        {/* Legend */}
-        <div className="absolute bottom-3 right-3 flex items-center gap-3 sm:gap-4 text-[11px] sm:text-xs text-gray-200 z-10 bg-slate-900/90 backdrop-blur-sm px-3 py-2 rounded-lg border border-slate-600/50">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
-            <span className="font-medium">Critical</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-orange-500" />
-            <span className="font-medium">Elevated</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
-            <span className="font-medium">Normal</span>
-          </div>
-        </div>
+        {/* Legend Toggle Button */}
+        <button
+          onClick={() => setLegendExpanded(!legendExpanded)}
+          className="absolute bottom-3 right-3 z-10 p-2 bg-slate-900/90 backdrop-blur-sm rounded-lg border border-slate-600/50 text-gray-300 hover:text-white hover:bg-slate-800/90 transition-colors"
+          title="Map key"
+        >
+          <InformationCircleIcon className="w-5 h-5" />
+        </button>
+
+        {/* Expanded Legend Panel */}
+        {legendExpanded && (
+          <>
+            {/* Backdrop for mobile */}
+            <div
+              className="fixed inset-0 bg-black/40 z-40 sm:hidden"
+              onClick={() => setLegendExpanded(false)}
+            />
+
+            {/* Legend Panel */}
+            <div className="fixed bottom-0 left-0 right-0 z-50 sm:absolute sm:bottom-3 sm:right-3 sm:left-auto sm:w-72
+                          bg-slate-900/95 backdrop-blur-md rounded-t-2xl sm:rounded-xl border border-slate-600/50
+                          max-h-[50vh] sm:max-h-none overflow-y-auto">
+              {/* Header */}
+              <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700/50 sticky top-0 bg-slate-900/95 backdrop-blur-md">
+                <h3 className="text-sm font-semibold text-white">Map Key</h3>
+                <button
+                  onClick={() => setLegendExpanded(false)}
+                  className="p-1 hover:bg-slate-700 rounded-lg transition-colors"
+                >
+                  <ChevronDownIcon className="w-5 h-5 text-gray-400" />
+                </button>
+              </div>
+
+              {/* Content */}
+              <div className="p-4 space-y-4">
+                {/* Activity Levels */}
+                <div>
+                  <div className="text-xs text-slate-400 mb-2 font-medium">
+                    {hotspotsOnly ? 'Showing elevated regions only' : 'Post frequency vs. average'}
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm text-gray-200">
+                      <span className="w-3 h-3 rounded-full bg-red-500" />
+                      <span className="font-medium">Surging</span>
+                      <span className="text-xs text-slate-400 ml-auto">4×+ usual</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-200">
+                      <span className="w-3 h-3 rounded-full bg-orange-500" />
+                      <span className="font-medium">Elevated</span>
+                      <span className="text-xs text-slate-400 ml-auto">2×+ usual</span>
+                    </div>
+                    {!hotspotsOnly && (
+                      <div className="flex items-center gap-2 text-sm text-gray-200">
+                        <span className="w-3 h-3 rounded-full bg-green-500" />
+                        <span className="font-medium">Typical</span>
+                        <span className="text-xs text-slate-400 ml-auto">Normal range</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Earthquake legend - only shows when there are significant quakes */}
+                {significantQuakes.length > 0 && (
+                  <div className="pt-3 border-t border-slate-700/50">
+                    <div className="text-xs text-slate-400 mb-2 font-medium">Large Earthquakes (M6+)</div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm text-gray-200">
+                        <span className="w-4 h-4 rounded-full bg-red-500 ring-2 ring-red-500/30" />
+                        <span>Magnitude 7+</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-200">
+                        <span className="w-3.5 h-3.5 rounded-full bg-orange-500 ring-2 ring-orange-500/30" />
+                        <span>Magnitude 6.5+</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-200">
+                        <span className="w-3 h-3 rounded-full bg-yellow-500 ring-2 ring-yellow-500/30" />
+                        <span>Magnitude 6+</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Hotspots mode message when no hotspots */}
+                {hotspotsOnly && Object.values(activity).every(a => a.level === 'normal') && (
+                  <div className="pt-3 border-t border-slate-700/50">
+                    <div className="bg-green-900/50 rounded-lg px-3 py-2 text-center">
+                      <div className="text-sm text-green-200 font-medium">All regions typical</div>
+                      <div className="text-xs text-green-300/70">No hotspots detected</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

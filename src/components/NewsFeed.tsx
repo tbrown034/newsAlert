@@ -178,6 +178,7 @@ export function NewsFeed({
   const [newItemIds, setNewItemIds] = useState<Set<string>>(new Set());
   const [platformFilter, setPlatformFilter] = useState<PlatformFilter>('all');
   const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
+  const [regionalExpanded, setRegionalExpanded] = useState(false);
   const [selectedTab, setSelectedTab] = useState<SelectedTab>('all'); // Local tab state, defaults to All
   const moreDropdownRef = useRef<HTMLDivElement>(null);
   const isInitialLoadRef = useRef(true);
@@ -374,62 +375,28 @@ export function NewsFeed({
             })}
           </div>
 
-          {/* Regional dropdown - OUTSIDE scrollable area so it's not clipped */}
-          <div className="relative" ref={moreDropdownRef}>
-            <button
-              onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
-              className={`
-                relative flex items-center gap-1 px-3 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-medium
-                transition-colors duration-200 whitespace-nowrap min-h-[44px]
-                focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset
-                ${isDropdownTabSelected
-                  ? 'text-slate-900 dark:text-slate-100'
-                  : 'text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-900'
-                }
-              `}
-              aria-expanded={moreDropdownOpen}
-              aria-haspopup="true"
-            >
-              {isDropdownTabSelected
-                ? dropdownTabs.find(t => t.id === selectedTab)?.label
-                : 'Regional'}
-              <ChevronDownIcon className={`w-3.5 h-3.5 transition-transform ${moreDropdownOpen ? 'rotate-180' : ''}`} />
-              {isDropdownTabSelected && (
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-blue-600 rounded-full" />
-              )}
-            </button>
-
-            {/* Dropdown menu */}
-            {moreDropdownOpen && (
-              <div className="absolute top-full left-0 mt-1 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-lg z-50 min-w-[160px]">
-                <div className="flex flex-col p-1">
-                  {/* Show regional tabs that are hidden on current screen size */}
-                  {allTabs.filter(t => !t.alwaysVisible).map((tab) => {
-                    const isSelected = selectedTab === tab.id;
-
-                    return (
-                      <button
-                        key={tab.id}
-                        onClick={() => {
-                          handleTabSelect(tab.id);
-                          setMoreDropdownOpen(false);
-                        }}
-                        className={`
-                          px-3 py-3 text-sm font-medium rounded-md transition-colors text-left min-h-[44px]
-                          ${isSelected
-                            ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
-                            : 'text-slate-600 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800'
-                          }
-                        `}
-                      >
-                        {tab.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+          {/* Regional toggle button */}
+          <button
+            onClick={() => setRegionalExpanded(!regionalExpanded)}
+            className={`
+              relative flex items-center gap-1 px-3 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-medium
+              transition-colors duration-200 whitespace-nowrap min-h-[44px]
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset
+              ${isDropdownTabSelected || regionalExpanded
+                ? 'text-slate-900 dark:text-slate-100'
+                : 'text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-900'
+              }
+            `}
+            aria-expanded={regionalExpanded}
+          >
+            {isDropdownTabSelected
+              ? dropdownTabs.find(t => t.id === selectedTab)?.label
+              : 'Regional'}
+            <ChevronDownIcon className={`w-3.5 h-3.5 transition-transform ${regionalExpanded ? 'rotate-180' : ''}`} />
+            {isDropdownTabSelected && (
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-blue-600 rounded-full" />
             )}
-          </div>
+          </button>
 
           <div className="flex-1" /> {/* Spacer */}
 
@@ -445,42 +412,136 @@ export function NewsFeed({
           )}
         </div>
 
-        {/* Platform filter + stats bar (combined) */}
-        {(platformCounts.bluesky > 0 || platformCounts.rss > 0 || platformCounts.telegram > 0) && (
-          <div className="px-3 py-2 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
-            <div className="flex items-center gap-1.5">
-              <span className="text-xs text-slate-500 dark:text-slate-500 mr-1">Source:</span>
+        {/* Expandable regional row */}
+        {regionalExpanded && (
+          <div className="flex items-center gap-1 px-2 sm:px-3 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 overflow-x-auto scrollbar-hide">
+            {/* Show first 3 regions inline on mobile, all on larger screens */}
+            {allTabs.filter(t => !t.alwaysVisible).slice(0, 3).map((tab) => {
+              const isSelected = selectedTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    handleTabSelect(tab.id);
+                    setRegionalExpanded(false);
+                  }}
+                  className={`
+                    px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg transition-colors whitespace-nowrap
+                    ${isSelected
+                      ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+                    }
+                  `}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+
+            {/* More dropdown for remaining regions on mobile */}
+            <div className="relative sm:hidden" ref={moreDropdownRef}>
+              <button
+                onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
+                className="px-2.5 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center gap-1"
+              >
+                More
+                <ChevronDownIcon className={`w-3 h-3 transition-transform ${moreDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {moreDropdownOpen && (
+                <div className="absolute top-full left-0 mt-1 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-lg z-50 min-w-[140px]">
+                  {allTabs.filter(t => !t.alwaysVisible).slice(3).map((tab) => {
+                    const isSelected = selectedTab === tab.id;
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => {
+                          handleTabSelect(tab.id);
+                          setMoreDropdownOpen(false);
+                          setRegionalExpanded(false);
+                        }}
+                        className={`
+                          w-full px-3 py-2.5 text-sm font-medium transition-colors text-left
+                          ${isSelected
+                            ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                            : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                          }
+                        `}
+                      >
+                        {tab.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Show remaining regions inline on larger screens */}
+            {allTabs.filter(t => !t.alwaysVisible).slice(3).map((tab) => {
+              const isSelected = selectedTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    handleTabSelect(tab.id);
+                    setRegionalExpanded(false);
+                  }}
+                  className={`
+                    hidden sm:block px-3 py-1.5 text-sm font-medium rounded-lg transition-colors whitespace-nowrap
+                    ${isSelected
+                      ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+                    }
+                  `}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Platform filter + stats bar (combined) - show while loading or when there's data */}
+        {(isLoading || isLoadingMore || platformCounts.bluesky > 0 || platformCounts.rss > 0 || platformCounts.telegram > 0) && (
+          <div className="px-2 sm:px-3 py-1.5 sm:py-2 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 overflow-x-auto scrollbar-hide">
+            <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-500 flex-shrink-0">Source:</span>
+            <div className="flex items-center gap-1.5 flex-shrink-0">
               {platformFilters.map((filter) => {
                 const isSelected = platformFilter === filter.id;
                 const count = filter.id === 'all'
                   ? (platformCounts.bluesky || 0) + (platformCounts.rss || 0) + (platformCounts.telegram || 0)
                   : (platformCounts[filter.id] || 0);
 
-                // Don't show filter if no items for that platform
-                if (filter.id !== 'all' && count === 0) return null;
+                // Show loading state if still loading initial data or loading more sources
+                const isLoadingPlatform = (isLoading || isLoadingMore) && filter.id !== 'all' && count === 0;
 
                 return (
                   <button
                     key={filter.id}
                     onClick={() => setPlatformFilter(filter.id)}
+                    disabled={isLoadingPlatform}
                     className={`
-                      px-2.5 py-1 text-xs font-medium rounded-full transition-colors
+                      px-2 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full transition-colors whitespace-nowrap
                       ${isSelected
                         ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'
                       }
+                      ${isLoadingPlatform ? 'opacity-60' : ''}
                     `}
                   >
                     {filter.label}
-                    <span className={`ml-1 ${isSelected ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>
-                      {count}
-                    </span>
+                    {isLoadingPlatform ? (
+                      <span className="ml-1 inline-block w-2.5 h-2.5 border border-slate-400 border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <span className={`ml-0.5 sm:ml-1 ${isSelected ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>
+                        {count}
+                      </span>
+                    )}
                   </button>
                 );
               })}
             </div>
-            {/* Stats on right side */}
-            <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500">
+            {/* Stats on right side - hidden on mobile to reduce cramping */}
+            <div className="hidden sm:flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500 ml-auto flex-shrink-0">
               {loadTimeMs != null && (
                 <span className={loadTimeMs > 10000 ? 'text-amber-500' : ''}>
                   {loadTimeMs > 1000 ? `${(loadTimeMs / 1000).toFixed(1)}s` : `${loadTimeMs}ms`}
@@ -546,7 +607,7 @@ export function NewsFeed({
           </div>
         )}
 
-        <div className="flex flex-col gap-3 px-3 sm:px-4 pb-3 sm:pb-4 pt-3 news-feed-list">
+        <div className="flex flex-col gap-4 px-3 sm:px-4 pb-3 sm:pb-4 pt-3 news-feed-list">
           {sortedItems.map((item, index) => (
             <div
               key={item.id}

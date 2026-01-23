@@ -5,8 +5,16 @@
  */
 
 import { NextResponse } from 'next/server';
+import { XMLParser } from 'fast-xml-parser';
 
 export const dynamic = 'force-dynamic';
+
+// XML parser instance with namespace handling
+const xmlParser = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: '@_',
+  removeNSPrefix: true, // Handle gdacs: and geo: prefixes
+});
 
 interface WeatherEvent {
   id: string;
@@ -223,40 +231,41 @@ export async function GET() {
     if (gdacsResponse.ok) {
       const rssText = await gdacsResponse.text();
 
-      // Parse RSS items
-      const items = rssText.match(/<item>[\s\S]*?<\/item>/g) || [];
+      // Parse RSS using fast-xml-parser
+      const parsed = xmlParser.parse(rssText);
+      const items = parsed?.rss?.channel?.item || [];
+      const itemArray = Array.isArray(items) ? items : [items];
 
-      for (const item of items.slice(0, 30)) {
-        // Extract fields using regex
-        const titleMatch = item.match(/<title>([^<]+)<\/title>/);
-        const linkMatch = item.match(/<link>([^<]+)<\/link>/);
-        const eventTypeMatch = item.match(/<gdacs:eventtype>([^<]+)<\/gdacs:eventtype>/);
-        const alertLevelMatch = item.match(/<gdacs:alertlevel>([^<]+)<\/gdacs:alertlevel>/);
-        const latMatch = item.match(/<geo:lat>([^<]+)<\/geo:lat>/);
-        const lonMatch = item.match(/<geo:long>([^<]+)<\/geo:long>/);
-        const dateMatch = item.match(/<pubDate>([^<]+)<\/pubDate>/);
-        const countryMatch = item.match(/<gdacs:country>([^<]+)<\/gdacs:country>/);
+      for (const item of itemArray.slice(0, 30)) {
+        const title = item.title;
+        const link = item.link;
+        const eventTypeVal = item.eventtype;
+        const alertLevel = item.alertlevel;
+        const lat = item.lat;
+        const lon = item.long;
+        const pubDate = item.pubDate;
+        const country = item.country;
 
-        if (!titleMatch || !eventTypeMatch || !latMatch || !lonMatch) continue;
+        if (!title || !eventTypeVal || lat === undefined || lon === undefined) continue;
 
-        const eventType = mapGDACSEventType(eventTypeMatch[1]);
+        const eventType = mapGDACSEventType(String(eventTypeVal));
         if (!eventType) continue;
 
-        const lat = parseFloat(latMatch[1]);
-        const lon = parseFloat(lonMatch[1]);
-        if (isNaN(lat) || isNaN(lon)) continue;
+        const latNum = parseFloat(String(lat));
+        const lonNum = parseFloat(String(lon));
+        if (isNaN(latNum) || isNaN(lonNum)) continue;
 
         events.push({
-          id: `gdacs-${eventTypeMatch[1]}-${lat}-${lon}`,
+          id: `gdacs-${eventTypeVal}-${latNum}-${lonNum}`,
           type: eventType,
-          name: titleMatch[1].substring(0, 100),
-          description: countryMatch ? `${eventType} event in ${countryMatch[1]}` : titleMatch[1].substring(0, 150),
-          severity: mapGDACSAlertLevel(alertLevelMatch?.[1] || 'green'),
-          coordinates: [lon, lat],
-          startTime: dateMatch ? new Date(dateMatch[1]) : new Date(),
+          name: String(title).substring(0, 100),
+          description: country ? `${eventType} event in ${country}` : String(title).substring(0, 150),
+          severity: mapGDACSAlertLevel(alertLevel ? String(alertLevel) : 'green'),
+          coordinates: [lonNum, latNum],
+          startTime: pubDate ? new Date(String(pubDate)) : new Date(),
           source: 'GDACS',
-          url: linkMatch?.[1],
-          affectedAreas: countryMatch ? [countryMatch[1]] : undefined,
+          url: link ? String(link) : undefined,
+          affectedAreas: country ? [String(country)] : undefined,
         });
       }
     }

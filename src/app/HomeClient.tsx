@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { NewsFeed, Legend, WorldMap, SeismicMap, WeatherMap, OutagesMap, TravelMap, FiresMap, AuthButton } from '@/components';
 import { watchpoints as defaultWatchpoints } from '@/lib/mockData';
 import { NewsItem, WatchpointId, Watchpoint, Earthquake } from '@/types';
-import { GlobeAltIcon, CloudIcon, SignalIcon, ExclamationTriangleIcon, FireIcon, EllipsisHorizontalIcon, Bars3Icon, XMarkIcon, ChevronUpIcon, ChevronDownIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import { GlobeAltIcon, CloudIcon, SignalIcon, ExclamationTriangleIcon, FireIcon, EllipsisHorizontalIcon, Bars3Icon, XMarkIcon, ChevronUpIcon, ChevronDownIcon, SunIcon, MoonIcon, InformationCircleIcon, BoltIcon } from '@heroicons/react/24/outline';
 import { MapPinIcon } from '@heroicons/react/24/solid';
 import { RegionActivity } from '@/lib/activityDetection';
 import { tier1Sources, tier2Sources, tier3Sources } from '@/lib/sources-clean';
@@ -19,7 +19,7 @@ interface ApiResponse {
   sourcesCount?: number;
 }
 
-type HeroView = 'main' | 'seismic' | 'weather' | 'outages' | 'travel' | 'fires';
+type HeroView = 'main' | 'hotspots' | 'seismic' | 'weather' | 'outages' | 'travel' | 'fires';
 
 interface HomeClientProps {
   initialData: ApiResponse | null;
@@ -59,6 +59,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
   const [selectedQuake, setSelectedQuake] = useState<Earthquake | null>(null);
   const [seismicLoading, setSeismicLoading] = useState(false);
   const [showMoreTabs, setShowMoreTabs] = useState(false);
+  const [showStats, setShowStats] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mapCollapsed, setMapCollapsed] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
@@ -309,11 +310,12 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
 
   const mainTabs = [
     { id: 'main', label: 'Main', icon: GlobeAltIcon, color: 'blue' },
+    { id: 'hotspots', label: 'Hotspots', icon: BoltIcon, color: 'orange' },
     { id: 'seismic', label: 'Seismic', icon: MapPinIcon, color: 'amber' },
-    { id: 'weather', label: 'Weather', icon: CloudIcon, color: 'cyan' },
   ] as const;
 
   const secondaryTabs = [
+    { id: 'weather', label: 'Weather', icon: CloudIcon, color: 'cyan' },
     { id: 'outages', label: 'Outages', icon: SignalIcon, color: 'purple' },
     { id: 'travel', label: 'Travel', icon: ExclamationTriangleIcon, color: 'rose' },
     { id: 'fires', label: 'Fires', icon: FireIcon, color: 'orange' },
@@ -659,6 +661,18 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                 hoursWindow={hoursWindow}
               />
             )}
+            {heroView === 'hotspots' && (
+              <WorldMap
+                watchpoints={watchpoints}
+                selected={selectedWatchpoint}
+                onSelect={setSelectedWatchpoint}
+                regionCounts={regionCounts}
+                activity={activityData || undefined}
+                significantQuakes={significantQuakes}
+                hoursWindow={hoursWindow}
+                hotspotsOnly
+              />
+            )}
             {heroView === 'seismic' && (
               <SeismicMap
                 earthquakes={earthquakes}
@@ -674,7 +688,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
           </div>
         )}
 
-        {/* Unified Stats Bar */}
+        {/* Compact Status Bar - Activity indicators only, stats hidden in collapsible */}
         <div className="mt-2 flex items-center justify-between px-3 py-2 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 shadow-sm">
           <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto">
             {/* All Elevated/Critical Regions */}
@@ -696,7 +710,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
 
               if (elevatedRegions.length === 0) {
                 return (
-                  <div className="flex items-center gap-1.5 pr-2 border-r border-slate-300 dark:border-slate-700">
+                  <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
                     <span className="text-slate-700 dark:text-slate-300 font-medium">All Normal</span>
                   </div>
@@ -704,41 +718,91 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
               }
 
               return (
-                <div className="flex items-center gap-2 pr-2 border-r border-slate-300 dark:border-slate-700">
+                <div className="flex items-center gap-3">
                   {elevatedRegions.map(([regionId, data]) => {
-                    const color = data.level === 'critical' ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400';
-                    const dotColor = data.level === 'critical' ? 'bg-red-500' : 'bg-orange-500';
+                    const isCritical = data.level === 'critical';
+                    const color = isCritical ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400';
+                    const dotColor = isCritical ? 'bg-red-500' : 'bg-orange-500';
+                    const label = isCritical ? 'Surging' : 'Active';
                     return (
-                      <div key={regionId} className="flex items-center gap-1">
-                        <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`} />
-                        <span className={`font-medium ${color}`}>{regionNames[regionId] || regionId}</span>
-                        <span className={`font-mono ${color}`}>{data.multiplier.toFixed(1)}x</span>
+                      <div key={regionId} className="flex items-center gap-1.5 group relative">
+                        <span className={`w-1.5 h-1.5 rounded-full ${dotColor} animate-pulse`} />
+                        <span className={`text-xs ${color}`}>
+                          {isCritical ? 'Surge in' : 'More'} posts about <span className="font-medium">{regionNames[regionId] || regionId}</span>{isCritical ? '' : ' than usual'}
+                        </span>
                       </div>
                     );
                   })}
                 </div>
               );
             })()}
-
-            <div className="flex items-center gap-1.5">
-              <span className="font-mono text-slate-700 dark:text-slate-300">{hoursWindow}h</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-slate-400 dark:text-slate-500">Latency:</span>
-              <span className="font-mono text-slate-700 dark:text-slate-300">{newsLoadTimeMs ? `${(newsLoadTimeMs / 1000).toFixed(1)}s` : '—'}</span>
-            </div>
-            <div className="hidden sm:flex items-center gap-1.5">
-              <span className="font-mono text-slate-700 dark:text-slate-300">{totalSources} sources</span>
-            </div>
             {significantQuakes.length > 0 && (
-              <div className="hidden xs:flex items-center gap-1.5">
+              <button
+                onClick={() => setHeroView('seismic')}
+                className="flex items-center gap-1.5 pl-2 border-l border-slate-300 dark:border-slate-700 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors"
+              >
                 <span className="w-1.5 h-1.5 rounded-full bg-yellow-500" />
-                <span className="text-slate-700 dark:text-slate-300">{significantQuakes.length} M6+</span>
-              </div>
+                <span className="text-slate-700 dark:text-slate-300 hover:text-yellow-600 dark:hover:text-yellow-400">{significantQuakes.length} large earthquake{significantQuakes.length > 1 ? 's' : ''}</span>
+              </button>
             )}
-            <span className="px-1.5 py-0.5 bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded text-2xs font-semibold uppercase tracking-wider">Beta</span>
           </div>
+          {/* More toggle button */}
+          <button
+            onClick={() => setShowStats(!showStats)}
+            className="flex items-center gap-1 px-2 py-1 text-2xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors"
+            aria-expanded={showStats}
+          >
+            More
+            <ChevronDownIcon className={`w-3 h-3 transition-transform ${showStats ? 'rotate-180' : ''}`} />
+          </button>
         </div>
+        {/* Collapsible more panel */}
+        {showStats && (
+          <div className="mt-1 px-3 py-2 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-800 space-y-3">
+            {/* Quick links to views */}
+            <div>
+              <div className="text-2xs text-slate-400 dark:text-slate-500 mb-1.5 font-medium">Views</div>
+              <div className="flex flex-wrap gap-2">
+                {allTabs.map((tab) => {
+                  const Icon = tab.icon;
+                  const isActive = heroView === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setHeroView(tab.id as HeroView)}
+                      className={`flex items-center gap-1.5 px-2 py-1 text-xs rounded-md transition-colors ${
+                        isActive
+                          ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white'
+                          : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                      }`}
+                    >
+                      <Icon className="w-3.5 h-3.5" />
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            {/* Stats */}
+            <div>
+              <div className="text-2xs text-slate-400 dark:text-slate-500 mb-1.5 font-medium">Stats</div>
+              <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-slate-400 dark:text-slate-500">Window:</span>
+                  <span className="font-mono text-slate-700 dark:text-slate-300">{hoursWindow}h</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-slate-400 dark:text-slate-500">Latency:</span>
+                  <span className="font-mono text-slate-700 dark:text-slate-300">{newsLoadTimeMs ? `${(newsLoadTimeMs / 1000).toFixed(1)}s` : '—'}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-slate-400 dark:text-slate-500">Sources:</span>
+                  <span className="font-mono text-slate-700 dark:text-slate-300">{totalSources}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Main Content */}
