@@ -59,18 +59,7 @@ export const osintAnalysts: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/osinttechnical.bsky.social',
     baselinePostsPerDay: 15,
   },
-  {
-    id: 'aurora-intel',
-    name: 'Aurora Intel',
-    handle: '@auroraintel.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 80,
-    region: 'middle-east' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/auroraintel.bsky.social/rss',
-    url: 'https://bsky.app/profile/auroraintel.bsky.social',
-    baselinePostsPerDay: 8,
-  },
+  // REMOVED: auroraintel.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'dfrlab',
     name: 'DFRLab',
@@ -119,18 +108,7 @@ export const osintAnalysts: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/oalexanderdk.bsky.social',
     baselinePostsPerDay: 5,
   },
-  {
-    id: 'rob-lee',
-    name: 'Rob Lee',
-    handle: '@ralee85.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 92,
-    region: 'europe-russia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/ralee85.bsky.social/rss',
-    url: 'https://bsky.app/profile/ralee85.bsky.social',
-    baselinePostsPerDay: 8,
-  },
+  // REMOVED: ralee85.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'michael-kofman',
     name: 'Michael Kofman',
@@ -143,18 +121,7 @@ export const osintAnalysts: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/michaelkofman.bsky.social',
     baselinePostsPerDay: 3,
   },
-  {
-    id: 'intel-crab',
-    name: 'The Intel Crab',
-    handle: '@intelcrab.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 80,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/intelcrab.bsky.social/rss',
-    url: 'https://bsky.app/profile/intelcrab.bsky.social',
-    baselinePostsPerDay: 10,
-  },
+  // REMOVED: intelcrab.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'elint-news',
     name: 'ELINT News',
@@ -240,18 +207,7 @@ export const osintAnalysts: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/nivcalderon.bsky.social',
     baselinePostsPerDay: 30,
   },
-  {
-    id: 'iran-international',
-    name: 'Iran International',
-    handle: '@iraninternational.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 82,
-    region: 'middle-east' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/iraninternational.bsky.social/rss',
-    url: 'https://bsky.app/profile/iraninternational.bsky.social',
-    baselinePostsPerDay: 50,
-  },
+  // REMOVED: iraninternational.bsky.social - inactive (no posts in 3+ months)
   // --- THINK TANKS ---
   {
     id: 'timep',
@@ -326,18 +282,7 @@ export const osintAnalysts: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/ryanmcbeth.bsky.social',
     baselinePostsPerDay: 5,
   },
-  {
-    id: 'black-bird-group',
-    name: 'Black Bird Group',
-    handle: '@blackbirdgroup.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 82,
-    region: 'europe-russia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/blackbirdgroup.bsky.social/rss',
-    url: 'https://bsky.app/profile/blackbirdgroup.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: blackbirdgroup.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'ukraine-map',
     name: 'Ukraine Battle Map',
@@ -375,18 +320,7 @@ export const osintAnalysts: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/taiwanmonitor.bsky.social',
     baselinePostsPerDay: 3,
   },
-  {
-    id: 'jennifer-welch',
-    name: 'Jennifer Welch',
-    handle: '@jenniewelch.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 90,
-    region: 'asia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/jenniewelch.bsky.social/rss',
-    url: 'https://bsky.app/profile/jenniewelch.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: jenniewelch.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'china-media-project',
     name: 'China Media Project',
@@ -596,18 +530,7 @@ export const osintAnalysts: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/markhertling.bsky.social',
     baselinePostsPerDay: 8,
   },
-  {
-    id: 'ben-hodges',
-    name: 'Ben Hodges',
-    handle: '@general-ben.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 92,
-    region: 'europe-russia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/general-ben.bsky.social/rss',
-    url: 'https://bsky.app/profile/general-ben.bsky.social',
-    baselinePostsPerDay: 10,
-  },
+  // REMOVED: general-ben.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'tom-nichols',
     name: 'Tom Nichols',
@@ -686,18 +609,7 @@ export const osintAggregators: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/meanwhileua.bsky.social',
     baselinePostsPerDay: 12,
   },
-  {
-    id: 'project-owl',
-    name: 'Project Owl',
-    handle: '@projectowlosint.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 80,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/projectowlosint.bsky.social/rss',
-    url: 'https://bsky.app/profile/projectowlosint.bsky.social',
-    baselinePostsPerDay: 8,
-  },
+  // REMOVED: projectowlosint.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'geoinsider',
     name: 'GeoInsider',
@@ -710,30 +622,8 @@ export const osintAggregators: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/geoinsider.bsky.social',
     baselinePostsPerDay: 15,
   },
-  {
-    id: 'steve-lookner',
-    name: 'Steve Lookner',
-    handle: '@lookner.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'ground',
-    confidence: 75,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/lookner.bsky.social/rss',
-    url: 'https://bsky.app/profile/lookner.bsky.social',
-    baselinePostsPerDay: 40,
-  },
-  {
-    id: 'osintdefender',
-    name: 'OSINTdefender',
-    handle: '@sentdefender.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 78,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/sentdefender.bsky.social/rss',
-    url: 'https://bsky.app/profile/sentdefender.bsky.social',
-    baselinePostsPerDay: 50,
-  },
+  // REMOVED: lookner.bsky.social - inactive (no posts in 3+ months)
+  // REMOVED: sentdefender.bsky.social - inactive (no posts in 3+ months)
 ];
 
 // -----------------------------------------------------------------------------
@@ -776,18 +666,7 @@ export const dataTrackers: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/geoconfirmed.org',
     baselinePostsPerDay: 10,
   },
-  {
-    id: 'status-6',
-    name: 'Status-6',
-    handle: '@archer83able.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 82,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/archer83able.bsky.social/rss',
-    url: 'https://bsky.app/profile/archer83able.bsky.social',
-    baselinePostsPerDay: 8,
-  },
+  // REMOVED: archer83able.bsky.social - inactive (no posts in 3+ months)
   // --- LIVE ALERT TRACKERS ---
   {
     id: 'ukraine-air-alerts',
@@ -879,18 +758,7 @@ export const reporters: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/bbcstever.bsky.social',
     baselinePostsPerDay: 3,
   },
-  {
-    id: 'igor-bobic',
-    name: 'Igor Bobic',
-    handle: '@igorbobic.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'us' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/igorbobic.bsky.social/rss',
-    url: 'https://bsky.app/profile/igorbobic.bsky.social',
-    baselinePostsPerDay: 8,
-  },
+  // REMOVED: igorbobic.bsky.social - inactive (no posts in 3+ months)
   // --- ISRAELI JOURNALISTS ---
   {
     id: 'barak-ravid',
@@ -904,18 +772,7 @@ export const reporters: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/barakravid.bsky.social',
     baselinePostsPerDay: 8,
   },
-  {
-    id: 'emanuel-fabian',
-    name: 'Emanuel Fabian',
-    handle: '@manniefabian.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 90,
-    region: 'middle-east' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/manniefabian.bsky.social/rss',
-    url: 'https://bsky.app/profile/manniefabian.bsky.social',
-    baselinePostsPerDay: 15,
-  },
+  // REMOVED: manniefabian.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'avi-scharf',
     name: 'Avi Scharf',
@@ -953,18 +810,7 @@ export const reporters: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/ozkaterji.bsky.social',
     baselinePostsPerDay: 10,
   },
-  {
-    id: 'asami-terajima',
-    name: 'Asami Terajima',
-    handle: '@asamiterajima.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 85,
-    region: 'europe-russia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/asamiterajima.bsky.social/rss',
-    url: 'https://bsky.app/profile/asamiterajima.bsky.social',
-    baselinePostsPerDay: 8,
-  },
+  // REMOVED: asamiterajima.bsky.social - inactive (no posts in 3+ months)
   // --- US NATIONAL SECURITY REPORTERS ---
   {
     id: 'david-sanger',
@@ -1014,18 +860,7 @@ export const reporters: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/carolrosenbergnyt.bsky.social',
     baselinePostsPerDay: 3,
   },
-  {
-    id: 'wg-dunlop',
-    name: 'W.G. Dunlop',
-    handle: '@wgdunlop.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'us' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/wgdunlop.bsky.social/rss',
-    url: 'https://bsky.app/profile/wgdunlop.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: wgdunlop.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'cristina-maza',
     name: 'Cristina Maza',
@@ -1124,18 +959,7 @@ export const reporters: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/jnbpage.bsky.social',
     baselinePostsPerDay: 5,
   },
-  {
-    id: 'arjun-neil-alim',
-    name: 'Arjun Neil Alim',
-    handle: '@arjunneilalim.ft.com',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'asia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/arjunneilalim.ft.com/rss',
-    url: 'https://bsky.app/profile/arjunneilalim.ft.com',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: arjunneilalim.ft.com - inactive (no posts in 3+ months)
   {
     id: 'richard-milne',
     name: 'Richard Milne',
@@ -1246,18 +1070,7 @@ export const reporters: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/ktumulty.bsky.social',
     baselinePostsPerDay: 5,
   },
-  {
-    id: 'louisa-loveluck',
-    name: 'Louisa Loveluck',
-    handle: '@leloveluck.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 90,
-    region: 'middle-east' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/leloveluck.bsky.social/rss',
-    url: 'https://bsky.app/profile/leloveluck.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: leloveluck.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'david-nakamura',
     name: 'David Nakamura',
@@ -1332,18 +1145,7 @@ export const reporters: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/carolecadwalla.bsky.social',
     baselinePostsPerDay: 8,
   },
-  {
-    id: 'jennifer-rankin',
-    name: 'Jennifer Rankin',
-    handle: '@jenniferrankin.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/jenniferrankin.bsky.social/rss',
-    url: 'https://bsky.app/profile/jenniferrankin.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: jenniferrankin.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'tom-phillips-guardian',
     name: 'Tom Phillips',
@@ -1443,42 +1245,9 @@ export const reporters: (Source & { feedUrl: string })[] = [
     baselinePostsPerDay: 8,
   },
   // --- AFRICA CORRESPONDENTS ---
-  {
-    id: 'larry-madowo',
-    name: 'Larry Madowo',
-    handle: '@larrymadowo.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 90,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/larrymadowo.bsky.social/rss',
-    url: 'https://bsky.app/profile/larrymadowo.bsky.social',
-    baselinePostsPerDay: 8,
-  },
-  {
-    id: 'ruth-maclean',
-    name: 'Ruth Maclean',
-    handle: '@ruthmaclean.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 90,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/ruthmaclean.bsky.social/rss',
-    url: 'https://bsky.app/profile/ruthmaclean.bsky.social',
-    baselinePostsPerDay: 5,
-  },
-  {
-    id: 'declan-walsh',
-    name: 'Declan Walsh',
-    handle: '@declanwalsh.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 92,
-    region: 'middle-east' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/declanwalsh.bsky.social/rss',
-    url: 'https://bsky.app/profile/declanwalsh.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: larrymadowo.bsky.social - inactive (no posts in 3+ months)
+  // REMOVED: ruthmaclean.bsky.social - inactive (no posts in 3+ months)
+  // REMOVED: declanwalsh.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'michela-wrong',
     name: 'Michela Wrong',
@@ -1577,18 +1346,7 @@ export const reporters: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/revkin.bsky.social',
     baselinePostsPerDay: 8,
   },
-  {
-    id: 'brad-plumer',
-    name: 'Brad Plumer',
-    handle: '@bradplumer.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/bradplumer.bsky.social/rss',
-    url: 'https://bsky.app/profile/bradplumer.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: bradplumer.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'matthew-cappucci',
     name: 'Matthew Cappucci',
@@ -1645,18 +1403,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     baselinePostsPerDay: 40,
   },
   // --- ISRAELI NEWS ORGS ---
-  {
-    id: 'haaretz',
-    name: 'Haaretz',
-    handle: '@haaretzcom.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'middle-east' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/haaretzcom.bsky.social/rss',
-    url: 'https://bsky.app/profile/haaretzcom.bsky.social',
-    baselinePostsPerDay: 30,
-  },
+  // REMOVED: haaretzcom.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'times-of-israel',
     name: 'Times of Israel',
@@ -1852,43 +1599,10 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     baselinePostsPerDay: 5,
   },
   // --- ASIA-PACIFIC NEWS ORGS ---
-  {
-    id: 'scmp',
-    name: 'South China Morning Post',
-    handle: '@scmp.com',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 85,
-    region: 'asia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/scmp.com/rss',
-    url: 'https://bsky.app/profile/scmp.com',
-    baselinePostsPerDay: 50,
-  },
+  // REMOVED: scmp.com - inactive (no posts in 3+ months)
   // --- OTHER OSINT ORGS ---
-  {
-    id: 'cir',
-    name: 'Centre for Information Resilience',
-    handle: '@cen4infores.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 88,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/cen4infores.bsky.social/rss',
-    url: 'https://bsky.app/profile/cen4infores.bsky.social',
-    baselinePostsPerDay: 5,
-  },
-  {
-    id: 'conflict-intel-team',
-    name: 'Conflict Intelligence Team',
-    handle: '@cit.ngo',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 88,
-    region: 'europe-russia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/cit.ngo/rss',
-    url: 'https://bsky.app/profile/cit.ngo',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: cen4infores.bsky.social - inactive (no posts in 3+ months)
+  // REMOVED: cit.ngo - inactive (no posts in 3+ months)
   {
     id: 'middle-east-monitor',
     name: 'Middle East Monitor',
@@ -1903,18 +1617,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
   },
   // REMOVED: syrianotes.bsky.social - not on Bluesky
   // REMOVED: middleeasteye.net - not on Bluesky
-  {
-    id: 'wilson-center',
-    name: 'Wilson Center',
-    handle: '@wilsoncenter.org',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 90,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/wilsoncenter.org/rss',
-    url: 'https://bsky.app/profile/wilsoncenter.org',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: wilsoncenter.org - inactive (no posts in 3+ months)
   {
     id: 'csis',
     name: 'CSIS',
@@ -2038,18 +1741,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     baselinePostsPerDay: 15,
   },
   // --- ASIA-PACIFIC NEWS ORGS (ADDITIONAL) ---
-  {
-    id: 'japan-times',
-    name: 'The Japan Times',
-    handle: '@japantimes.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'asia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/japantimes.bsky.social/rss',
-    url: 'https://bsky.app/profile/japantimes.bsky.social',
-    baselinePostsPerDay: 20,
-  },
+  // REMOVED: japantimes.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'nikkei-asia',
     name: 'Nikkei Asia',
@@ -2074,18 +1766,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/channelnewsasia.bsky.social',
     baselinePostsPerDay: 40,
   },
-  {
-    id: 'taiwan-news',
-    name: 'Taiwan News',
-    handle: '@taiwannews.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 82,
-    region: 'asia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/taiwannews.bsky.social/rss',
-    url: 'https://bsky.app/profile/taiwannews.bsky.social',
-    baselinePostsPerDay: 25,
-  },
+  // REMOVED: taiwannews.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'diplomat-asia',
     name: 'The Diplomat',
@@ -2176,42 +1857,9 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
   },
   // REMOVED: carbonbrief.bsky.social - not on Bluesky
   // --- EUROPEAN NEWS ORGS ---
-  {
-    id: 'euronews',
-    name: 'Euronews',
-    handle: '@euronews.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 85,
-    region: 'europe-russia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/euronews.bsky.social/rss',
-    url: 'https://bsky.app/profile/euronews.bsky.social',
-    baselinePostsPerDay: 50,
-  },
-  {
-    id: 'dw-news',
-    name: 'Deutsche Welle',
-    handle: '@dwnews.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/dwnews.bsky.social/rss',
-    url: 'https://bsky.app/profile/dwnews.bsky.social',
-    baselinePostsPerDay: 40,
-  },
-  {
-    id: 'france24-en',
-    name: 'France 24 English',
-    handle: '@france24.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/france24.bsky.social/rss',
-    url: 'https://bsky.app/profile/france24.bsky.social',
-    baselinePostsPerDay: 40,
-  },
+  // REMOVED: euronews.bsky.social - inactive (no posts in 3+ months)
+  // REMOVED: dwnews.bsky.social - inactive (no posts in 3+ months)
+  // REMOVED: france24.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'politico-eu',
     name: 'POLITICO Europe',
@@ -2228,30 +1876,8 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
   // REMOVED: americasquarterly.bsky.social - not on Bluesky
   // REMOVED: elpais.english.bsky.social - not on Bluesky
   // --- AFRICA NEWS ORGS ---
-  {
-    id: 'africa-news',
-    name: 'Africanews',
-    handle: '@africanews.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 82,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/africanews.bsky.social/rss',
-    url: 'https://bsky.app/profile/africanews.bsky.social',
-    baselinePostsPerDay: 30,
-  },
-  {
-    id: 'africa-report',
-    name: 'The Africa Report',
-    handle: '@theafricareport.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 85,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/theafricareport.bsky.social/rss',
-    url: 'https://bsky.app/profile/theafricareport.bsky.social',
-    baselinePostsPerDay: 15,
-  },
+  // REMOVED: africanews.bsky.social - inactive (no posts in 3+ months)
+  // REMOVED: theafricareport.bsky.social - inactive (no posts in 3+ months)
   // --- ADDITIONAL THINK TANKS ---
   {
     id: 'brookings',
@@ -2365,31 +1991,9 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/hrw.org',
     baselinePostsPerDay: 8,
   },
-  {
-    id: 'amnesty',
-    name: 'Amnesty International',
-    handle: '@amnesty.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 90,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/amnesty.bsky.social/rss',
-    url: 'https://bsky.app/profile/amnesty.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: amnesty.bsky.social - inactive (no posts in 3+ months)
   // --- ADDITIONAL REPORTERS ---
-  {
-    id: 'david-sanger',
-    name: 'David E. Sanger',
-    handle: '@davidsanger.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 92,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/davidsanger.bsky.social/rss',
-    url: 'https://bsky.app/profile/davidsanger.bsky.social',
-    baselinePostsPerDay: 3,
-  },
+  // REMOVED: davidsanger.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'max-boot',
     name: 'Max Boot',
@@ -2450,18 +2054,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/michaeldweiss.bsky.social',
     baselinePostsPerDay: 10,
   },
-  {
-    id: 'tom-nichols',
-    name: 'Tom Nichols',
-    handle: '@tomnichols.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 88,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/tomnichols.bsky.social/rss',
-    url: 'https://bsky.app/profile/tomnichols.bsky.social',
-    baselinePostsPerDay: 10,
-  },
+  // REMOVED: tomnichols.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'ruth-ben-ghiat',
     name: 'Ruth Ben-Ghiat',
@@ -2502,18 +2095,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     baselinePostsPerDay: 10,
   },
   // REMOVED: defmon.bsky.social - not on Bluesky
-  {
-    id: 'intel-crab',
-    name: 'Intel Crab',
-    handle: '@intelcrab.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 78,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/intelcrab.bsky.social/rss',
-    url: 'https://bsky.app/profile/intelcrab.bsky.social',
-    baselinePostsPerDay: 15,
-  },
+  // REMOVED: intelcrab.bsky.social - inactive (no posts in 3+ months)
   // REMOVED: eyesonrussia.bsky.social - not on Bluesky
   // --- ADDITIONAL NEWS ORGS ---
   // REMOVED: theintercept.com - not on Bluesky
@@ -2543,18 +2125,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     baselinePostsPerDay: 40,
   },
   // REMOVED: npr.org - not on Bluesky
-  {
-    id: 'pbs-news',
-    name: 'PBS NewsHour',
-    handle: '@newshour.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 90,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/newshour.bsky.social/rss',
-    url: 'https://bsky.app/profile/newshour.bsky.social',
-    baselinePostsPerDay: 20,
-  },
+  // REMOVED: newshour.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'abc-news',
     name: 'ABC News',
@@ -2580,18 +2151,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     baselinePostsPerDay: 50,
   },
   // --- SCIENCE / HEALTH REPORTERS ---
-  {
-    id: 'ed-yong',
-    name: 'Ed Yong',
-    handle: '@edyong.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 90,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/edyong.bsky.social/rss',
-    url: 'https://bsky.app/profile/edyong.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: edyong.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'carl-zimmer',
     name: 'Carl Zimmer',
@@ -2691,18 +2251,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/billbishop.bsky.social',
     baselinePostsPerDay: 5,
   },
-  {
-    id: 'james-palmer',
-    name: 'James Palmer',
-    handle: '@jamespalmer.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'asia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/jamespalmer.bsky.social/rss',
-    url: 'https://bsky.app/profile/jamespalmer.bsky.social',
-    baselinePostsPerDay: 8,
-  },
+  // REMOVED: jamespalmer.bsky.social - inactive (no posts in 3+ months)
   // REMOVED: isaacstonefish.bsky.social - not on Bluesky
   {
     id: 'asia-society',
@@ -2716,18 +2265,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/asiasociety.org',
     baselinePostsPerDay: 5,
   },
-  {
-    id: 'korea-herald',
-    name: 'The Korea Herald',
-    handle: '@koreaherald.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 85,
-    region: 'asia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/koreaherald.bsky.social/rss',
-    url: 'https://bsky.app/profile/koreaherald.bsky.social',
-    baselinePostsPerDay: 30,
-  },
+  // REMOVED: koreaherald.bsky.social - inactive (no posts in 3+ months)
   // --- MORE MIDDLE EAST SPECIALISTS ---
   {
     id: 'barak-ravid',
@@ -2765,30 +2303,8 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/joycekaram.bsky.social',
     baselinePostsPerDay: 10,
   },
-  {
-    id: 'raf-sanchez',
-    name: 'Raf Sanchez',
-    handle: '@rafsanchez.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'middle-east' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/rafsanchez.bsky.social/rss',
-    url: 'https://bsky.app/profile/rafsanchez.bsky.social',
-    baselinePostsPerDay: 8,
-  },
-  {
-    id: 'liz-sly',
-    name: 'Liz Sly',
-    handle: '@lizsly.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 90,
-    region: 'middle-east' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/lizsly.bsky.social/rss',
-    url: 'https://bsky.app/profile/lizsly.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: rafsanchez.bsky.social - inactive (no posts in 3+ months)
+  // REMOVED: lizsly.bsky.social - inactive (no posts in 3+ months)
   // --- MORE TECH / AI JOURNALISTS ---
   {
     id: 'kara-swisher',
@@ -2815,18 +2331,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     baselinePostsPerDay: 10,
   },
   // REMOVED: willoremus.bsky.social - not on Bluesky
-  {
-    id: 'emily-chang',
-    name: 'Emily Chang',
-    handle: '@emilychang.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 85,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/emilychang.bsky.social/rss',
-    url: 'https://bsky.app/profile/emilychang.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: emilychang.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'techmeme',
     name: 'Techmeme',
@@ -2941,18 +2446,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     baselinePostsPerDay: 60,
   },
   // REMOVED: thetimes.co.uk - not on Bluesky
-  {
-    id: 'sky-news',
-    name: 'Sky News',
-    handle: '@skynews.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/skynews.bsky.social/rss',
-    url: 'https://bsky.app/profile/skynews.bsky.social',
-    baselinePostsPerDay: 60,
-  },
+  // REMOVED: skynews.bsky.social - inactive (no posts in 3+ months)
   // --- ADDITIONAL ACADEMIC EXPERTS ---
   {
     id: 'ian-bremmer',
@@ -2978,18 +2472,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/eurasiagroup.net',
     baselinePostsPerDay: 5,
   },
-  {
-    id: 'fiona-hill',
-    name: 'Fiona Hill',
-    handle: '@fionahill.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'osint',
-    confidence: 92,
-    region: 'europe-russia' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/fionahill.bsky.social/rss',
-    url: 'https://bsky.app/profile/fionahill.bsky.social',
-    baselinePostsPerDay: 3,
-  },
+  // REMOVED: fionahill.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'michael-mcfaul',
     name: 'Michael McFaul',
@@ -3098,18 +2581,7 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/newyorker.com',
     baselinePostsPerDay: 20,
   },
-  {
-    id: 'time-magazine',
-    name: 'TIME',
-    handle: '@time.com',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 88,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/time.com/rss',
-    url: 'https://bsky.app/profile/time.com',
-    baselinePostsPerDay: 30,
-  },
+  // REMOVED: time.com - inactive (no posts in 3+ months)
   {
     id: 'vox-media',
     name: 'Vox',
@@ -3134,31 +2606,9 @@ export const newsOrgs: (Source & { feedUrl: string })[] = [
     url: 'https://bsky.app/profile/propublica.org',
     baselinePostsPerDay: 10,
   },
-  {
-    id: 'bbc-news',
-    name: 'BBC News',
-    handle: '@bbcnews.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'reporter',
-    confidence: 95,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/bbcnews.bsky.social/rss',
-    url: 'https://bsky.app/profile/bbcnews.bsky.social',
-    baselinePostsPerDay: 80,
-  },
+  // REMOVED: bbcnews.bsky.social - inactive (no posts in 3+ months)
   // --- OFFICIAL GOVERNMENT ACCOUNTS ---
-  {
-    id: 'us-army',
-    name: 'U.S. Army',
-    handle: '@usarmy.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'official',
-    confidence: 98,
-    region: 'us' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/usarmy.bsky.social/rss',
-    url: 'https://bsky.app/profile/usarmy.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: usarmy.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'netherlands-mfa',
     name: 'David van Weel (Netherlands MFA)',
@@ -3239,18 +2689,7 @@ export const rssSources: (Source & { feedUrl: string })[] = [
 // -----------------------------------------------------------------------------
 export const governmentSources: (Source & { feedUrl: string })[] = [
   // --- US GOVERNMENT ---
-  {
-    id: 'us-state-dept',
-    name: 'US State Department',
-    handle: '@state-department.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'official',
-    confidence: 95,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/state-department.bsky.social/rss',
-    url: 'https://bsky.app/profile/state-department.bsky.social',
-    baselinePostsPerDay: 5,
-  },
+  // REMOVED: state-department.bsky.social - inactive (no posts in 3+ months)
   {
     id: 'us-dhs',
     name: 'DHS Homeland Security',
@@ -3264,18 +2703,7 @@ export const governmentSources: (Source & { feedUrl: string })[] = [
     baselinePostsPerDay: 3,
   },
   // --- EARTHQUAKE ALERTS ---
-  {
-    id: 'usgs-earthquake',
-    name: 'USGS Earthquakes',
-    handle: '@earthquake.bsky.social',
-    platform: 'bluesky',
-    sourceType: 'official',
-    confidence: 98,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/earthquake.bsky.social/rss',
-    url: 'https://bsky.app/profile/earthquake.bsky.social',
-    baselinePostsPerDay: 10,
-  },
+  // REMOVED: earthquake.bsky.social - inactive (no posts in 3+ months)
   // --- INTERNATIONAL ORGANIZATIONS ---
   {
     id: 'who',
