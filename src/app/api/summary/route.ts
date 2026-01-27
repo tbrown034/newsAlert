@@ -13,7 +13,7 @@ export const maxDuration = 60; // Allow up to 60 seconds for AI generation (requ
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const regionParam = searchParams.get('region') || 'all';
-  const hours = Math.min(Math.max(1, parseInt(searchParams.get('hours') || '4', 10)), 24);
+  const hours = Math.min(Math.max(1, parseInt(searchParams.get('hours') || '6', 10)), 24);
   const forceRefresh = searchParams.get('refresh') === 'true';
 
   // Validate region parameter

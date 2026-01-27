@@ -28,7 +28,7 @@ const VALID_REGIONS: WatchpointId[] = ['all', 'us', 'latam', 'middle-east', 'eur
 const VALID_TIERS: FetchTier[] = ['T1', 'T2', 'T3'];
 
 // Time window defaults (in hours)
-const DEFAULT_TIME_WINDOW = 12; // 12 hours default
+const DEFAULT_TIME_WINDOW = 6; // 6 hours - optimized for "what's happening NOW"
 const MAX_TIME_WINDOW = 72; // Max 3 days
 
 // Limits (for safety)

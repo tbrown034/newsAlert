@@ -60,6 +60,7 @@ interface StructuredPost {
   source: string;
   sourceType: string;
   minutesAgo: number;
+  postedAt: string; // Human-readable time (e.g., "2:43 PM")
   title: string;
   content?: string;
   contentType: string;
@@ -144,11 +145,20 @@ function selectAndStructurePosts(posts: NewsItem[], maxPosts: number = 25): Stru
   return selected.map((item, idx) => {
     const analysis = analyzeMessage(item.post.title + ' ' + (item.post.content || ''));
 
+    // Calculate human-readable posted time
+    const postedTime = new Date(now - item.minutesAgo * 60 * 1000);
+    const postedAt = postedTime.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+
     return {
       id: idx + 1,
       source: item.post.source.name,
       sourceType: item.post.source.sourceType,
       minutesAgo: item.minutesAgo,
+      postedAt,
       title: item.post.title,
       content: item.post.content !== item.post.title ? item.post.content : undefined,
       contentType: analysis.contentType.type,
@@ -171,23 +181,56 @@ function buildEnhancedPrompt(
   // Use compact JSON to reduce token count (~30% savings)
   const postsJson = JSON.stringify(posts);
 
-  return `You are an intelligence analyst creating a briefing for ${regionName}.
+  // Temporal grounding - give AI awareness of current time and date
+  const now = new Date();
+  const startTime = new Date(now.getTime() - timeWindowHours * 60 * 60 * 1000);
 
-Analyze ${posts.length} posts from the last ${timeWindowHours}h:
+  const currentTimeStr = now.toLocaleString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+    timeZoneName: 'short'
+  });
+
+  const startTimeStr = startTime.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+
+  const nowTimeStr = now.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+
+  return `You are a news editor writing a brief situation update for ${regionName}.
+
+Current time: ${currentTimeStr}
+Window: ${startTimeStr} to ${nowTimeStr} (${timeWindowHours}h)
 
 <posts>
 ${postsJson}
 </posts>
 
-Post fields: source, tier (official>osint>reporter>ground), minutesAgo, title, contentType, verification, provenance.
+Write a concise briefing in JSON:
+{
+  "overview": "1-2 sentences. What's the overall picture? Are tensions rising, stable, or easing? Give context.",
+  "developments": [
+    "Specific event + source (e.g., 'Ukraine reported 49 clashes since dawn - Ukrinform')",
+    "Another key development + source",
+    "Third if significant, otherwise omit"
+  ]
+}
 
-Respond with JSON only:
-{"summary":"2-3 sentence overview of current situation","tensionScore":<1-10>,"keyDevelopments":[{"headline":"<10 words","detail":"1 sentence max","sources":[],"severity":"critical|high|moderate|routine","confidence":"high|medium|low"}]}
-
-Severity: critical=mass casualty/nuclear, high=strikes/invasion, moderate=movements/tensions, routine=statements.
-Confidence: high=multiple official sources, medium=single credible, low=unverified/rumor.
-
-Rules: EXACTLY 3 key developments (most important only). Be concise. Cross-reference sources. Score reflects situation severity, not volume.`;
+Rules:
+- Overview = big picture assessment, not a list of events
+- Developments = 2-3 specific items with sources, each one line
+- Reference time naturally (this morning, overnight, since dawn)
+- No jargon, no severity labels, no scores`;
 }
 
 // =============================================================================
@@ -197,7 +240,7 @@ Rules: EXACTLY 3 key developments (most important only). Be concise. Cross-refer
 export async function generateSummary(
   posts: NewsItem[],
   region: WatchpointId,
-  timeWindowHours: number = 4
+  timeWindowHours: number = 6
 ): Promise<SituationBriefing> {
   const model = 'claude-sonnet-4-20250514';
   const startTime = Date.now();
@@ -286,17 +329,24 @@ export async function generateSummary(
 
   const parsed = JSON.parse(jsonStr.trim());
 
+  // Convert developments array to keyDevelopments format for UI
+  const developments = parsed.developments || [];
+  const keyDevelopments = developments.map((text: string) => ({
+    headline: text,
+    detail: '',
+    sources: [],
+    severity: 'moderate' as const,
+    confidence: 'medium' as const,
+  }));
+
   return {
     region,
     timeWindowHours,
     generatedAt: new Date(),
-    summary: parsed.summary,
-    tensionScore: parsed.tensionScore || 5,
-    keyDevelopments: (parsed.keyDevelopments || []).map((dev: any) => ({
-      ...dev,
-      confidence: dev.confidence || 'medium',
-    })),
-    watchIndicators: parsed.watchIndicators || [],
+    summary: parsed.overview || parsed.summary || '',
+    tensionScore: 5,
+    keyDevelopments,
+    watchIndicators: [],
     sourcesAnalyzed: structuredPosts.length,
     topSources,
     usage: {
@@ -304,7 +354,7 @@ export async function generateSummary(
       inputTokens,
       outputTokens,
       latencyMs,
-      costUsd: Math.round(costUsd * 100000) / 100000, // Round to 5 decimal places
+      costUsd: Math.round(costUsd * 100000) / 100000,
     },
   };
 }

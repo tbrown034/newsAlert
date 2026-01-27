@@ -68,9 +68,23 @@ export async function POST(request: Request) {
       .map(d => `- [${sanitizePromptInput(d.severity, 20).toUpperCase()}] ${sanitizePromptInput(d.headline, 100)}: ${sanitizePromptInput(d.detail, 200)}`)
       .join('\n');
 
+    // Temporal grounding for follow-up responses
+    const now = new Date();
+    const currentTimeStr = now.toLocaleString('en-US', {
+      weekday: 'long',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+      timeZoneName: 'short'
+    });
+
     const prompt = `You are a senior intelligence analyst answering a follow-up question about the ${regionName} situation.
 
-Current briefing context:
+Current time: ${currentTimeStr}
+
+Briefing context (covers the last several hours):
 - Region: ${regionName}
 - Tension Score: ${safeTensionScore}/10
 - Summary: ${safeSummary}
@@ -80,7 +94,7 @@ ${developmentsSummary || 'None reported'}
 
 User Question: ${safeQuestion}
 
-Provide a concise, factual response (2-4 sentences). Focus on what's known from the briefing context. If the question asks about something not covered in the briefing, acknowledge that limitation.`;
+Provide a concise, factual response (2-4 sentences). Reference time naturally when relevant (e.g., "this morning's statement", "in the past hour"). Focus on what's known from the briefing context. If the question asks about something not covered in the briefing, acknowledge that limitation.`;
 
     const client = new Anthropic();
 

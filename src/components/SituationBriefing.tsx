@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   XMarkIcon,
   SparklesIcon,
@@ -34,39 +34,69 @@ interface SituationBriefingProps {
   onClose: () => void;
 }
 
-// Dark theme severity styles (matching Pulse aesthetic)
-const severityStyles = {
-  critical: {
-    bg: 'bg-red-500/10',
-    border: 'border-red-500/30',
-    text: 'text-red-400',
-    icon: '',
-  },
-  high: {
-    bg: 'bg-orange-500/10',
-    border: 'border-orange-500/30',
-    text: 'text-orange-400',
-    icon: '',
-  },
-  moderate: {
-    bg: 'bg-amber-500/10',
-    border: 'border-amber-500/30',
-    text: 'text-amber-400',
-    icon: '',
-  },
-  routine: {
-    bg: 'bg-slate-500/10',
-    border: 'border-slate-500/30',
-    text: 'text-slate-400',
-    icon: '',
-  },
-};
+// Removed severity styles - keeping it minimal
+
+// Countries/locations to highlight in briefing text
+const HIGHLIGHT_LOCATIONS = [
+  // Active conflict regions
+  'Ukraine', 'Russia', 'Crimea', 'Donbas', 'Kyiv', 'Moscow', 'Kharkiv', 'Odesa',
+  'Israel', 'Gaza', 'West Bank', 'Lebanon', 'Beirut', 'Hezbollah', 'Hamas', 'Jerusalem', 'Tel Aviv',
+  'Iran', 'Tehran', 'Syria', 'Damascus', 'Yemen', 'Houthi',
+  // Asia-Pacific
+  'China', 'Taiwan', 'Beijing', 'Taipei', 'North Korea', 'Pyongyang', 'South Korea', 'Seoul',
+  'Philippines', 'South China Sea', 'Japan', 'Tokyo',
+  // Americas
+  'United States', 'U.S.', 'US', 'Washington', 'Mexico', 'Venezuela', 'Cuba',
+  // Europe
+  'NATO', 'EU', 'European Union', 'Germany', 'France', 'UK', 'Britain', 'Poland', 'Belarus', 'Moldova',
+  // Other hotspots
+  'Sudan', 'Ethiopia', 'Myanmar', 'Afghanistan', 'Pakistan', 'India', 'Kashmir',
+];
+
+// Common news source suffixes - don't highlight locations before these
+const SOURCE_SUFFIXES = ['Post', 'Times', 'Monitor', 'Tribune', 'Herald', 'Journal', 'News', 'Today', 'Daily'];
+
+// Highlight locations in text with subtle emphasis
+// Skip highlighting when location is part of a source name (e.g., "Jerusalem Post")
+function highlightLocations(text: string): React.ReactNode {
+  if (!text) return text;
+
+  const pattern = new RegExp(
+    `\\b(${HIGHLIGHT_LOCATIONS.map(loc => loc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`,
+    'gi'
+  );
+
+  const parts = text.split(pattern);
+
+  return parts.map((part, i) => {
+    const isLocation = HIGHLIGHT_LOCATIONS.some(
+      loc => loc.toLowerCase() === part.toLowerCase()
+    );
+    if (isLocation) {
+      // Check if next part starts with a source suffix (e.g., " Post", " Times")
+      const nextPart = parts[i + 1];
+      if (nextPart) {
+        const nextWord = nextPart.trim().split(/\s+/)[0];
+        if (SOURCE_SUFFIXES.some(suffix => suffix.toLowerCase() === nextWord.toLowerCase())) {
+          // This is part of a source name, don't highlight
+          return part;
+        }
+      }
+      return (
+        <span key={i} className="font-semibold text-white">
+          {part}
+        </span>
+      );
+    }
+    return part;
+  });
+}
 
 export function SituationBriefing({ region, onClose }: SituationBriefingProps) {
   const [briefing, setBriefing] = useState<BriefingData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [hours, setHours] = useState(4);
+  const [hours, setHours] = useState(6);
 
   const fetchBriefing = async (forceRefresh = false) => {
     setLoading(true);
@@ -153,10 +183,9 @@ export function SituationBriefing({ region, onClose }: SituationBriefingProps) {
                   onChange={(e) => setHours(parseInt(e.target.value))}
                   className="bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
                 >
-                  <option value={1}>Last 1 hour</option>
-                  <option value={2}>Last 2 hours</option>
-                  <option value={4}>Last 4 hours</option>
-                  <option value={8}>Last 8 hours</option>
+                  <option value={3}>Last 3 hours</option>
+                  <option value={6}>Last 6 hours</option>
+                  <option value={12}>Last 12 hours</option>
                   <option value={24}>Last 24 hours</option>
                 </select>
               </div>
@@ -204,44 +233,19 @@ export function SituationBriefing({ region, onClose }: SituationBriefingProps) {
                   <InformationCircleIcon className="w-4 h-4" />
                   Executive Summary
                 </h3>
-                <p className="text-slate-200 leading-relaxed">{briefing.summary}</p>
+                <p className="text-slate-200 leading-relaxed">{highlightLocations(briefing.summary)}</p>
               </div>
 
-              {/* Key Developments */}
+              {/* Developments */}
               {briefing.keyDevelopments.length > 0 && (
-                <div>
-                  <h3 className="text-sm font-semibold text-cyan-400 mb-3 uppercase tracking-wide">
-                    Key Developments
-                  </h3>
-                  <div className="space-y-3">
-                    {briefing.keyDevelopments.map((dev, i) => {
-                      const style = severityStyles[dev.severity];
-                      return (
-                        <div
-                          key={i}
-                          className={`${style.bg} border ${style.border} rounded-lg p-4`}
-                        >
-                          <div className="flex items-start gap-2">
-                            <div className={`w-2 h-2 rounded-full mt-2 ${style.text.replace('text-', 'bg-')}`} />
-                            <div className="flex-1">
-                              <h4 className={`font-medium ${style.text}`}>
-                                {dev.headline}
-                              </h4>
-                              <p className="text-slate-300 text-sm mt-1">
-                                {dev.detail}
-                              </p>
-                              {dev.sources.length > 0 && (
-                                <p className="text-xs text-slate-500 mt-2">
-                                  Sources: {dev.sources.join(', ')}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
+                <ul className="space-y-2.5 border-t border-slate-700 pt-4">
+                  {briefing.keyDevelopments.map((dev, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-slate-200">
+                      <span className="text-cyan-400 mt-0.5 text-xs">▸</span>
+                      <span className="leading-relaxed">{highlightLocations(dev.headline)}</span>
+                    </li>
+                  ))}
+                </ul>
               )}
 
               {/* Meta info */}

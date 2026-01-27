@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { WatchpointId } from '@/types';
 import { regionDisplayNames } from '@/lib/regionDetection';
 import { SparklesIcon } from '@heroicons/react/24/outline';
@@ -60,22 +60,65 @@ interface InlineBriefingProps {
   region: WatchpointId;
 }
 
-// Tension level styling - Light theme
-function getTensionStyle(score: number): { label: string; color: string; bgColor: string } {
-  if (score >= 8) return { label: 'CRITICAL', color: 'text-red-600', bgColor: 'bg-red-100 dark:bg-red-900/30' };
-  if (score >= 6) return { label: 'HIGH', color: 'text-orange-600', bgColor: 'bg-orange-100 dark:bg-orange-900/30' };
-  if (score >= 4) return { label: 'ELEVATED', color: 'text-amber-600', bgColor: 'bg-amber-100 dark:bg-amber-900/30' };
-  if (score >= 2) return { label: 'WATCHFUL', color: 'text-blue-600', bgColor: 'bg-blue-100 dark:bg-blue-900/30' };
-  return { label: 'STABLE', color: 'text-emerald-600', bgColor: 'bg-emerald-100 dark:bg-emerald-900/30' };
+// Removed tension/severity styling - keeping it minimal
+
+// Countries/locations to highlight in briefing text
+const HIGHLIGHT_LOCATIONS = [
+  // Active conflict regions
+  'Ukraine', 'Russia', 'Crimea', 'Donbas', 'Kyiv', 'Moscow', 'Kharkiv', 'Odesa',
+  'Israel', 'Gaza', 'West Bank', 'Lebanon', 'Beirut', 'Hezbollah', 'Hamas', 'Jerusalem', 'Tel Aviv',
+  'Iran', 'Tehran', 'Syria', 'Damascus', 'Yemen', 'Houthi',
+  // Asia-Pacific
+  'China', 'Taiwan', 'Beijing', 'Taipei', 'North Korea', 'Pyongyang', 'South Korea', 'Seoul',
+  'Philippines', 'South China Sea', 'Japan', 'Tokyo',
+  // Americas
+  'United States', 'U.S.', 'US', 'Washington', 'Mexico', 'Venezuela', 'Cuba',
+  // Europe
+  'NATO', 'EU', 'European Union', 'Germany', 'France', 'UK', 'Britain', 'Poland', 'Belarus', 'Moldova',
+  // Other hotspots
+  'Sudan', 'Ethiopia', 'Myanmar', 'Afghanistan', 'Pakistan', 'India', 'Kashmir',
+];
+
+// Common news source suffixes - don't highlight locations before these
+const SOURCE_SUFFIXES = ['Post', 'Times', 'Monitor', 'Tribune', 'Herald', 'Journal', 'News', 'Today', 'Daily'];
+
+// Highlight locations in text with subtle emphasis
+// Skip highlighting when location is part of a source name (e.g., "Jerusalem Post")
+function highlightLocations(text: string): React.ReactNode {
+  if (!text) return text;
+
+  // Build regex pattern (case insensitive, word boundaries)
+  const pattern = new RegExp(
+    `\\b(${HIGHLIGHT_LOCATIONS.map(loc => loc.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`,
+    'gi'
+  );
+
+  const parts = text.split(pattern);
+
+  return parts.map((part, i) => {
+    const isLocation = HIGHLIGHT_LOCATIONS.some(
+      loc => loc.toLowerCase() === part.toLowerCase()
+    );
+    if (isLocation) {
+      // Check if next part starts with a source suffix (e.g., " Post", " Times")
+      const nextPart = parts[i + 1];
+      if (nextPart) {
+        const nextWord = nextPart.trim().split(/\s+/)[0];
+        if (SOURCE_SUFFIXES.some(suffix => suffix.toLowerCase() === nextWord.toLowerCase())) {
+          // This is part of a source name, don't highlight
+          return part;
+        }
+      }
+      return (
+        <span key={i} className="font-semibold text-slate-900 dark:text-white">
+          {part}
+        </span>
+      );
+    }
+    return part;
+  });
 }
 
-// Severity styling for key developments
-const severityConfig: Record<KeyDevelopment['severity'], { dot: string; text: string; bg: string }> = {
-  critical: { dot: 'bg-red-500', text: 'text-red-600 dark:text-red-400', bg: 'bg-red-50 dark:bg-red-900/20' },
-  high: { dot: 'bg-orange-500', text: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-900/20' },
-  moderate: { dot: 'bg-amber-500', text: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-900/20' },
-  routine: { dot: 'bg-slate-400', text: 'text-slate-600 dark:text-slate-400', bg: 'bg-slate-50 dark:bg-slate-800/50' },
-};
 
 export function InlineBriefing({ region }: InlineBriefingProps) {
   const [briefing, setBriefing] = useState<BriefingData | null>(null);
@@ -111,7 +154,7 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
     const startTime = performance.now();
 
     try {
-      const response = await fetch(`/api/summary?region=${region}&hours=4`, {
+      const response = await fetch(`/api/summary?region=${region}&hours=6`, {
         signal: controllerRef.current.signal,
       });
 
@@ -263,112 +306,39 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
     );
   }
 
-  const tensionScore = briefing.tensionScore || 5;
-  const tension = getTensionStyle(tensionScore);
-
   return (
-    <div className="mx-3 sm:mx-4 my-3 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-sm shadow-slate-200/50 dark:shadow-none news-initial-load">
-      {/* Header - Clean and minimal */}
-      <div className="px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-slate-600 dark:text-slate-500 uppercase tracking-wide">
-              AI Summary
-            </span>
-            <span className="text-xs text-slate-300 dark:text-slate-500">•</span>
-            <span className="text-xs text-slate-500 dark:text-slate-500">{regionDisplayNames[region]}</span>
-          </div>
-          <span className={`px-2 py-0.5 text-2xs font-medium rounded ${tension.bgColor} ${tension.color}`}>
-            {tension.label}
-          </span>
-        </div>
+    <div className="mx-3 sm:mx-4 my-3 border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden bg-white dark:bg-slate-900">
+      {/* Header - Minimal */}
+      <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
+        <span className="text-xs text-slate-500 dark:text-slate-500">
+          {regionDisplayNames[region]} · last {briefing.timeWindowHours}h
+        </span>
       </div>
 
-      {/* Body - Summary + Key Developments */}
-      <div className="px-4 py-3 space-y-4">
-        {/* Executive Summary */}
-        <p className="text-sm text-slate-700 dark:text-slate-100 leading-relaxed">
-          {briefing.summary}
+      {/* Body - Overview + Developments */}
+      <div className="px-4 py-3 space-y-3">
+        {/* Overview */}
+        <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+          {highlightLocations(briefing.summary)}
         </p>
 
-        {/* Key Developments */}
+        {/* Developments */}
         {briefing.keyDevelopments && briefing.keyDevelopments.length > 0 && (
-          <div className="space-y-2">
-            <h4 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-              Key Developments
-            </h4>
-            <div className="space-y-2">
-              {briefing.keyDevelopments.map((dev, i) => {
-                const style = severityConfig[dev.severity] || severityConfig.routine;
-                return (
-                  <div key={i} className={`rounded-lg p-3 ${style.bg} border border-slate-200/50 dark:border-slate-700/50`}>
-                    <div className="flex items-start gap-2">
-                      <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${style.dot}`} />
-                      <div className="flex-1 min-w-0">
-                        <h5 className={`text-sm font-medium ${style.text}`}>
-                          {dev.headline}
-                        </h5>
-                        <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
-                          {dev.detail}
-                        </p>
-                        {dev.sources && dev.sources.length > 0 && (
-                          <p className="text-2xs text-slate-400 dark:text-slate-500 mt-1.5">
-                            Sources: {dev.sources.join(', ')}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* Watch Indicators */}
-        {briefing.watchIndicators && briefing.watchIndicators.length > 0 && (
-          <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
-            <h4 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-2">
-              Watch For
-            </h4>
-            <ul className="space-y-1">
-              {briefing.watchIndicators.map((indicator, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-300">
-                  <span className="text-blue-500 mt-0.5">→</span>
-                  <span>{indicator}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="space-y-2 text-sm border-t border-slate-100 dark:border-slate-800 pt-3">
+            {briefing.keyDevelopments.map((dev, i) => (
+              <li key={i} className="flex items-start gap-2.5 text-slate-600 dark:text-slate-300">
+                <span className="text-blue-500 dark:text-blue-400 mt-0.5 text-xs">▸</span>
+                <span className="leading-relaxed">{highlightLocations(dev.headline)}</span>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
 
-      {/* Footer - stats with tokens, latency, cost */}
-      <div className="px-4 py-2 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 text-2xs text-slate-400 dark:text-slate-500 flex flex-col xs:flex-row xs:justify-between gap-1">
-        <div className="flex items-center gap-2">
-          <span>{briefing.sourcesAnalyzed} posts</span>
-          {(briefing.pending || briefing.limited) && (
-            <span className="flex items-center gap-1 text-blue-500">
-              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse" />
-              updating
-            </span>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          {briefing.fromCache && <span>cached</span>}
-          {briefing.usage && (
-            <>
-              <span className="hidden xs:inline">{briefing.usage.inputTokens + briefing.usage.outputTokens} tok</span>
-              <span>{briefing.usage.latencyMs > 1000 ? `${(briefing.usage.latencyMs / 1000).toFixed(1)}s` : `${briefing.usage.latencyMs}ms`}</span>
-              <span>${briefing.usage.costUsd.toFixed(4)}</span>
-            </>
-          )}
-          {!briefing.usage && loadTimeMs !== null && (
-            <span className={loadTimeMs > 10000 ? 'text-amber-500' : ''}>
-              {loadTimeMs > 1000 ? `${(loadTimeMs / 1000).toFixed(1)}s` : `${loadTimeMs}ms`}
-            </span>
-          )}
-        </div>
+      {/* Footer - Subtle */}
+      <div className="px-4 py-1.5 border-t border-slate-100 dark:border-slate-800 text-2xs text-slate-400 dark:text-slate-600">
+        {briefing.sourcesAnalyzed} sources
+        {(briefing.pending || briefing.limited) && ' · updating...'}
       </div>
     </div>
   );

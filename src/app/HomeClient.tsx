@@ -50,7 +50,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
   const [activityData, setActivityData] = useState<ApiResponse['activity'] | null>(initialData?.activity || null);
   const [newsError, setNewsError] = useState<string | null>(null);
   const [newsLoadTimeMs, setNewsLoadTimeMs] = useState<number | null>(null);
-  const [hoursWindow, setHoursWindow] = useState<number>(initialData?.hoursWindow || 12);
+  const [hoursWindow, setHoursWindow] = useState<number>(initialData?.hoursWindow || 6);
 
   // Hero view mode
   const [heroView, setHeroView] = useState<HeroView>('main');
@@ -106,7 +106,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
     setIsLoadingT2(true);
 
     try {
-      const response = await fetch(`/api/news?region=${region}&tier=T2&hours=12&limit=200`);
+      const response = await fetch(`/api/news?region=${region}&tier=T2&hours=6&limit=200`);
       if (!response.ok) return;
 
       const data: ApiResponse = await response.json();
@@ -151,7 +151,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
 
     try {
       // First fetch T1 sources (critical, fast)
-      const response = await fetch(`/api/news?region=${selectedWatchpoint}&tier=T1&hours=12&limit=100`, {
+      const response = await fetch(`/api/news?region=${selectedWatchpoint}&tier=T1&hours=6&limit=100`, {
         signal: controller.signal,
       });
 
@@ -717,13 +717,16 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                 );
               }
 
+              // Show max 2 indicators to avoid crowding on mobile
+              const visibleRegions = elevatedRegions.slice(0, 2);
+              const hiddenCount = elevatedRegions.length - 2;
+
               return (
-                <div className="flex items-center gap-3">
-                  {elevatedRegions.map(([regionId, data]) => {
+                <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                  {visibleRegions.map(([regionId, data]) => {
                     const isCritical = data.level === 'critical';
                     const color = isCritical ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400';
                     const dotColor = isCritical ? 'bg-red-500' : 'bg-orange-500';
-                    const label = isCritical ? 'Surging' : 'Active';
                     return (
                       <div key={regionId} className="flex items-center gap-1.5 group relative">
                         <span className={`w-1.5 h-1.5 rounded-full ${dotColor} animate-pulse`} />
@@ -733,6 +736,9 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                       </div>
                     );
                   })}
+                  {hiddenCount > 0 && (
+                    <span className="text-xs text-slate-500 dark:text-slate-400">+{hiddenCount} more</span>
+                  )}
                 </div>
               );
             })()}

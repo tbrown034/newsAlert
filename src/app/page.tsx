@@ -24,7 +24,7 @@ export default async function Home() {
       : 'http://localhost:3000';
 
     // Fetch T1 first for fast initial load, client will fetch T2 async
-    const response = await fetch(`${baseUrl}/api/news?region=all&tier=T1&hours=12&limit=100`, {
+    const response = await fetch(`${baseUrl}/api/news?region=all&tier=T1&hours=6&limit=100`, {
       next: { revalidate: 60 }, // Cache for 60s on server
     });
 

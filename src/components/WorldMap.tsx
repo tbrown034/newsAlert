@@ -66,7 +66,7 @@ const regionMarkers: Record<string, { coordinates: [number, number]; label: stri
 const DEFAULT_CENTER: [number, number] = [40, 25];
 const DEFAULT_ZOOM = 1;
 
-function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {}, activity = {}, significantQuakes = [], hoursWindow = 12, hotspotsOnly = false }: WorldMapProps) {
+function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {}, activity = {}, significantQuakes = [], hoursWindow = 6, hotspotsOnly = false }: WorldMapProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [position, setPosition] = useState({ coordinates: DEFAULT_CENTER, zoom: DEFAULT_ZOOM });

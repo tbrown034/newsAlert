@@ -182,6 +182,7 @@ export function NewsFeed({
   const [platformFilter, setPlatformFilter] = useState<PlatformFilter>('all');
   const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
   const [regionalExpanded, setRegionalExpanded] = useState(false);
+  const [sourceFilterExpanded, setSourceFilterExpanded] = useState(false);
   const [selectedTab, setSelectedTab] = useState<SelectedTab>('all'); // Local tab state, defaults to All
   const moreDropdownRef = useRef<HTMLDivElement>(null);
   const isInitialLoadRef = useRef(true);
@@ -503,64 +504,107 @@ export function NewsFeed({
           </div>
         )}
 
-        {/* Platform filter + stats bar (combined) - show while loading or when there's data */}
+        {/* Platform filter bar - collapsible */}
         {(isLoading || isLoadingMore || Object.values(platformCounts).some(count => count > 0)) && (
           <div className="px-2 sm:px-3 py-1.5 sm:py-2 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
-            <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-500 flex-shrink-0">Source:</span>
-            <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
-              {platformFilters.map((filter) => {
-                const isSelected = platformFilter === filter.id;
-                const count = filter.id === 'all'
-                  ? Object.values(platformCounts).reduce((sum, c) => sum + c, 0)
-                  : (platformCounts[filter.id] || 0);
+            {/* Collapsed state: just show toggle button */}
+            {!sourceFilterExpanded ? (
+              <>
+                <button
+                  onClick={() => setSourceFilterExpanded(true)}
+                  className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors flex items-center gap-1"
+                >
+                  <span>Filter by source</span>
+                  <ChevronDownIcon className="w-3 h-3" />
+                </button>
+                {/* Show active filter if not "all" */}
+                {platformFilter !== 'all' && (
+                  <span className="px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs font-medium rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">
+                    {platformFilters.find(f => f.id === platformFilter)?.label}
+                    <button
+                      onClick={() => setPlatformFilter('all')}
+                      className="ml-1 text-blue-400 hover:text-blue-600"
+                    >
+                      ×
+                    </button>
+                  </span>
+                )}
+                {/* Stats on right side */}
+                <div className="flex items-center gap-2 text-[10px] sm:text-xs text-slate-400 dark:text-slate-500 ml-auto flex-shrink-0">
+                  <span>{Object.values(platformCounts).reduce((sum, c) => sum + c, 0)} posts</span>
+                  {lastUpdated && (
+                    <span className="hidden sm:inline" suppressHydrationWarning>
+                      · {formatLastUpdated(lastUpdated)}
+                    </span>
+                  )}
+                </div>
+              </>
+            ) : (
+              /* Expanded state: show all platform filters */
+              <>
+                <button
+                  onClick={() => setSourceFilterExpanded(false)}
+                  className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors flex items-center gap-1 flex-shrink-0"
+                >
+                  <span>Source:</span>
+                  <ChevronDownIcon className="w-3 h-3 rotate-180" />
+                </button>
+                <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
+                  {platformFilters.map((filter) => {
+                    const isSelected = platformFilter === filter.id;
+                    const count = filter.id === 'all'
+                      ? Object.values(platformCounts).reduce((sum, c) => sum + c, 0)
+                      : (platformCounts[filter.id] || 0);
 
-                // Hide platforms with 0 items (except "All" and currently selected)
-                if (filter.id !== 'all' && count === 0 && !isSelected && !isLoading && !isLoadingMore) {
-                  return null;
-                }
+                    // Hide platforms with 0 items (except "All" and currently selected)
+                    if (filter.id !== 'all' && count === 0 && !isSelected && !isLoading && !isLoadingMore) {
+                      return null;
+                    }
 
-                // Show loading state if still loading initial data or loading more sources
-                const isLoadingPlatform = (isLoading || isLoadingMore) && filter.id !== 'all' && count === 0;
+                    // Show loading state if still loading initial data or loading more sources
+                    const isLoadingPlatform = (isLoading || isLoadingMore) && filter.id !== 'all' && count === 0;
 
-                return (
-                  <button
-                    key={filter.id}
-                    onClick={() => setPlatformFilter(filter.id)}
-                    disabled={isLoadingPlatform}
-                    className={`
-                      px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full transition-colors whitespace-nowrap
-                      ${isSelected
-                        ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'
-                      }
-                      ${isLoadingPlatform ? 'opacity-60' : ''}
-                    `}
-                  >
-                    {filter.label}
-                    {isLoadingPlatform ? (
-                      <span className="ml-1 inline-block w-2.5 h-2.5 border border-slate-400 border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <span className={`ml-0.5 sm:ml-1 ${isSelected ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>
-                        {count}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-            {/* Stats on right side - hidden on mobile to reduce cramping */}
-            <div className="hidden sm:flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500 ml-auto flex-shrink-0">
-              {loadTimeMs != null && (
-                <span className={loadTimeMs > 10000 ? 'text-amber-500' : ''}>
-                  {loadTimeMs > 1000 ? `${(loadTimeMs / 1000).toFixed(1)}s` : `${loadTimeMs}ms`}
-                </span>
-              )}
-              {lastUpdated && (
-                <span suppressHydrationWarning>
-                  {formatLastUpdated(lastUpdated)}
-                </span>
-              )}
-            </div>
+                    return (
+                      <button
+                        key={filter.id}
+                        onClick={() => setPlatformFilter(filter.id)}
+                        disabled={isLoadingPlatform}
+                        className={`
+                          px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full transition-colors whitespace-nowrap
+                          ${isSelected
+                            ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'
+                          }
+                          ${isLoadingPlatform ? 'opacity-60' : ''}
+                        `}
+                      >
+                        {filter.label}
+                        {isLoadingPlatform ? (
+                          <span className="ml-1 inline-block w-2.5 h-2.5 border border-slate-400 border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                          <span className={`ml-0.5 sm:ml-1 ${isSelected ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>
+                            {count}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+                {/* Stats on right side - hidden on mobile to reduce cramping */}
+                <div className="hidden sm:flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500 ml-auto flex-shrink-0">
+                  {loadTimeMs != null && (
+                    <span className={loadTimeMs > 10000 ? 'text-amber-500' : ''}>
+                      {loadTimeMs > 1000 ? `${(loadTimeMs / 1000).toFixed(1)}s` : `${loadTimeMs}ms`}
+                    </span>
+                  )}
+                  {lastUpdated && (
+                    <span suppressHydrationWarning>
+                      {formatLastUpdated(lastUpdated)}
+                    </span>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         )}
 
