@@ -24,14 +24,14 @@ const sourceSerif = Source_Serif_4({
 
 export const metadata: Metadata = {
   title: {
-    default: "Pulse Alert",
-    template: "%s | Pulse Alert",
+    default: "News Pulse",
+    template: "%s | News Pulse",
   },
   description: "News Before Its News. Real-time monitoring of breaking news, seismic activity, and geopolitical events from 380+ verified sources worldwide.",
   keywords: ["news", "OSINT", "intelligence", "geopolitical", "monitoring", "real-time", "global news", "breaking news", "earthquake", "pulse alert"],
-  authors: [{ name: "Pulse Alert" }],
-  creator: "Pulse Alert",
-  publisher: "Pulse Alert",
+  authors: [{ name: "News Pulse" }],
+  creator: "News Pulse",
+  publisher: "News Pulse",
   metadataBase: new URL("https://news-alert.vercel.app"),
   alternates: {
     canonical: "/",
@@ -40,21 +40,21 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://news-alert.vercel.app",
-    siteName: "Pulse Alert",
-    title: "Pulse Alert - News Before Its News",
+    siteName: "News Pulse",
+    title: "News Pulse - News Before Its News",
     description: "Monitor breaking news, seismic activity, and geopolitical events from 380+ verified sources worldwide.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Pulse Alert - News Before Its News",
+        alt: "News Pulse - News Before Its News",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pulse Alert - News Before Its News",
+    title: "News Pulse - News Before Its News",
     description: "Monitor breaking news, seismic activity, and geopolitical events from 380+ verified sources worldwide.",
     images: ["/og-image.png"],
     creator: "@pulsealert",

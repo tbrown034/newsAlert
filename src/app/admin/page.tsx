@@ -133,7 +133,7 @@ export default function AdminPage() {
               <ArrowLeftIcon className="w-5 h-5" />
               <span className="text-sm font-medium">Back</span>
             </Link>
-            <h1 className="text-lg font-semibold">Admin Dashboard</h1>
+            <h1 className="text-lg font-semibold">News Pulse Admin</h1>
             <div className="w-16" /> {/* Spacer for centering */}
           </div>
         </div>

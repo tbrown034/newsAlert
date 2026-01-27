@@ -3,7 +3,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { WatchpointId } from '@/types';
 import { regionDisplayNames } from '@/lib/regionDetection';
-import { SparklesIcon, BoltIcon, RocketLaunchIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon, BoltIcon, RocketLaunchIcon, ChevronDownIcon, ChevronUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useSession } from '@/lib/auth-client';
 
 // Client-side cache - persists across region switches, keyed by region+tier
@@ -115,11 +115,42 @@ function highlightLocations(text: string): React.ReactNode {
   });
 }
 
-// Tier display info
-const TIER_INFO: Record<ModelTier, { label: string; icon: React.ElementType; color: string; description: string }> = {
-  quick: { label: 'Quick', icon: BoltIcon, color: 'text-emerald-500', description: 'Fast summary (Haiku)' },
-  advanced: { label: 'Advanced', icon: SparklesIcon, color: 'text-blue-500', description: 'Deeper analysis (Sonnet)' },
-  pro: { label: 'Pro', icon: RocketLaunchIcon, color: 'text-purple-500', description: 'Expert analysis (Opus)' },
+// Tier display info with actual model names for transparency
+// Links to Anthropic so users can learn about Claude models
+const ANTHROPIC_URL = 'https://www.anthropic.com/claude';
+
+const TIER_INFO: Record<ModelTier, {
+  label: string;
+  model: string;
+  modelShort: string;
+  icon: React.ElementType;
+  color: string;
+  description: string;
+}> = {
+  quick: {
+    label: 'Quick',
+    model: 'Claude Haiku',
+    modelShort: 'Haiku',
+    icon: BoltIcon,
+    color: 'text-emerald-500',
+    description: 'Fast AI summary',
+  },
+  advanced: {
+    label: 'Advanced',
+    model: 'Claude Sonnet',
+    modelShort: 'Sonnet',
+    icon: SparklesIcon,
+    color: 'text-blue-500',
+    description: 'Deeper AI analysis',
+  },
+  pro: {
+    label: 'Pro',
+    model: 'Claude Opus',
+    modelShort: 'Opus',
+    icon: RocketLaunchIcon,
+    color: 'text-purple-500',
+    description: 'Expert AI analysis',
+  },
 };
 
 // Admin emails
@@ -153,12 +184,26 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
   const [error, setError] = useState<string | null>(null);
   const [currentTier, setCurrentTier] = useState<ModelTier>('quick');
   const [loadingElapsed, setLoadingElapsed] = useState(0);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const controllerRef = useRef<AbortController | null>(null);
   const loadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const autoLoadedRef = useRef(false);
 
   // Check if user is admin
   const isAdmin = session?.user?.email && ADMIN_EMAILS.includes(session.user.email.toLowerCase());
+
+  // Load collapsed preference from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('ai-summary-collapsed');
+    if (saved === 'true') setIsCollapsed(true);
+  }, []);
+
+  // Save collapsed preference
+  const toggleCollapsed = () => {
+    const newValue = !isCollapsed;
+    setIsCollapsed(newValue);
+    localStorage.setItem('ai-summary-collapsed', String(newValue));
+  };
 
   const fetchBriefing = useCallback(async (tier: ModelTier = 'quick', skipCache = false) => {
     // Check client-side cache first
@@ -251,7 +296,7 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
     return () => clearTimeout(timer);
   }, [region, fetchBriefing]);
 
-  // Loading state
+  // Loading state - shows which AI model is being used
   if (loading) {
     const TierIcon = TIER_INFO[currentTier].icon;
     return (
@@ -265,6 +310,14 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
               <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
                 {getLoadingMessage(loadingElapsed, currentTier)}
               </span>
+              <a
+                href={ANTHROPIC_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-2xs px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+              >
+                {TIER_INFO[currentTier].model} ↗
+              </a>
               {loadingElapsed > 0 && (
                 <span className="text-2xs text-slate-400 dark:text-slate-500 tabular-nums">
                   {loadingElapsed}s
@@ -306,7 +359,17 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
       <div className="mx-3 sm:mx-4 my-3 px-4 py-3 border border-slate-200 dark:border-slate-800 rounded-lg bg-slate-50 dark:bg-slate-900/50">
         <div className="flex items-center gap-3">
           <div className="w-5 h-5 border-2 border-slate-300 dark:border-slate-600 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-slate-500 dark:text-slate-400">Loading AI summary...</span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-slate-500 dark:text-slate-400">Preparing AI summary</span>
+            <a
+              href={ANTHROPIC_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-2xs px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+            >
+              Claude Haiku ↗
+            </a>
+          </div>
         </div>
       </div>
     );
@@ -315,19 +378,56 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
   // Display briefing with upgrade options
   const TierIcon = TIER_INFO[briefing.tier || 'quick'].icon;
 
+  // Collapsed view - minimal bar to expand
+  if (isCollapsed) {
+    return (
+      <div className="mx-3 sm:mx-4 my-3">
+        <button
+          onClick={toggleCollapsed}
+          className="w-full flex items-center justify-between px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-lg bg-slate-50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors group"
+        >
+          <div className="flex items-center gap-2">
+            <TierIcon className={`w-4 h-4 ${TIER_INFO[briefing.tier || 'quick'].color}`} />
+            <span className="text-xs text-slate-500 dark:text-slate-400">AI Summary</span>
+            <span className="text-2xs text-slate-400 dark:text-slate-500">(hidden)</span>
+          </div>
+          <ChevronDownIcon className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300" />
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-3 sm:mx-4 my-3 border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden bg-white dark:bg-slate-900">
-      {/* Header with tier badge */}
+      {/* Header - clearly labeled as AI summary with model info and link */}
       <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <TierIcon className={`w-4 h-4 ${TIER_INFO[briefing.tier || 'quick'].color}`} />
-          <span className="text-xs text-slate-500 dark:text-slate-500">
-            {regionDisplayNames[region]} · {TIER_INFO[briefing.tier || 'quick'].label}
+          <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+            AI Summary
           </span>
+          <a
+            href={ANTHROPIC_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-2xs px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+            title="Learn more about Claude AI models"
+          >
+            {TIER_INFO[briefing.tier || 'quick'].model} ↗
+          </a>
         </div>
-        {briefing.fromCache && (
-          <span className="text-2xs text-slate-400 dark:text-slate-600">cached</span>
-        )}
+        <div className="flex items-center gap-2">
+          {briefing.fromCache && (
+            <span className="text-2xs text-slate-400 dark:text-slate-600">cached</span>
+          )}
+          <button
+            onClick={toggleCollapsed}
+            className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors"
+            title="Hide AI summary"
+          >
+            <ChevronUpIcon className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* Body - Overview + Developments */}
@@ -348,22 +448,23 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
         )}
       </div>
 
-      {/* Footer with upgrade options */}
+      {/* Footer with stats and upgrade options */}
       <div className="px-4 py-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
         <span className="text-2xs text-slate-400 dark:text-slate-600">
           {briefing.sourcesAnalyzed} sources · {briefing.usage?.latencyMs ? `${(briefing.usage.latencyMs / 1000).toFixed(1)}s` : ''}
         </span>
 
-        {/* Upgrade buttons */}
+        {/* Upgrade buttons with Claude model names */}
         <div className="flex items-center gap-2">
           {(briefing.tier === 'quick') && (
             <button
               onClick={() => fetchBriefing('advanced', true)}
               disabled={loading}
               className="flex items-center gap-1.5 px-2.5 py-1 text-2xs font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors"
+              title="Upgrade to Claude Sonnet for deeper analysis"
             >
               <SparklesIcon className="w-3.5 h-3.5" />
-              Advanced
+              <span>Try Sonnet</span>
             </button>
           )}
 
@@ -372,16 +473,17 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
               onClick={() => fetchBriefing('pro', true)}
               disabled={loading}
               className="flex items-center gap-1.5 px-2.5 py-1 text-2xs font-medium text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-md transition-colors"
+              title="Upgrade to Claude Opus for expert analysis"
             >
               <RocketLaunchIcon className="w-3.5 h-3.5" />
-              Pro
+              <span>Try Opus</span>
             </button>
           )}
 
           {briefing.tier === 'pro' && (
-            <span className="flex items-center gap-1 text-2xs text-purple-500">
+            <span className="flex items-center gap-1 text-2xs text-purple-500" title="Using Claude Opus">
               <RocketLaunchIcon className="w-3 h-3" />
-              Max
+              Best model
             </span>
           )}
         </div>

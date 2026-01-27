@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { NewsFeed, Legend, WorldMap, SeismicMap, WeatherMap, OutagesMap, TravelMap, FiresMap, AuthButton } from '@/components';
 import { watchpoints as defaultWatchpoints } from '@/lib/mockData';
 import { NewsItem, WatchpointId, Watchpoint, Earthquake } from '@/types';
-import { GlobeAltIcon, CloudIcon, SignalIcon, ExclamationTriangleIcon, FireIcon, EllipsisHorizontalIcon, Bars3Icon, XMarkIcon, ChevronUpIcon, ChevronDownIcon, SunIcon, MoonIcon, InformationCircleIcon, BoltIcon } from '@heroicons/react/24/outline';
+import { GlobeAltIcon, CloudIcon, SignalIcon, ExclamationTriangleIcon, FireIcon, EllipsisHorizontalIcon, Bars3Icon, XMarkIcon, ChevronUpIcon, ChevronDownIcon, SunIcon, MoonIcon, InformationCircleIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
+import { useSession } from '@/lib/auth-client';
 import { MapPinIcon } from '@heroicons/react/24/solid';
 import { RegionActivity } from '@/lib/activityDetection';
 import { tier1Sources, tier2Sources, tier3Sources } from '@/lib/sources-clean';
@@ -20,7 +21,7 @@ interface ApiResponse {
   isIncremental?: boolean;
 }
 
-type HeroView = 'main' | 'hotspots' | 'seismic' | 'weather' | 'outages' | 'travel' | 'fires';
+type HeroView = 'main' | 'seismic' | 'weather' | 'outages' | 'travel' | 'fires';
 
 interface HomeClientProps {
   initialData: ApiResponse | null;
@@ -28,6 +29,7 @@ interface HomeClientProps {
 }
 
 export default function HomeClient({ initialData, initialRegion }: HomeClientProps) {
+  const { data: session } = useSession();
   const [selectedWatchpoint, setSelectedWatchpoint] = useState<WatchpointId>(initialRegion);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [newsItems, setNewsItems] = useState<NewsItem[]>(() => {
@@ -387,7 +389,6 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
 
   const mainTabs = [
     { id: 'main', label: 'Main', icon: GlobeAltIcon, color: 'blue' },
-    { id: 'hotspots', label: 'Hotspots', icon: BoltIcon, color: 'orange' },
     { id: 'seismic', label: 'Seismic', icon: MapPinIcon, color: 'amber' },
   ] as const;
 
@@ -413,7 +414,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               className="flex items-center gap-2 sm:gap-4 hover:opacity-80 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-lg"
-              aria-label="Pulse Alert home - reset to all regions"
+              aria-label="News Pulse home - reset to all regions"
             >
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-slate-700 to-slate-900 rounded-xl flex items-center justify-center shadow-md shadow-black/30 border border-slate-600">
                 <svg viewBox="0 0 32 32" className="w-5 h-5 sm:w-6 sm:h-6">
@@ -435,7 +436,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
               </div>
               <div className="text-left">
                 <h1 className="text-xl sm:text-2xl font-bold headline text-slate-900 dark:text-white">
-                  Pulse Alert
+                  News Pulse
                 </h1>
                 <p className="text-2xs sm:text-xs font-medium tracking-wide uppercase hidden xs:block text-cyan-600 dark:text-cyan-400">
                   News Before Its News
@@ -457,6 +458,20 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
               >
                 Feed
               </a>
+              <a
+                href="/about"
+                className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded px-2 py-1"
+              >
+                About
+              </a>
+              {session && (
+                <a
+                  href="/admin"
+                  className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded px-2 py-1"
+                >
+                  Admin
+                </a>
+              )}
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
@@ -534,6 +549,24 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                       <GlobeAltIcon className="w-5 h-5 text-slate-400" />
                       Live Feed
                     </a>
+                    <a
+                      href="/about"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-3 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                    >
+                      <InformationCircleIcon className="w-5 h-5 text-slate-400" />
+                      About
+                    </a>
+                    {session && (
+                      <a
+                        href="/admin"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-3 px-3 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                      >
+                        <Cog6ToothIcon className="w-5 h-5 text-slate-400" />
+                        Admin
+                      </a>
+                    )}
                   </div>
 
                   {/* Preferences Section */}
@@ -738,18 +771,6 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                 hoursWindow={hoursWindow}
               />
             )}
-            {heroView === 'hotspots' && (
-              <WorldMap
-                watchpoints={watchpoints}
-                selected={selectedWatchpoint}
-                onSelect={setSelectedWatchpoint}
-                regionCounts={regionCounts}
-                activity={activityData || undefined}
-                significantQuakes={significantQuakes}
-                hoursWindow={hoursWindow}
-                hotspotsOnly
-              />
-            )}
             {heroView === 'seismic' && (
               <SeismicMap
                 earthquakes={earthquakes}
@@ -789,7 +810,12 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                 return (
                   <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    <span className="text-slate-700 dark:text-slate-300 font-medium">All Normal</span>
+                    <span className="text-slate-700 dark:text-slate-300 font-medium">
+                      Typical activity
+                    </span>
+                    <span className="text-slate-500 dark:text-slate-500 text-xs">
+                      · {newsItems.length} posts tracked
+                    </span>
                   </div>
                 );
               }
@@ -891,19 +917,16 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
 
       {/* Main Content */}
       <main id="feed" className="max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto px-3 sm:px-4 pb-20 pt-4 sm:pt-6">
-        <div className="mb-4 sm:mb-5 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full animate-pulse-soft bg-emerald-500" />
-            <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100">
-              Live Wire
-            </h2>
+        <div className="rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none overflow-hidden">
+          {/* Live Wire header inside the box */}
+          <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full animate-pulse-soft bg-emerald-500" />
+              <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
+                Live Wire
+              </h2>
+            </div>
           </div>
-          <p className="text-2xs sm:text-xs text-slate-500 dark:text-slate-500">
-            {totalSources} sources
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none">
           <NewsFeed
             items={newsItems}
             selectedWatchpoint={selectedWatchpoint}
