@@ -1097,6 +1097,9 @@ async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<B
       }
 
       // Extract reply context
+      // Bluesky provides reply info in two places:
+      // 1. item.reply - Thread context with parent/root post details (may include text)
+      // 2. item.post.record.reply - Just URI references (indicates this IS a reply)
       let replyContext: ReplyContext | undefined;
       if (item.reply?.parent?.post) {
         const parentPost = item.reply.parent.post;
@@ -1104,6 +1107,14 @@ async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<B
           parentAuthor: parentPost.author.displayName || parentPost.author.handle,
           parentHandle: parentPost.author.handle,
           parentText: parentPost.record?.text?.slice(0, 100), // Truncate parent text
+        };
+      } else if (item.post.record.reply) {
+        // Post is a reply but we don't have parent details - mark as reply anyway
+        // This helps users understand why a short post like "Exactly" exists
+        replyContext = {
+          parentAuthor: 'someone',
+          parentHandle: undefined,
+          parentText: undefined,
         };
       }
 

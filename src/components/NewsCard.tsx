@@ -38,90 +38,150 @@ const sourceTypeLabels: Record<string, string> = {
   bot: 'Bot',
 };
 
+// External link card component (for article links, embeds)
+function ExternalLinkCard({ link }: { link: MediaAttachment }) {
+  const [imgError, setImgError] = useState(false);
+
+  // Extract domain from URL for display
+  const domain = (() => {
+    try {
+      return new URL(link.url).hostname.replace('www.', '');
+    } catch {
+      return '';
+    }
+  })();
+
+  return (
+    <a
+      href={link.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-2 flex overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors bg-slate-50 dark:bg-slate-800/50"
+    >
+      {/* Thumbnail */}
+      {link.thumbnail && !imgError && (
+        <div className="relative w-24 sm:w-32 flex-shrink-0">
+          <Image
+            src={link.thumbnail}
+            alt={link.title || 'Link preview'}
+            fill
+            className="object-cover"
+            onError={() => setImgError(true)}
+            unoptimized
+          />
+        </div>
+      )}
+      {/* Content */}
+      <div className="flex-1 p-2.5 sm:p-3 min-w-0 flex flex-col justify-center">
+        {link.title && (
+          <p className="text-sm font-medium text-slate-800 dark:text-slate-100 line-clamp-2 leading-snug">
+            {link.title}
+          </p>
+        )}
+        {link.alt && !link.title && (
+          <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+            {link.alt}
+          </p>
+        )}
+        {domain && (
+          <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 flex items-center gap-1">
+            <ArrowTopRightOnSquareIcon className="w-3 h-3" />
+            {domain}
+          </p>
+        )}
+      </div>
+    </a>
+  );
+}
+
 // Media display component for images/videos/links
 function MediaDisplay({ media }: { media: MediaAttachment[] }) {
   const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
 
   if (!media || media.length === 0) return null;
 
-  // Filter to images and videos only (external links shown as text)
+  // Separate visual media from external links
   const visualMedia = media.filter(m => m.type === 'image' || m.type === 'video');
-  if (visualMedia.length === 0) return null;
+  const externalLinks = media.filter(m => m.type === 'external');
 
   const handleImageError = (index: number) => {
     setFailedImages(prev => new Set(prev).add(index));
   };
 
-  // Single image: full width
-  if (visualMedia.length === 1) {
-    const item = visualMedia[0];
-    if (failedImages.has(0)) return null;
-
-    return (
-      <div className="mt-2 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
-        <a
-          href={item.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block relative"
-        >
-          <Image
-            src={item.thumbnail || item.url}
-            alt={item.alt || 'Media attachment'}
-            width={400}
-            height={300}
-            className="w-full h-auto max-h-72 object-cover"
-            onError={() => handleImageError(0)}
-            unoptimized
-          />
-          {item.type === 'video' && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-              <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
-                <svg className="w-6 h-6 text-slate-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-            </div>
-          )}
-        </a>
-      </div>
-    );
-  }
-
-  // Multiple images: 2x2 grid
   return (
-    <div className="mt-2 grid grid-cols-2 gap-1 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
-      {visualMedia.slice(0, 4).map((item, index) => {
-        if (failedImages.has(index)) return null;
-        return (
+    <>
+      {/* Visual media (images/videos) */}
+      {visualMedia.length === 1 && !failedImages.has(0) && (
+        <div className="mt-2 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
           <a
-            key={index}
-            href={item.url}
+            href={visualMedia[0].url}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative aspect-square"
+            className="block relative"
           >
             <Image
-              src={item.thumbnail || item.url}
-              alt={item.alt || `Image ${index + 1}`}
-              fill
-              className="object-cover"
-              onError={() => handleImageError(index)}
+              src={visualMedia[0].thumbnail || visualMedia[0].url}
+              alt={visualMedia[0].alt || 'Media attachment'}
+              width={400}
+              height={300}
+              className="w-full h-auto max-h-72 object-cover"
+              onError={() => handleImageError(0)}
               unoptimized
             />
-            {item.type === 'video' && (
+            {visualMedia[0].type === 'video' && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-slate-800 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-slate-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
               </div>
             )}
           </a>
-        );
-      })}
-    </div>
+        </div>
+      )}
+
+      {/* Multiple images: 2x2 grid */}
+      {visualMedia.length > 1 && (
+        <div className="mt-2 grid grid-cols-2 gap-1 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+          {visualMedia.slice(0, 4).map((item, index) => {
+            if (failedImages.has(index)) return null;
+            return (
+              <a
+                key={index}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative aspect-square"
+              >
+                <Image
+                  src={item.thumbnail || item.url}
+                  alt={item.alt || `Image ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  onError={() => handleImageError(index)}
+                  unoptimized
+                />
+                {item.type === 'video' && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                    <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center">
+                      <svg className="w-4 h-4 text-slate-800 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+              </a>
+            );
+          })}
+        </div>
+      )}
+
+      {/* External links as cards */}
+      {externalLinks.map((link, index) => (
+        <ExternalLinkCard key={`link-${index}`} link={link} />
+      ))}
+    </>
   );
 }
 
@@ -342,13 +402,24 @@ export function NewsCard({ item }: NewsCardProps) {
           </span>
         </div>
 
-        {/* Reply indicator */}
+        {/* Reply context - show parent post for context */}
         {item.replyContext && (
-          <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 pl-10">
-            <span>Replying to</span>
-            <span className="text-blue-500 dark:text-blue-400">
-              @{item.replyContext.parentHandle || item.replyContext.parentAuthor}
-            </span>
+          <div className="ml-10 pl-3 border-l-2 border-slate-200 dark:border-slate-700">
+            <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 mb-1">
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+              </svg>
+              <span>Replying to</span>
+              <span className="text-blue-500 dark:text-blue-400 font-medium">
+                @{item.replyContext.parentHandle || item.replyContext.parentAuthor}
+              </span>
+            </div>
+            {/* Show parent text if available */}
+            {item.replyContext.parentText && (
+              <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 italic">
+                &ldquo;{item.replyContext.parentText}&rdquo;
+              </p>
+            )}
           </div>
         )}
 
@@ -381,6 +452,32 @@ export function NewsCard({ item }: NewsCardProps) {
         {/* Media attachments */}
         {item.media && item.media.length > 0 && (
           <MediaDisplay media={item.media} />
+        )}
+
+        {/* Article link card for RSS/news items (not social media) */}
+        {item.url && item.source.platform === 'rss' && !item.media?.length && (
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1 flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors group"
+          >
+            <div className="flex-1 min-w-0">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Read full article
+              </p>
+              <p className="text-xs text-slate-400 dark:text-slate-500 truncate">
+                {(() => {
+                  try {
+                    return new URL(item.url).hostname.replace('www.', '');
+                  } catch {
+                    return item.url;
+                  }
+                })()}
+              </p>
+            </div>
+            <ArrowTopRightOnSquareIcon className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:text-blue-500 dark:group-hover:text-blue-400 flex-shrink-0" />
+          </a>
         )}
 
         {/* Row 3: Tags + Actions */}
