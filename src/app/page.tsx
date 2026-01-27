@@ -18,15 +18,21 @@ export default async function Home() {
   let initialRegion: WatchpointId = 'all';
 
   try {
-    // Server-side fetch - no network hop, direct function call would be even better
+    // Server-side fetch with timeout - don't block page render for too long
     const baseUrl = process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : 'http://localhost:3000';
 
+    // Abort if SSR fetch takes longer than 5s - client will fetch fresh
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
     // Fetch T1 first for fast initial load, client will fetch T2 async
     const response = await fetch(`${baseUrl}/api/news?region=all&tier=T1&hours=6&limit=100`, {
       next: { revalidate: 300 }, // Cache for 5 min (matches server cache TTL)
+      signal: controller.signal,
     });
+    clearTimeout(timeoutId);
 
     if (response.ok) {
       initialData = await response.json();
