@@ -41,6 +41,11 @@ export async function GET(request: Request) {
         return NextResponse.json({
           ...cached,
           fromCache: true,
+        }, {
+          headers: {
+            // Edge cache for 5 minutes - other users get this cached response
+            'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60',
+          },
         });
       }
     }
@@ -123,6 +128,11 @@ export async function GET(request: Request) {
         topSources: sortedPosts.map(p => p.source.name).slice(0, 3),
         fromCache: false,
         limited: true, // Signal that this is a limited summary
+      }, {
+        headers: {
+          // Shorter cache for limited summaries - will be replaced when more data available
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30',
+        },
       });
     }
 
@@ -135,6 +145,12 @@ export async function GET(request: Request) {
     return NextResponse.json({
       ...briefing,
       fromCache: false,
+    }, {
+      headers: {
+        // Edge cache for 5 minutes - other users get this cached response instantly
+        // stale-while-revalidate allows serving stale content while refreshing in background
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60',
+      },
     });
   } catch (error) {
     console.error('Summary generation error:', error);
