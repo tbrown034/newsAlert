@@ -33,9 +33,6 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
-# internal docs (keep README.md and CLAUDE.md public)
-/docs/
-
 # vercel
 .vercel
 
@@ -44,11 +41,5 @@ yarn-error.log*
 next-env.d.ts
 auth.db
 
-# Telegram session files
-pulse_session.session
-pulse_code_hash.txt
-telegram_code_hash.txt
-
-# Telegram data cache
-data/telegram.json
-.env*.local
+# playwright screenshots (testing)
+.playwright-mcp/

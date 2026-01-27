@@ -1,5 +1,5 @@
 import { NewsItem, Source, VerificationStatus, MediaAttachment, ReplyContext, RepostContext } from '@/types';
-import { classifyRegion, isBreakingNews } from './sources';
+import { classifyRegion, isBreakingNews } from './sourceUtils';
 import { createHash } from 'crypto';
 
 interface RssItem {
