@@ -3662,18 +3662,6 @@ export const tier1Sources: TieredSource[] = [
     url: 'https://ecfr.eu/',
     postsPerDay: 5,
   },
-  {
-    id: 'lowy-interpreter-rss',
-    name: 'Lowy Interpreter',
-    platform: 'rss',
-    sourceType: 'analyst',
-    fetchTier: 'T1',
-    confidence: 90,
-    region: 'asia' as WatchpointId,
-    feedUrl: 'https://www.lowyinstitute.org/the-interpreter/rss.xml',
-    url: 'https://www.lowyinstitute.org/the-interpreter',
-    postsPerDay: 4,
-  },
   // -- Regional News --
   {
     id: 'dw-news-rss',
@@ -3722,18 +3710,6 @@ export const tier1Sources: TieredSource[] = [
     feedUrl: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml',
     url: 'https://www.channelnewsasia.com/',
     postsPerDay: 40,
-  },
-  {
-    id: 'diplomat-rss',
-    name: 'The Diplomat',
-    platform: 'rss',
-    sourceType: 'news-org',
-    fetchTier: 'T1',
-    confidence: 90,
-    region: 'asia' as WatchpointId,
-    feedUrl: 'https://thediplomat.com/feed/',
-    url: 'https://thediplomat.com/',
-    postsPerDay: 12,
   },
   {
     id: 'scmp-china-rss',
@@ -4526,18 +4502,6 @@ export const tier1Sources: TieredSource[] = [
     feedUrl: 'https://www.fdd.org/feed/',
     url: 'https://www.fdd.org',
     postsPerDay: 5,
-  },
-  {
-    id: 'al-monitor-rss',
-    name: 'Al-Monitor RSS',
-    platform: 'rss',
-    sourceType: 'reporter',
-    fetchTier: 'T1',
-    confidence: 88,
-    region: 'middle-east' as WatchpointId,
-    feedUrl: 'https://www.al-monitor.com/rss',
-    url: 'https://www.al-monitor.com',
-    postsPerDay: 20,
   },
 ];
 

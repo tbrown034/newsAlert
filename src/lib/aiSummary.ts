@@ -69,52 +69,25 @@ interface StructuredPost {
 }
 
 /**
- * Smart post selection - prioritize quality over quantity
- * Reduced to 25 posts max to optimize token usage while maintaining coverage
+ * Post selection - simple recency-based approach
+ * Takes the 25 most recent posts, deduplicating similar headlines
  */
 function selectAndStructurePosts(posts: NewsItem[], maxPosts: number = 25): StructuredPost[] {
   const now = Date.now();
 
-  // Score posts for selection
-  const scoredPosts = posts.map(post => {
-    let score = 0;
-
-    // Source type scoring (official > news-org > osint > reporter > analyst > aggregator > ground > bot)
-    const sourceTypeScores: Record<string, number> = {
-      official: 5,
-      'news-org': 4,
-      osint: 4,
-      reporter: 3,
-      analyst: 3,
-      aggregator: 2,
-      ground: 2,
-      bot: 1,
-    };
-    score += sourceTypeScores[post.source.sourceType] || 1;
-
-    // Recency scoring (more recent = higher)
-    const minutesAgo = Math.floor((now - post.timestamp.getTime()) / 60000);
-    if (minutesAgo < 30) score += 3;
-    else if (minutesAgo < 60) score += 2;
-    else if (minutesAgo < 120) score += 1;
-
-    // Breaking/urgent content
-    if (post.isBreaking) score += 2;
-
-    return { post, score, minutesAgo };
-  });
-
-  // Sort by score, then by recency
-  scoredPosts.sort((a, b) => {
-    if (b.score !== a.score) return b.score - a.score;
-    return a.minutesAgo - b.minutesAgo;
-  });
+  // Sort by recency (newest first)
+  const sortedPosts = [...posts]
+    .map(post => ({
+      post,
+      minutesAgo: Math.floor((now - post.timestamp.getTime()) / 60000)
+    }))
+    .sort((a, b) => a.minutesAgo - b.minutesAgo);
 
   // Deduplicate by similar headlines (simple fuzzy match)
-  const selected: typeof scoredPosts = [];
+  const selected: typeof sortedPosts = [];
   const seenHeadlines = new Set<string>();
 
-  for (const item of scoredPosts) {
+  for (const item of sortedPosts) {
     // Normalize headline for comparison
     const normalized = item.post.title.toLowerCase()
       .replace(/[^\w\s]/g, '')

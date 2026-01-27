@@ -1,22 +1,22 @@
-import type { Metadata } from "next";
+'use client';
+
+import { useState } from 'react';
 import Link from "next/link";
 import {
   ArrowLeftIcon,
-  NewspaperIcon,
   ChartBarIcon,
   UserIcon,
   GlobeAltIcon,
   BoltIcon,
   ShieldCheckIcon,
-  ClockIcon,
+  SparklesIcon,
+  ChevronDownIcon,
+  CodeBracketIcon,
 } from "@heroicons/react/24/outline";
 
-export const metadata: Metadata = {
-  title: "About",
-  description: "Learn about Pulse, how our intelligence ranking system works, and the team behind it.",
-};
-
 export default function AboutPage() {
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [showDataFlow, setShowDataFlow] = useState(false);
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-slate-100">
       {/* Header */}
@@ -39,7 +39,7 @@ export default function AboutPage() {
         {/* Hero Section */}
         <section className="text-center py-8">
           <h1 className="font-serif text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-4">
-            About Pulse
+            About News Pulse
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Real-time global intelligence monitoring for those who need to know first.
@@ -54,25 +54,25 @@ export default function AboutPage() {
                 <GlobeAltIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               </div>
               <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
-                What is Pulse?
+                What is News Pulse?
               </h2>
             </div>
           </div>
           <div className="px-6 py-6 space-y-4 text-slate-600 dark:text-slate-300">
             <p>
-              Pulse is a real-time global intelligence dashboard that aggregates and analyzes
-              <strong className="text-slate-900 dark:text-white"> 580+ verified OSINT sources</strong> to
+              News Pulse is a real-time global intelligence dashboard that aggregates and analyzes
+              <strong className="text-slate-900 dark:text-white"> 478 verified OSINT sources</strong> to
               deliver breaking news before it hits mainstream media.
             </p>
             <p>
-              The platform monitors RSS feeds from major news organizations, wire services, and regional
-              outlets alongside 150+ curated Bluesky accounts from journalists, analysts, and official
-              government channels.
+              The platform monitors 219 RSS feeds from major news organizations, wire services, and regional
+              outlets alongside 222 curated Bluesky accounts from journalists, analysts, and official
+              government channels, plus Telegram, Mastodon, Reddit, and YouTube sources.
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
               <div className="text-center p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
-                <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">580+</p>
+                <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">478</p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">Sources</p>
               </div>
               <div className="text-center p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
@@ -116,168 +116,52 @@ export default function AboutPage() {
           </div>
           <div className="px-6 py-6 space-y-6 text-slate-600 dark:text-slate-300">
             <p>
-              Pulse uses a multi-layered intelligence ranking system to surface the most important
-              news first. Here&apos;s how it works:
+              News Pulse keeps it simple: posts appear in <strong className="text-slate-900 dark:text-white">chronological order</strong> (newest first)
+              from all sources. No algorithmic manipulation or engagement-based ranking. What you see is what&apos;s happening, as it happens.
             </p>
-
-            {/* Source Tiers */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <BoltIcon className="w-5 h-5 text-amber-500" />
-                <h3 className="font-semibold text-slate-900 dark:text-white">Source Tiers</h3>
-              </div>
-              <p className="text-sm">
-                Sources are organized into three fetch tiers based on activity level and reliability:
-              </p>
-              <div className="space-y-2">
-                <div className="flex items-center gap-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800/50">
-                  <span className="w-8 h-8 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded">T1</span>
-                  <div>
-                    <p className="font-medium text-slate-900 dark:text-white">Critical (84 sources)</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Fetched first, always. Reuters, AP, BNO News, NOELREPORTS</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800/50">
-                  <span className="w-8 h-8 flex items-center justify-center bg-amber-500 text-white text-xs font-bold rounded">T2</span>
-                  <div>
-                    <p className="font-medium text-slate-900 dark:text-white">Standard (76 sources)</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Fetched async, animated in. Regional analysts, secondary journalists</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
-                  <span className="w-8 h-8 flex items-center justify-center bg-slate-500 text-white text-xs font-bold rounded">T3</span>
-                  <div>
-                    <p className="font-medium text-slate-900 dark:text-white">Archive (24 sources)</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">On-demand fetching. Occasional commentators, specialists</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Source Types */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <ShieldCheckIcon className="w-5 h-5 text-green-500" />
-                <h3 className="font-semibold text-slate-900 dark:text-white">Source Type Scoring</h3>
-              </div>
-              <p className="text-sm">
-                Each source type carries a different weight in our ranking algorithm:
-              </p>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-slate-200 dark:border-slate-700">
-                      <th className="text-left py-2 font-medium text-slate-900 dark:text-white">Source Type</th>
-                      <th className="text-center py-2 font-medium text-slate-900 dark:text-white">Score</th>
-                      <th className="text-left py-2 font-medium text-slate-900 dark:text-white">Examples</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                    <tr>
-                      <td className="py-2">Official</td>
-                      <td className="py-2 text-center font-mono text-green-600 dark:text-green-400">5</td>
-                      <td className="py-2 text-slate-500 dark:text-slate-400">Pentagon, White House, IDF</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2">News Org</td>
-                      <td className="py-2 text-center font-mono text-green-600 dark:text-green-400">4</td>
-                      <td className="py-2 text-slate-500 dark:text-slate-400">Reuters, AP, BBC</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2">OSINT</td>
-                      <td className="py-2 text-center font-mono text-green-600 dark:text-green-400">4</td>
-                      <td className="py-2 text-slate-500 dark:text-slate-400">NOELREPORTS, BNO News</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2">Reporter</td>
-                      <td className="py-2 text-center font-mono text-blue-600 dark:text-blue-400">3</td>
-                      <td className="py-2 text-slate-500 dark:text-slate-400">Christopher Miller, Jim Acosta</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2">Analyst</td>
-                      <td className="py-2 text-center font-mono text-blue-600 dark:text-blue-400">3</td>
-                      <td className="py-2 text-slate-500 dark:text-slate-400">ISW, CSIS</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2">Aggregator</td>
-                      <td className="py-2 text-center font-mono text-slate-600 dark:text-slate-400">2</td>
-                      <td className="py-2 text-slate-500 dark:text-slate-400">News aggregation accounts</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2">Ground</td>
-                      <td className="py-2 text-center font-mono text-slate-600 dark:text-slate-400">2</td>
-                      <td className="py-2 text-slate-500 dark:text-slate-400">On-the-ground reporters</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Recency Bonus */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <ClockIcon className="w-5 h-5 text-blue-500" />
-                <h3 className="font-semibold text-slate-900 dark:text-white">Recency Bonus</h3>
-              </div>
-              <p className="text-sm">
-                Breaking news gets boosted based on how fresh it is:
-              </p>
-              <div className="grid grid-cols-3 gap-3">
-                <div className="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <p className="text-lg font-bold text-green-600 dark:text-green-400">+3</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">&lt; 30 min</p>
-                </div>
-                <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                  <p className="text-lg font-bold text-blue-600 dark:text-blue-400">+2</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">&lt; 60 min</p>
-                </div>
-                <div className="text-center p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
-                  <p className="text-lg font-bold text-slate-600 dark:text-slate-400">+1</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">&lt; 2 hours</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Severity Detection */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <NewspaperIcon className="w-5 h-5 text-red-500" />
-                <h3 className="font-semibold text-slate-900 dark:text-white">Severity Detection</h3>
-              </div>
-              <p className="text-sm">
-                Headlines are scanned for keywords that indicate urgency. Posts containing
-                &quot;BREAKING&quot;, &quot;URGENT&quot;, or conflict-related terms get a <strong className="text-slate-900 dark:text-white">+2 boost</strong>.
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {['breaking', 'urgent', 'alert', 'strike', 'explosion', 'missile', 'invasion', 'casualties'].map((keyword) => (
-                  <code key={keyword} className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 text-xs rounded">
-                    {keyword}
-                  </code>
-                ))}
-              </div>
-            </div>
 
             {/* Activity Surge */}
             <div className="space-y-3">
-              <h3 className="font-semibold text-slate-900 dark:text-white">Activity Surge Detection</h3>
+              <div className="flex items-center gap-2">
+                <BoltIcon className="w-5 h-5 text-amber-500" />
+                <h3 className="font-semibold text-slate-900 dark:text-white">Activity Surge Detection</h3>
+              </div>
               <p className="text-sm">
-                The system monitors posting rates against regional baselines. When activity exceeds
-                normal levels, the dashboard indicates heightened activity:
+                Instead of static rankings, News Pulse monitors <strong className="text-slate-900 dark:text-white">posting frequency</strong> in
+                real-time. Each region has a baseline rate of normal activity. When posts spike above that baseline, the system flags it:
               </p>
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center justify-between p-2 bg-red-50 dark:bg-red-900/20 rounded">
-                  <span>Critical</span>
-                  <span className="font-mono text-red-600 dark:text-red-400">&ge; 4x baseline</span>
-                </div>
-                <div className="flex items-center justify-between p-2 bg-amber-50 dark:bg-amber-900/20 rounded">
-                  <span>Elevated</span>
-                  <span className="font-mono text-amber-600 dark:text-amber-400">&ge; 2x baseline</span>
-                </div>
-                <div className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-800/50 rounded">
-                  <span>Normal</span>
-                  <span className="font-mono text-slate-600 dark:text-slate-400">&lt; 2x baseline</span>
+              <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 space-y-3">
+                <p className="text-xs font-mono text-slate-500 dark:text-slate-400">
+                  posts in last hour ÷ regional baseline = activity multiplier
+                </p>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800/50">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                      <span className="font-medium text-slate-900 dark:text-white">Critical</span>
+                    </div>
+                    <span className="font-mono text-red-600 dark:text-red-400">&ge; 4x normal</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg border border-amber-200 dark:border-amber-800/50">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                      <span className="font-medium text-slate-900 dark:text-white">Elevated</span>
+                    </div>
+                    <span className="font-mono text-amber-600 dark:text-amber-400">&ge; 2x normal</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-slate-100 dark:bg-slate-700/50 rounded-lg border border-slate-200 dark:border-slate-600">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-slate-400"></span>
+                      <span className="font-medium text-slate-900 dark:text-white">Normal</span>
+                    </div>
+                    <span className="font-mono text-slate-600 dark:text-slate-400">&lt; 2x normal</span>
+                  </div>
                 </div>
               </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                This approach surfaces breaking news organically - when many sources start posting about the same event,
+                the activity spike becomes visible without needing to manually flag stories as &quot;breaking.&quot;
+              </p>
             </div>
           </div>
         </section>
@@ -328,12 +212,12 @@ export default function AboutPage() {
             </div>
 
             <div className="space-y-3">
-              <h3 className="font-semibold text-slate-900 dark:text-white">Why I Built Pulse</h3>
+              <h3 className="font-semibold text-slate-900 dark:text-white">Why I Built News Pulse</h3>
               <p className="text-sm">
                 As a journalist, I know the value of being first with accurate information.
-                I built Pulse to aggregate the sources I already trust into a single dashboard,
-                surfacing breaking news faster than traditional media while maintaining source
-                credibility through transparent ranking.
+                I built News Pulse to aggregate the sources I already trust into a single dashboard,
+                surfacing breaking news faster than traditional media with full transparency about
+                where every story comes from.
               </p>
             </div>
 
@@ -379,10 +263,247 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* AI Transparency */}
+        <section className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+          <div className="px-6 py-6 border-b border-slate-200 dark:border-slate-800">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center">
+                <SparklesIcon className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+              </div>
+              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
+                AI Transparency
+              </h2>
+            </div>
+          </div>
+          <div className="px-6 py-6 space-y-6 text-slate-600 dark:text-slate-300">
+            <p>
+              News Pulse uses AI in two distinct ways: as a development tool and as a user-facing feature.
+              Here&apos;s an honest breakdown of both.
+            </p>
+
+            {/* Development Process */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-slate-900 dark:text-white">How This Site Was Built</h3>
+              <p className="text-sm">
+                I built News Pulse using{' '}
+                <a
+                  href="https://www.anthropic.com/claude-code"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-violet-600 dark:text-violet-400 hover:underline"
+                >
+                  Claude Code
+                </a>
+                , Anthropic&apos;s AI coding assistant. But this wasn&apos;t &quot;vibe coding&quot; where you
+                describe an app and hope for the best. I drove every decision:
+              </p>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-violet-500 mt-1">-</span>
+                  <span><strong className="text-slate-900 dark:text-white">Architecture decisions</strong> - I chose Next.js, the source curation approach, and the activity detection system</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-violet-500 mt-1">-</span>
+                  <span><strong className="text-slate-900 dark:text-white">Code review</strong> - I inspect every change Claude suggests, often requesting modifications or rejecting approaches</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-violet-500 mt-1">-</span>
+                  <span><strong className="text-slate-900 dark:text-white">Iterative refinement</strong> - Features evolve through back-and-forth conversation, not one-shot prompts</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-violet-500 mt-1">-</span>
+                  <span><strong className="text-slate-900 dark:text-white">Domain expertise</strong> - My journalism background shapes what sources to trust, how to rank content, and what matters in breaking news</span>
+                </li>
+              </ul>
+              <p className="text-sm text-slate-500 dark:text-slate-400 italic">
+                Think of it like pair programming with a very fast junior developer who needs constant direction.
+              </p>
+            </div>
+
+            {/* AI-Generated Briefings */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-slate-900 dark:text-white">AI-Generated Situation Briefings</h3>
+              <p className="text-sm">
+                The &quot;AI Summary&quot; feature on the main page uses{' '}
+                <a
+                  href="https://www.anthropic.com/claude"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-violet-600 dark:text-violet-400 hover:underline"
+                >
+                  Claude
+                </a>
+                {' '}to synthesize recent posts into a situation overview. Here&apos;s how it works:
+              </p>
+
+              <div className="grid sm:grid-cols-3 gap-3 pt-2">
+                <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-2">
+                    <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm">1</span>
+                  </div>
+                  <p className="text-sm font-medium text-slate-900 dark:text-white">Select</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">The 25 most recent posts are selected from the feed</p>
+                </div>
+                <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+                  <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-2">
+                    <span className="text-blue-600 dark:text-blue-400 font-bold text-sm">2</span>
+                  </div>
+                  <p className="text-sm font-medium text-slate-900 dark:text-white">Analyze</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Claude reads headlines, content, and source metadata</p>
+                </div>
+                <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+                  <div className="w-8 h-8 rounded-lg bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center mb-2">
+                    <span className="text-violet-600 dark:text-violet-400 font-bold text-sm">3</span>
+                  </div>
+                  <p className="text-sm font-medium text-slate-900 dark:text-white">Synthesize</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Returns a big-picture overview with 2-3 key developments</p>
+                </div>
+              </div>
+
+              <div className="pt-2 text-sm">
+                <strong className="text-slate-900 dark:text-white">Model tiers:</strong>
+                <ul className="mt-1 space-y-1">
+                  <li><span className="text-emerald-600 dark:text-emerald-400 font-mono text-xs">Quick</span> - Claude Haiku 3.5 (fast, economical)</li>
+                  <li><span className="text-blue-600 dark:text-blue-400 font-mono text-xs">Advanced</span> - Claude Sonnet 4 (balanced)</li>
+                  <li><span className="text-violet-600 dark:text-violet-400 font-mono text-xs">Pro</span> - Claude Opus 4.5 (most capable)</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* The Actual Prompt */}
+            <div className="space-y-3">
+              <button
+                onClick={() => setShowPrompt(!showPrompt)}
+                className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+              >
+                <CodeBracketIcon className="w-5 h-5" />
+                <span>See the Actual Prompt</span>
+                <ChevronDownIcon className={`w-4 h-4 transition-transform ${showPrompt ? 'rotate-180' : ''}`} />
+              </button>
+
+              {showPrompt && (
+                <div className="bg-slate-900 dark:bg-black rounded-xl p-4 overflow-x-auto border border-slate-700">
+                  <pre className="text-xs text-slate-300 font-mono whitespace-pre-wrap leading-relaxed">
+{`You are a news editor writing a brief situation update for {region}.
+
+Current time: {currentTime}
+Window: {startTime} to {nowTime} ({timeWindowHours}h)
+
+<posts>
+{postsJson}  // Compact JSON with: source, sourceType, minutesAgo, title, content
+</posts>
+
+Write a concise briefing in JSON:
+{
+  "overview": "1-2 sentences. What's the overall picture? Are tensions rising, stable, or easing? Give context.",
+  "developments": [
+    "Specific event + source (e.g., 'Ukraine reported 49 clashes since dawn - Ukrinform')",
+    "Another key development + source",
+    "Third if significant, otherwise omit"
+  ]
+}
+
+Rules:
+- Overview = big picture assessment, not a list of events
+- Developments = 2-3 specific items with sources, each one line
+- Reference time naturally (this morning, overnight, since dawn)
+- No jargon, no severity labels, no scores`}
+                  </pre>
+                </div>
+              )}
+            </div>
+
+            {/* Data Privacy */}
+            <div className="space-y-3">
+              <button
+                onClick={() => setShowDataFlow(!showDataFlow)}
+                className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white hover:text-violet-600 dark:hover:text-violet-400 transition-colors"
+              >
+                <ShieldCheckIcon className="w-5 h-5" />
+                <span>Data Flow & Privacy</span>
+                <ChevronDownIcon className={`w-4 h-4 transition-transform ${showDataFlow ? 'rotate-180' : ''}`} />
+              </button>
+
+              {showDataFlow && (
+                <div className="text-sm space-y-3 pl-7">
+                  <div className="space-y-2">
+                    <p className="font-medium text-slate-900 dark:text-white">What gets sent to Claude:</p>
+                    <ul className="space-y-1 text-slate-600 dark:text-slate-400">
+                      <li>- Post headlines and content (public news)</li>
+                      <li>- Source names and types</li>
+                      <li>- Timestamps</li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="font-medium text-slate-900 dark:text-white">What&apos;s NOT sent:</p>
+                    <ul className="space-y-1 text-slate-600 dark:text-slate-400">
+                      <li>- Your IP address or identity</li>
+                      <li>- Any user data or preferences</li>
+                      <li>- Which region you&apos;re viewing</li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="font-medium text-slate-900 dark:text-white">Caching:</p>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      Summaries are cached for 10 minutes on the server. Multiple users requesting the same
+                      region will get the cached result, reducing API calls and cost.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Why Anthropic */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-slate-900 dark:text-white">Why Anthropic?</h3>
+              <p className="text-sm">
+                I chose{' '}
+                <a
+                  href="https://www.anthropic.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-violet-600 dark:text-violet-400 hover:underline"
+                >
+                  Anthropic
+                </a>
+                {' '}for a few reasons:
+              </p>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-violet-500 mt-1">-</span>
+                  <span><strong className="text-slate-900 dark:text-white">Safety focus</strong> - Their research on AI safety aligns with my concerns about responsible AI deployment</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-violet-500 mt-1">-</span>
+                  <span><strong className="text-slate-900 dark:text-white">Writing quality</strong> - Claude produces more natural, less &quot;AI-sounding&quot; text for news synthesis</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-violet-500 mt-1">-</span>
+                  <span><strong className="text-slate-900 dark:text-white">Claude Code</strong> - Their developer tools made building this site more collaborative than other options</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-violet-500 mt-1">-</span>
+                  <span><strong className="text-slate-900 dark:text-white">Cost structure</strong> - Tiered models (Haiku/Sonnet/Opus) let me offer different quality levels</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Limitations */}
+            <div className="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800/50">
+              <p className="font-medium text-amber-800 dark:text-amber-200 mb-2">AI Limitations</p>
+              <p className="text-sm text-amber-700 dark:text-amber-300">
+                AI summaries can make mistakes. They may miss important context, misinterpret sources,
+                or occasionally hallucinate details. The summary is meant to complement the raw feed,
+                not replace it. Always check the source posts for critical information.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Footer */}
         <footer className="text-center py-8 text-sm text-slate-500 dark:text-slate-400">
           <p>Built with Next.js, TypeScript, and Claude AI</p>
-          <p className="mt-1">&copy; {new Date().getFullYear()} Pulse. All rights reserved.</p>
+          <p className="mt-1">&copy; {new Date().getFullYear()} News Pulse. All rights reserved.</p>
         </footer>
       </main>
     </div>

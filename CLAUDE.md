@@ -27,11 +27,11 @@ src/
 │   └── page.tsx
 ├── components/                  # 15 React components (maps, feeds, cards)
 ├── lib/
-│   ├── sources-clean.ts        # MAIN SOURCE FILE (580+ sources, tiered)
+│   ├── sources-clean.ts        # MAIN SOURCE FILE (478 sources)
 │   ├── rss.ts                  # Multi-platform fetcher (1300+ lines)
 │   ├── regionDetection.ts      # Keyword-based geo classification
 │   ├── activityDetection.ts    # Regional activity levels
-│   ├── alertStatus.ts          # Breaking/confirmed detection
+│   ├── alertStatus.ts          # Chronological sorting
 │   ├── aiSummary.ts            # Claude API integration
 │   ├── newsCache.ts            # 5min TTL cache
 │   ├── rateLimit.ts            # 60 req/min per IP
@@ -54,14 +54,10 @@ Next.js 15 | TypeScript | Tailwind CSS | react-simple-maps | Claude API | Heroic
 
 ## Source System
 
-### Source Tiers
-| Tier | Count | Fetch Strategy | Examples |
-|------|-------|----------------|----------|
-| T1 | 84 | Always, immediate | Reuters, NOELREPORTS, BNO News |
-| T2 | 200+ | Async background | Regional reporters, analysts |
-| T3 | 100+ | On-demand only | Archive, low-activity sources |
+### Source Count
+- **478 total sources** (222 Bluesky, 219 RSS, plus Telegram/Mastodon/Reddit/YouTube)
 
-### Source Types
+### Source Types (for categorization, not ranking)
 - `official` - Government, military, institutional
 - `news-org` - News organizations (AP, Reuters)
 - `reporter` - Individual journalists
@@ -79,21 +75,10 @@ Next.js 15 | TypeScript | Tailwind CSS | react-simple-maps | Claude API | Heroic
 - **YouTube** - Feed XML
 - **Mastodon** - ActivityPub API
 
-### What's ACTUALLY Used
-| Feature | Defined | Used For |
-|---------|---------|----------|
-| sourceType | 7 types | Feed balancing (20% OSINT), verification badges |
-| confidence | 1-100 | Verification status only |
-| region | 6 regions | Content classification, filtering |
-| fetchTier | T1/T2/T3 | Fetch priority |
-| postsPerDay | baseline | Activity level calculation (count-based) |
-| keywords | 3 sets | Region detection, alert status |
-
-### What's NOT Used (Yet)
-- **Priority scoring** based on keywords/severity
-- **Source recommendations** based on provenance
-- **Content filtering** based on breaking/analysis type
-- **Per-source anomaly detection** (interfaces defined, not implemented)
+### Feed Philosophy
+- **Chronological order** - newest posts first, no algorithmic ranking
+- **Activity detection** - frequency-based surge detection per region
+- **Source diversity** - 20% OSINT balance to prevent wire service dominance
 
 ---
 
@@ -170,7 +155,7 @@ Track searches to avoid duplicating effort:
 
 ---
 
-## Activity & Severity Detection
+## Activity Detection
 
 ### Activity Levels (Frequency-Based)
 ```
@@ -181,19 +166,12 @@ Multiplier >= 2.0 → ELEVATED (2x normal)
 Multiplier <  2.0 → NORMAL
 ```
 
-**Baselines:**
+**Regional Baselines:**
 - US: 10 posts/hour
 - LATAM: 6 posts/hour
 - Middle East: 15 posts/hour
 - Europe-Russia: 18 posts/hour
 - Asia: 10 posts/hour
-
-### Alert Status (Provenance + Recency)
-```
-OSINT/ground source + alert keywords + <30 min → "FIRST"
-Official/reporter source + alert keywords → "CONFIRMED"
-Otherwise → null
-```
 
 ---
 
@@ -246,45 +224,39 @@ Otherwise → null
 
 1. **Duplicate source files** - `sources.ts` (3,357 lines) mostly dead, only helper functions used
 2. **Unused telegram code** - `telegram-reader.ts`, `telegram.ts` not used
-3. **messageAnalysis.ts** - Sophisticated analysis built but not integrated
-4. **Per-source anomaly detection** - Interfaces defined, not implemented
+3. **messageAnalysis.ts** - Analysis functions built but lightly used (AI summary only)
 
 ---
 
 ## AI Briefing Feature
 
 ### Overview
-The AI briefing generates a situation summary using Claude Sonnet. Located in `src/lib/aiSummary.ts`.
+The AI briefing generates a situation summary using Claude. Located in `src/lib/aiSummary.ts`.
 
-### Output Format
-```
-Overview: 1-2 sentences describing the big picture (tensions rising/stable/easing)
-Developments:
-▸ Specific event with source (e.g., "Ukraine reported 49 clashes - Ukrinform")
-▸ Another key development with source
-▸ Third if significant
-```
+### How It Works
+1. **Select** - Takes the 25 most recent posts (simple recency, no scoring)
+2. **Deduplicate** - Removes similar headlines
+3. **Synthesize** - Claude generates overview + 2-3 key developments
 
-### Features
-- **Location highlighting**: Countries/regions (Ukraine, Gaza, etc.) displayed in bold
-- **Source name detection**: Skips bolding source names (Jerusalem Post, Washington Times)
-- **Temporal context**: Prompts include current time and date range
-- **Caching**: 10-minute server cache, 3-minute client cache
+### Model Tiers
+- **Quick** - Claude Haiku 3.5 (fast, economical)
+- **Advanced** - Claude Sonnet 4 (balanced)
+- **Pro** - Claude Opus 4.5 (most capable)
 
-### Time Windows
-- Default: 6 hours (optimized for "what's happening now")
-- Options: 3h, 6h, 12h, 24h in modal view
+### Caching
+- Server: 10-minute cache
+- Client: 3-minute cache
 
 ### Components
 - `InlineBriefing.tsx` - Compact inline version (main feed)
 - `SituationBriefing.tsx` - Full modal version
-- `aiSummary.ts` - Prompt construction and API call
+- `aiSummary.ts` - Post selection and API call
 
 ---
 
 ## Principles
-- KISS - Keep It Simple
-- Mobile-first, dark theme
-- Work autonomously
-- Frequency-based activity (no ML complexity)
-- 20% OSINT feed balance (prevent wire service dominance)
+- **KISS** - Keep It Simple
+- **Chronological** - No algorithmic ranking, newest first
+- **Transparent** - Show where every story comes from
+- **Frequency-based** - Activity detection without ML complexity
+- **Mobile-first** - Dark theme, responsive design
