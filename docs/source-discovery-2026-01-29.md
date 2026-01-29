@@ -288,5 +288,27 @@ Per blocklist.ts:
 
 ---
 
+---
+
+## ADDED TO SOURCES-CLEAN.TS (Jan 29, 2026)
+
+**8 new Bluesky accounts added:**
+
+| ID | Handle | Region | Tier | Type |
+|----|--------|--------|------|------|
+| ruth-michaelson | @ruthmichaelson.com | middle-east | T1 | reporter |
+| vatniksoup | @vatniksoup.bsky.social | europe-russia | T1 | osint |
+| chriso-wiki | @chriso-wiki.bsky.social | europe-russia | T1 | osint |
+| shashank-joshi | @shashj.bsky.social | all | T1 | analyst |
+| michael-colborne | @colborne.bsky.social | europe-russia | T1 | reporter |
+| militarynewsua | @militarynewsua.bsky.social | europe-russia | T1 | news-org |
+| occrp | @occrp.org | all | T1 | news-org |
+| bonnie-glaser | @bglaser.bsky.social | asia | T2 | analyst |
+
+**Skipped (already exist or duplicate content):**
+- bellingcat, foreignpolicy, breakingdefense, warontherocks, defenseone, 38north, nknews, propublica, netblocks, chinamediaproject, wartranslated, armscontrolwonk
+
+---
+
 *Generated: 2026-01-29*
 *Research agents: 6 parallel searches covering existing sources, Middle East, Mastodon, competitor analysis, LATAM/Asia/Africa, and network connections*

@@ -12,8 +12,10 @@ import {
   setCachedNews,
   isCacheFresh,
 } from '@/lib/newsCache';
-import { WatchpointId, NewsItem } from '@/types';
+import { WatchpointId, NewsItem, Source } from '@/types';
 import { checkRateLimit, getClientIp, rateLimitHeaders } from '@/lib/rateLimit';
+import { getActiveEditorialPosts } from '@/lib/editorial';
+import { EditorialPost } from '@/types/editorial';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -68,6 +70,33 @@ function getSourcesForRegion(region: WatchpointId): TieredSource[] {
 function filterByTimeWindow(items: NewsItem[], hours: number): NewsItem[] {
   const cutoff = Date.now() - (hours * 60 * 60 * 1000);
   return items.filter(item => item.timestamp.getTime() > cutoff);
+}
+
+// Convert editorial post to NewsItem format for rendering
+function editorialToNewsItem(post: EditorialPost): NewsItem & { isEditorial: true; editorialType: string } {
+  const editorSource: Source = {
+    id: 'editorial',
+    name: 'Editor',
+    platform: 'rss', // Use RSS as base platform for editorial
+    sourceType: 'official',
+    confidence: 100,
+    region: post.region || 'all',
+  };
+
+  return {
+    id: `editorial-${post.id}`,
+    title: post.title,
+    content: post.content || post.title,
+    source: editorSource,
+    timestamp: post.createdAt,
+    region: post.region || 'all',
+    verificationStatus: 'confirmed',
+    url: post.url,
+    media: post.mediaUrl ? [{ type: 'image', url: post.mediaUrl }] : undefined,
+    // Custom fields for editorial posts
+    isEditorial: true as const,
+    editorialType: post.postType,
+  };
 }
 
 /**
@@ -433,14 +462,62 @@ export async function GET(request: Request) {
       }
     }
 
+    // Fetch editorial posts and merge with feed
+    let editorialPosts: EditorialPost[] = [];
+    let editorialCount = 0;
+    try {
+      editorialPosts = await getActiveEditorialPosts(region);
+      editorialCount = editorialPosts.length;
+    } catch (err) {
+      console.error('[News API] Failed to fetch editorial posts:', err);
+      // Continue without editorial posts
+    }
+
+    // Convert editorial posts to NewsItem format
+    const editorialItems = editorialPosts.map(editorialToNewsItem);
+
+    // Separate editorial posts by type for priority ordering
+    const breakingPosts = editorialItems.filter(p => p.editorialType === 'breaking');
+    const pinnedPosts = editorialItems.filter(p => p.editorialType === 'pinned');
+    const contextPosts = editorialItems.filter(p => p.editorialType === 'context');
+    const eventPosts = editorialItems.filter(p => p.editorialType === 'event');
+
     // Process alert statuses - O(n)
     const withAlertStatus = processAlertStatuses(filtered);
 
     // Sort by published timestamp (pure chronological)
     const sorted = sortByCascadePriority(withAlertStatus);
 
+    // Merge with editorial posts:
+    // 1. BREAKING posts at the very top
+    // 2. PINNED posts next
+    // 3. Context and event posts mixed chronologically with regular feed
+    const contextAndEvents = [...contextPosts, ...eventPosts].sort(
+      (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
+    );
+
+    // Merge context/events into sorted feed chronologically
+    const mergedFeed: NewsItem[] = [];
+    let feedIdx = 0;
+    let editIdx = 0;
+
+    while (feedIdx < sorted.length || editIdx < contextAndEvents.length) {
+      if (editIdx >= contextAndEvents.length) {
+        mergedFeed.push(sorted[feedIdx++]);
+      } else if (feedIdx >= sorted.length) {
+        mergedFeed.push(contextAndEvents[editIdx++]);
+      } else if (contextAndEvents[editIdx].timestamp >= sorted[feedIdx].timestamp) {
+        mergedFeed.push(contextAndEvents[editIdx++]);
+      } else {
+        mergedFeed.push(sorted[feedIdx++]);
+      }
+    }
+
+    // Final order: breaking -> pinned -> merged feed
+    const finalFeed = [...breakingPosts, ...pinnedPosts, ...mergedFeed];
+
     // Simple limit - no rebalancing, preserve chronological order
-    const limited = sorted.slice(0, limit);
+    const limited = finalFeed.slice(0, limit);
 
     // Calculate activity levels - O(n)
     const activity = calculateRegionActivity(filtered);
@@ -450,6 +527,7 @@ export async function GET(request: Request) {
       activity,
       fetchedAt: new Date().toISOString(),
       totalItems: filtered.length,
+      editorialCount,
       fromCache,
       hoursWindow: hours,
       sourcesCount: getSourcesForRegion(region).length,

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { NewsItem, WatchpointId } from '@/types';
 import { NewsCard } from './NewsCard';
+import { EditorialCard, isEditorialItem } from './EditorialCard';
 import { InlineBriefing } from './InlineBriefing';
 import { ArrowPathIcon, ExclamationTriangleIcon, GlobeAltIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { regionDisplayNames } from '@/lib/regionDetection';
@@ -195,6 +196,9 @@ export function NewsFeed({
   const moreDropdownRef = useRef<HTMLDivElement>(null);
   const isInitialLoadRef = useRef(true);
 
+  // Track items that existed when user first loaded the page (for "new since arrival" divider)
+  const [initialSessionIds, setInitialSessionIds] = useState<Set<string> | null>(null);
+
   // Handle tab selection - update local and parent state
   const handleTabSelect = useCallback((tabId: TabId) => {
     setSelectedTab(tabId);
@@ -245,6 +249,10 @@ export function NewsFeed({
     if (isInitialLoadRef.current) {
       // First load - mark all as seen, no animation
       setSeenIds(currentIds);
+      // Also capture these as the "initial session" items for the divider
+      if (initialSessionIds === null) {
+        setInitialSessionIds(currentIds);
+      }
       isInitialLoadRef.current = false;
     } else {
       // Find new items (not in seenIds)
@@ -271,13 +279,14 @@ export function NewsFeed({
         return () => clearTimeout(timeout);
       }
     }
-  }, [sortedItems, seenIds]);
+  }, [sortedItems, seenIds, initialSessionIds]);
 
   // Reset seen items when tab changes
   useEffect(() => {
     isInitialLoadRef.current = true;
     setSeenIds(new Set());
     setNewItemIds(new Set());
+    setInitialSessionIds(null); // Reset so new tab gets its own "initial" set
   }, [selectedTab]);
 
   // Count items by region
@@ -336,6 +345,24 @@ export function NewsFeed({
     }
     return '';
   };
+
+  // Calculate where to show the "new since arrival" divider
+  const newSinceArrivalCount = useMemo(() => {
+    if (!initialSessionIds || initialSessionIds.size === 0) return 0;
+    return sortedItems.filter(item => !initialSessionIds.has(item.id)).length;
+  }, [sortedItems, initialSessionIds]);
+
+  // Find the index where we should insert the divider (after all new items)
+  const dividerIndex = useMemo(() => {
+    if (newSinceArrivalCount === 0 || !initialSessionIds) return -1;
+    // Find first item that WAS in the initial session
+    for (let i = 0; i < sortedItems.length; i++) {
+      if (initialSessionIds.has(sortedItems[i].id)) {
+        return i; // Insert divider before this item
+      }
+    }
+    return -1;
+  }, [sortedItems, initialSessionIds, newSinceArrivalCount]);
 
   return (
     <div className="flex flex-col bg-white dark:bg-black">
@@ -641,6 +668,11 @@ export function NewsFeed({
         {selectedTab !== 'all' && activity?.[selectedTab] && (
           <VolumeIndicator activity={activity[selectedTab]} />
         )}
+
+        {/* AI Summary Section - part of sticky header */}
+        {!isLoading && sortedItems.length > 0 && (
+          <InlineBriefing region={selectedTab} />
+        )}
       </div>
 
       <div id="feed-panel" role="tabpanel" aria-label={`News for ${selectedTab === 'all' ? 'all regions' : selectedTab}`}>
@@ -693,18 +725,26 @@ export function NewsFeed({
           </button>
         )}
 
-        {/* AI Summary Section - only show after news loads */}
-        {!isLoading && sortedItems.length > 0 && (
-          <InlineBriefing region={selectedTab} />
-        )}
-
         <div className="flex flex-col gap-4 px-3 sm:px-4 pb-3 sm:pb-4 pt-3 news-feed-list">
           {sortedItems.map((item, index) => (
-            <div
-              key={item.id}
-              className={getItemAnimationClass(item.id, index)}
-            >
-              <NewsCard item={item} />
+            <div key={item.id}>
+              {/* New since arrival divider - appears before first "old" item */}
+              {dividerIndex === index && dividerIndex > 0 && (
+                <div className="flex items-center gap-3 py-3 mb-4">
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-blue-400/50 to-transparent dark:via-blue-500/40" />
+                  <span className="text-xs font-medium text-blue-600 dark:text-blue-400 whitespace-nowrap px-2">
+                    {newSinceArrivalCount} new since you arrived
+                  </span>
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-blue-400/50 to-transparent dark:via-blue-500/40" />
+                </div>
+              )}
+              <div className={getItemAnimationClass(item.id, index)}>
+                {isEditorialItem(item) ? (
+                  <EditorialCard item={item} />
+                ) : (
+                  <NewsCard item={item} />
+                )}
+              </div>
             </div>
           ))}
         </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { NewsFeed, Legend, WorldMap, SeismicMap, WeatherMap, OutagesMap, TravelMap, FiresMap, AuthButton } from '@/components';
+import { EditorialFAB } from '@/components/EditorialFAB';
 import { watchpoints as defaultWatchpoints } from '@/lib/mockData';
 import { NewsItem, WatchpointId, Watchpoint, Earthquake } from '@/types';
 import { GlobeAltIcon, CloudIcon, SignalIcon, ExclamationTriangleIcon, FireIcon, EllipsisHorizontalIcon, Bars3Icon, XMarkIcon, ChevronUpIcon, ChevronDownIcon, SunIcon, MoonIcon, InformationCircleIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
@@ -99,8 +100,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
     }
   };
 
-  // Refs for dropdown click-outside handling (separate for xl and smaller screens)
-  const xlDropdownRef = useRef<HTMLDivElement>(null);
+  // Ref for dropdown click-outside handling
   const moreDropdownRef = useRef<HTMLDivElement>(null);
 
   // Dynamic source count
@@ -355,13 +355,11 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
     fetchSignificantQuakes();
   }, []);
 
-  // Click outside handler for dropdown (check both refs)
+  // Click outside handler for dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      const clickedInsideXl = xlDropdownRef.current?.contains(target);
-      const clickedInsideMore = moreDropdownRef.current?.contains(target);
-      if (!clickedInsideXl && !clickedInsideMore) {
+      if (!moreDropdownRef.current?.contains(target)) {
         setShowMoreTabs(false);
       }
     };
@@ -608,197 +606,157 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
 
       {/* Hero Map Section */}
       <section id="map" className="max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto px-3 sm:px-4 pt-4">
-        {/* Map Layer Tabs - Above the map */}
-        <div className="flex items-center mb-2">
-          <div className="flex items-center gap-1 bg-white dark:bg-slate-900 rounded-lg p-1 border border-slate-200 dark:border-slate-700 shadow-sm">
-            {mapCollapsed ? (
-              /* Show Map button when collapsed */
-              <button
-                onClick={() => setMapCollapsed(false)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
-              >
-                <ChevronUpIcon className="w-4 h-4" />
-                <span>Show Map</span>
-              </button>
-            ) : (
-              /* Normal tabs when expanded */
-              <>
-                {/* All tabs on xl screens */}
-                <div className="hidden xl:flex items-center gap-1">
-                  {allTabs.map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => handleHeroViewChange(tab.id as HeroView)}
-                      aria-label={tab.label}
-                      aria-pressed={heroView === tab.id}
-                      className={`
-                        flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-colors
-                        ${heroView === tab.id
-                          ? 'bg-blue-600 text-white'
-                          : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700'
-                        }
-                      `}
-                    >
-                      <tab.icon className="w-4 h-4" />
-                      <span>{tab.label}</span>
-                    </button>
-                  ))}
-                  {/* Hide option on xl */}
-                  <div className="relative" ref={xlDropdownRef}>
-                    <button
-                      onClick={() => setShowMoreTabs(!showMoreTabs)}
-                      className="flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-colors text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
-                      aria-expanded={showMoreTabs}
-                      aria-haspopup="true"
-                    >
-                      <EllipsisHorizontalIcon className="w-4 h-4" />
-                    </button>
-                    {showMoreTabs && (
-                      <div className="absolute top-full left-0 mt-2 bg-white dark:bg-slate-900 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 py-1 min-w-[140px] z-50">
-                        <button
-                          onClick={() => {
-                            setMapCollapsed(true);
-                            setShowMoreTabs(false);
-                          }}
-                          className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-left transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
-                        >
-                          <ChevronDownIcon className="w-4 h-4" />
-                          Hide Map
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Compact tabs with More dropdown on smaller screens */}
-                <div className="flex xl:hidden items-center gap-1">
-                  {mainTabs.map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => handleHeroViewChange(tab.id)}
-                      aria-label={tab.label}
-                      aria-pressed={heroView === tab.id}
-                      className={`
-                        flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-colors
-                        ${heroView === tab.id
-                          ? 'bg-blue-600 text-white'
-                          : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700'
-                        }
-                      `}
-                    >
-                      <tab.icon className="w-4 h-4" />
-                      <span>{tab.label}</span>
-                    </button>
-                  ))}
-
-                  <div className="relative" ref={moreDropdownRef}>
-                    <button
-                      onClick={() => setShowMoreTabs(!showMoreTabs)}
-                      className={`
-                        flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-medium transition-colors
-                        focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-                        ${secondaryTabs.some(t => t.id === heroView)
-                          ? 'bg-blue-600 text-white'
-                          : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700'
-                        }
-                      `}
-                      aria-expanded={showMoreTabs}
-                      aria-haspopup="true"
-                      aria-label="More map layers"
-                    >
-                      <EllipsisHorizontalIcon className="w-4 h-4" />
-                      <span>More</span>
-                    </button>
-
-                    {showMoreTabs && (
-                      <div
-                        className="absolute top-full left-0 mt-2 bg-white dark:bg-slate-900 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 py-1 min-w-[160px] z-50"
-                        role="menu"
-                        aria-orientation="vertical"
-                      >
-                        {secondaryTabs.map((tab) => (
-                          <button
-                            key={tab.id}
-                            role="menuitem"
-                            onClick={() => {
-                              handleHeroViewChange(tab.id);
-                              setShowMoreTabs(false);
-                            }}
-                            className={`
-                              w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-left transition-colors
-                              focus:outline-none focus-visible:bg-slate-100 dark:focus-visible:bg-slate-800
-                              ${heroView === tab.id ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'}
-                            `}
-                          >
-                            <tab.icon className="w-4 h-4" />
-                            {tab.label}
-                          </button>
-                        ))}
-                        {/* Hide Map option */}
-                        <div className="border-t border-slate-200 dark:border-slate-700 mt-1 pt-1">
-                          <button
-                            role="menuitem"
-                            onClick={() => {
-                              setMapCollapsed(true);
-                              setShowMoreTabs(false);
-                            }}
-                            className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-left transition-colors text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white focus:outline-none focus-visible:bg-slate-100 dark:focus-visible:bg-slate-800"
-                          >
-                            <ChevronDownIcon className="w-4 h-4" />
-                            Hide Map
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
+        {/* Show Map button - only when collapsed */}
+        {mapCollapsed && (
+          <div className="mb-2">
+            <button
+              onClick={() => setMapCollapsed(false)}
+              className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            >
+              <ChevronUpIcon className="w-4 h-4" />
+              <span>Show Map</span>
+              <span className="text-slate-400 dark:text-slate-500">·</span>
+              <span className="text-slate-500 dark:text-slate-400">
+                {allTabs.find(t => t.id === heroView)?.label || 'Main'}
+              </span>
+            </button>
           </div>
-        </div>
+        )}
 
         {/* Map Container - Hidden when collapsed */}
         {!mapCollapsed && (
-          <div className="relative bg-slate-200 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/20">
-            {/* Dynamic Map Header */}
+          <div className="relative bg-slate-200 dark:bg-slate-800 rounded-t-2xl overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/20">
+            {/* Map Header with integrated tabs */}
             <div className="px-3 sm:px-4 py-2 bg-slate-100/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-700/50">
-              <div className="flex items-center gap-2">
-                {heroView === 'main' && (
-                  <>
-                    <GlobeAltIcon className="w-4 h-4 text-blue-500" />
-                    <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Global Monitor</h2>
-                  </>
-                )}
-                {heroView === 'seismic' && (
-                  <>
-                    <div className="w-4 h-4 rounded-full bg-red-500 animate-pulse" />
-                    <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Seismic Activity</h2>
-                  </>
-                )}
-                {heroView === 'weather' && (
-                  <>
-                    <CloudIcon className="w-4 h-4 text-sky-500" />
-                    <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Weather Alerts</h2>
-                  </>
-                )}
-                {heroView === 'outages' && (
-                  <>
-                    <SignalIcon className="w-4 h-4 text-purple-500" />
-                    <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Internet Outages</h2>
-                  </>
-                )}
-                {heroView === 'travel' && (
-                  <>
-                    <ExclamationTriangleIcon className="w-4 h-4 text-amber-500" />
-                    <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Travel Advisories</h2>
-                  </>
-                )}
-                {heroView === 'fires' && (
-                  <>
-                    <FireIcon className="w-4 h-4 text-orange-500" />
-                    <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Wildfire Tracker</h2>
-                  </>
-                )}
+              <div className="flex items-center justify-between gap-2">
+                {/* Dynamic Title */}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  {heroView === 'main' && (
+                    <>
+                      <GlobeAltIcon className="w-4 h-4 text-blue-500" />
+                      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Global Monitor</h2>
+                    </>
+                  )}
+                  {heroView === 'seismic' && (
+                    <>
+                      <div className="w-4 h-4 rounded-full bg-red-500 animate-pulse" />
+                      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Seismic Activity</h2>
+                    </>
+                  )}
+                  {heroView === 'weather' && (
+                    <>
+                      <CloudIcon className="w-4 h-4 text-sky-500" />
+                      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Weather Alerts</h2>
+                    </>
+                  )}
+                  {heroView === 'outages' && (
+                    <>
+                      <SignalIcon className="w-4 h-4 text-purple-500" />
+                      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Internet Outages</h2>
+                    </>
+                  )}
+                  {heroView === 'travel' && (
+                    <>
+                      <ExclamationTriangleIcon className="w-4 h-4 text-amber-500" />
+                      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Travel Advisories</h2>
+                    </>
+                  )}
+                  {heroView === 'fires' && (
+                    <>
+                      <FireIcon className="w-4 h-4 text-orange-500" />
+                      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Wildfire Tracker</h2>
+                    </>
+                  )}
+                </div>
+
+                {/* Tabs - right side */}
+                <div className="flex items-center gap-1 overflow-x-auto">
+                  {/* All tabs on larger screens */}
+                  <div className="hidden sm:flex items-center gap-1">
+                    {allTabs.map((tab) => (
+                      <button
+                        key={tab.id}
+                        onClick={() => handleHeroViewChange(tab.id as HeroView)}
+                        className={`
+                          flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-colors
+                          ${heroView === tab.id
+                            ? 'bg-blue-600 text-white'
+                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
+                          }
+                        `}
+                      >
+                        <tab.icon className="w-3.5 h-3.5" />
+                        <span className="hidden md:inline">{tab.label}</span>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Compact tabs on mobile */}
+                  <div className="flex sm:hidden items-center gap-1">
+                    {mainTabs.map((tab) => (
+                      <button
+                        key={tab.id}
+                        onClick={() => handleHeroViewChange(tab.id)}
+                        className={`
+                          flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-colors
+                          ${heroView === tab.id
+                            ? 'bg-blue-600 text-white'
+                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
+                          }
+                        `}
+                      >
+                        <tab.icon className="w-3.5 h-3.5" />
+                      </button>
+                    ))}
+                    {/* More dropdown for secondary tabs on mobile */}
+                    <div className="relative" ref={moreDropdownRef}>
+                      <button
+                        onClick={() => setShowMoreTabs(!showMoreTabs)}
+                        className={`
+                          flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-colors
+                          ${secondaryTabs.some(t => t.id === heroView)
+                            ? 'bg-blue-600 text-white'
+                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
+                          }
+                        `}
+                      >
+                        <EllipsisHorizontalIcon className="w-3.5 h-3.5" />
+                      </button>
+                      {showMoreTabs && (
+                        <div className="absolute top-full right-0 mt-1 bg-white dark:bg-slate-900 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 py-1 min-w-[140px] z-50">
+                          {secondaryTabs.map((tab) => (
+                            <button
+                              key={tab.id}
+                              onClick={() => {
+                                handleHeroViewChange(tab.id);
+                                setShowMoreTabs(false);
+                              }}
+                              className={`
+                                w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-left transition-colors
+                                ${heroView === tab.id
+                                  ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white'
+                                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                                }
+                              `}
+                            >
+                              <tab.icon className="w-4 h-4" />
+                              {tab.label}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Hide map button */}
+                  <button
+                    onClick={() => setMapCollapsed(true)}
+                    className="ml-1 p-1 rounded text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 transition-colors"
+                    title="Hide map"
+                  >
+                    <ChevronDownIcon className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -828,9 +786,10 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
           </div>
         )}
 
-        {/* Compact Status Bar - Activity indicators only, stats hidden in collapsible */}
-        <div className="mt-2 flex items-center justify-between px-3 py-2 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 shadow-sm">
-          <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto">
+        {/* Status Bar - flush against map bottom */}
+        {!mapCollapsed && (
+          <div className="flex items-center justify-between px-3 py-2 bg-slate-100 dark:bg-slate-900 rounded-b-2xl border-x border-b border-slate-300 dark:border-slate-700 -mt-[1px] text-xs text-slate-500 dark:text-slate-400 shadow-xl shadow-black/5 dark:shadow-black/20">
+            <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto">
             {/* All Elevated/Critical Regions */}
             {(() => {
               const regionNames: Record<string, string> = {
@@ -908,6 +867,8 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
             <ChevronDownIcon className={`w-3 h-3 transition-transform ${showStats ? 'rotate-180' : ''}`} />
           </button>
         </div>
+        )}
+
         {/* Collapsible more panel */}
         {showStats && (
           <div className="mt-1 px-3 py-2 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-800 space-y-3">
@@ -996,14 +957,22 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
 
       {/* Main Content */}
       <main id="feed" className="max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto px-3 sm:px-4 pb-20 pt-4 sm:pt-6">
-        <div className="rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none overflow-hidden">
-          {/* Live Wire header inside the box */}
-          <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full animate-pulse-soft bg-emerald-500" />
-              <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
-                Live Wire
-              </h2>
+        <div className="rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-none overflow-hidden bg-white dark:bg-slate-900">
+          {/* Live Wire header - styled like Global Monitor */}
+          <div className="px-3 sm:px-4 py-2 bg-slate-100/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-700/50">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full bg-emerald-500 animate-pulse-soft flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-emerald-300" />
+                </div>
+                <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                  Live Wire
+                </h2>
+              </div>
+              {/* Post count on right */}
+              <div className="text-xs text-slate-500 dark:text-slate-400">
+                {newsItems.length} posts
+              </div>
             </div>
           </div>
           <NewsFeed
@@ -1026,6 +995,9 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
       </main>
 
       <Legend />
+
+      {/* Editorial FAB - only visible when admin is logged in */}
+      {session && <EditorialFAB onPostCreated={fetchNews} />}
     </div>
   );
 }

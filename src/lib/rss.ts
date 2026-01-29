@@ -1032,7 +1032,7 @@ async function fetchBlueskyFeed(source: Source & { feedUrl: string }): Promise<B
   const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout for faster failure
 
   try {
-    const apiUrl = `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${handle}&limit=20`;
+    const apiUrl = `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${handle}&limit=20&filter=posts_no_replies`;
     const response = await fetch(apiUrl, {
       signal: controller.signal,
       headers: {
