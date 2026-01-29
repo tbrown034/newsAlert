@@ -3175,18 +3175,7 @@ export const tier1Sources: TieredSource[] = [
     postsPerDay: 50,
   },
   // -- UK News --
-  {
-    id: 'telegraph-rss',
-    name: 'The Telegraph',
-    platform: 'rss',
-    sourceType: 'news-org',
-    fetchTier: 'T1',
-    confidence: 85,
-    region: 'europe-russia' as WatchpointId,
-    feedUrl: 'https://www.telegraph.co.uk/rss.xml',
-    url: 'https://www.telegraph.co.uk',
-    postsPerDay: 50,
-  },
+  // Telegraph removed 2026-01-29: HTTP 403 (blocks RSS requests)
   {
     id: 'independent-rss',
     name: 'The Independent',
@@ -4438,19 +4427,7 @@ export const tier1Sources: TieredSource[] = [
     url: 'https://www.youtube.com/@CaspianReport',
     postsPerDay: 1,
   },
-  {
-    id: 'youtube-memritv',
-    name: 'MEMRI TV',
-    handle: '@MEMRITV',
-    platform: 'youtube',
-    sourceType: 'osint',
-    fetchTier: 'T1',
-    confidence: 80,
-    region: 'middle-east' as WatchpointId,
-    feedUrl: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCe5IOE9I7aVs2uh4XJwk3_g',
-    url: 'https://www.youtube.com/@MEMRITV',
-    postsPerDay: 5,
-  },
+  // MEMRI TV removed 2026-01-29: YouTube channel ID invalid (404)
   // === MASTODON - OSINT (Added Jan 2026) ===
   {
     id: 'mastodon-osinttechnical-mstdn',

@@ -514,7 +514,7 @@ export function NewsFeed({
 
         {/* Platform filter bar - collapsible */}
         {(isLoading || Object.values(platformCounts).some(count => count > 0)) && (
-          <div className="px-2 sm:px-3 py-1.5 sm:py-2 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+          <div className="px-3 sm:px-4 py-2 sm:py-2.5 flex items-center gap-2 sm:gap-3 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
             {/* Collapsed state: just show toggle button */}
             {!sourceFilterExpanded ? (
               <>
@@ -537,13 +537,34 @@ export function NewsFeed({
                     </button>
                   </span>
                 )}
-                {/* Stats on right side */}
-                <div className="flex items-center gap-2 text-[10px] sm:text-xs text-slate-400 dark:text-slate-500 ml-auto flex-shrink-0">
+                {/* Stats + Live updates on right side */}
+                <div className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs text-slate-400 dark:text-slate-500 ml-auto flex-shrink-0">
                   <span>{Object.values(platformCounts).reduce((sum, c) => sum + c, 0)} posts</span>
                   {lastUpdated && (
                     <span className="hidden sm:inline" suppressHydrationWarning>
                       · {formatLastUpdated(lastUpdated)}
                     </span>
+                  )}
+                  {onToggleAutoUpdate && (
+                    <>
+                      <span className="text-slate-300 dark:text-slate-700">|</span>
+                      <span>Live updates</span>
+                      <button
+                        onClick={onToggleAutoUpdate}
+                        className={`relative w-8 h-5 rounded-full transition-colors ${
+                          autoUpdate
+                            ? 'bg-blue-500'
+                            : 'bg-slate-300 dark:bg-slate-600'
+                        }`}
+                        aria-label={autoUpdate ? 'Disable live updates' : 'Enable live updates'}
+                      >
+                        <span
+                          className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
+                            autoUpdate ? 'translate-x-3' : 'translate-x-0'
+                          }`}
+                        />
+                      </button>
+                    </>
                   )}
                 </div>
               </>
@@ -670,28 +691,6 @@ export function NewsFeed({
             </svg>
             {pendingCount} new {pendingCount === 1 ? 'post' : 'posts'}
           </button>
-        )}
-
-        {/* Auto-update toggle */}
-        {onToggleAutoUpdate && (
-          <div className="mx-3 sm:mx-4 mt-2 flex items-center justify-end gap-2 text-xs text-slate-500 dark:text-slate-400">
-            <span>Live updates</span>
-            <button
-              onClick={onToggleAutoUpdate}
-              className={`relative w-8 h-5 rounded-full transition-colors ${
-                autoUpdate
-                  ? 'bg-blue-500'
-                  : 'bg-slate-300 dark:bg-slate-600'
-              }`}
-              aria-label={autoUpdate ? 'Disable live updates' : 'Enable live updates'}
-            >
-              <span
-                className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
-                  autoUpdate ? 'translate-x-3' : 'translate-x-0'
-                }`}
-              />
-            </button>
-          </div>
         )}
 
         {/* AI Summary Section - only show after news loads */}

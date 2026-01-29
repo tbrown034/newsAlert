@@ -760,6 +760,48 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
         {/* Map Container - Hidden when collapsed */}
         {!mapCollapsed && (
           <div className="relative bg-slate-200 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl shadow-black/10 dark:shadow-black/20">
+            {/* Dynamic Map Header */}
+            <div className="px-3 sm:px-4 py-2 bg-slate-100/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-700/50">
+              <div className="flex items-center gap-2">
+                {heroView === 'main' && (
+                  <>
+                    <GlobeAltIcon className="w-4 h-4 text-blue-500" />
+                    <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Global Monitor</h2>
+                  </>
+                )}
+                {heroView === 'seismic' && (
+                  <>
+                    <div className="w-4 h-4 rounded-full bg-red-500 animate-pulse" />
+                    <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Seismic Activity</h2>
+                  </>
+                )}
+                {heroView === 'weather' && (
+                  <>
+                    <CloudIcon className="w-4 h-4 text-sky-500" />
+                    <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Weather Alerts</h2>
+                  </>
+                )}
+                {heroView === 'outages' && (
+                  <>
+                    <SignalIcon className="w-4 h-4 text-purple-500" />
+                    <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Internet Outages</h2>
+                  </>
+                )}
+                {heroView === 'travel' && (
+                  <>
+                    <ExclamationTriangleIcon className="w-4 h-4 text-amber-500" />
+                    <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Travel Advisories</h2>
+                  </>
+                )}
+                {heroView === 'fires' && (
+                  <>
+                    <FireIcon className="w-4 h-4 text-orange-500" />
+                    <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Wildfire Tracker</h2>
+                  </>
+                )}
+              </div>
+            </div>
+
             {heroView === 'main' && (
               <WorldMap
                 watchpoints={watchpoints}
@@ -909,6 +951,43 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                   <span className="text-slate-400 dark:text-slate-500">Sources:</span>
                   <span className="font-mono text-slate-700 dark:text-slate-300">{totalSources}</span>
                 </div>
+              </div>
+            </div>
+            {/* Map Key */}
+            <div>
+              <div className="text-2xs text-slate-400 dark:text-slate-500 mb-1.5 font-medium">Map Key</div>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-500 dark:text-slate-400">
+                <div className="flex items-center gap-2">
+                  <span className="flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-green-500" />
+                    <span>Typical</span>
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-orange-500" />
+                    <span>2x+</span>
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-red-500" />
+                    <span>4x+</span>
+                  </span>
+                </div>
+                {significantQuakes.length > 0 && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-300 dark:text-slate-600">|</span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-yellow-500" />
+                      <span>M6+</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-orange-500" />
+                      <span>M6.5+</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-red-500" />
+                      <span>M7+</span>
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

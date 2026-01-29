@@ -37,6 +37,18 @@ export const blockedSources = [
     reason: 'Off-topic, user requested removal',
     dateBlocked: '2026-01-20',
   },
+  {
+    id: 'telegraph-rss',
+    name: 'The Telegraph',
+    reason: 'HTTP 403 - blocks RSS requests, paywall',
+    dateBlocked: '2026-01-29',
+  },
+  {
+    id: 'youtube-memritv',
+    name: 'MEMRI TV',
+    reason: 'YouTube channel ID invalid (404), channel may have been removed or ID changed',
+    dateBlocked: '2026-01-29',
+  },
 ];
 
 // Quick lookup

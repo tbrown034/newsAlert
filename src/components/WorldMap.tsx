@@ -8,7 +8,7 @@ import {
   Marker,
   ZoomableGroup,
 } from 'react-simple-maps';
-import { ArrowPathIcon, PlusIcon, MinusIcon, ChevronUpIcon, ChevronDownIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { Watchpoint, WatchpointId, Earthquake } from '@/types';
 import { RegionActivity } from '@/lib/activityDetection';
 
@@ -72,7 +72,6 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
   const [position, setPosition] = useState({ coordinates: DEFAULT_CENTER, zoom: DEFAULT_ZOOM });
   const [hoveredMarker, setHoveredMarker] = useState<string | null>(null);
   const [hoveredQuake, setHoveredQuake] = useState<string | null>(null);
-  const [legendExpanded, setLegendExpanded] = useState(false);
 
   const handleMoveEnd = (position: { coordinates: [number, number]; zoom: number }) => {
     setPosition(position);
@@ -157,7 +156,7 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
   if (!isMounted) {
     return (
       <div className="relative w-full bg-[#1e3a5f] overflow-hidden">
-        <div className="relative h-[200px] sm:h-[260px] flex items-center justify-center">
+        <div className="relative h-[140px] sm:h-[180px] flex items-center justify-center">
           <div className="text-gray-600 text-sm">Loading map...</div>
         </div>
       </div>
@@ -167,7 +166,7 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
   return (
     <div className="relative w-full bg-[#1e3a5f] overflow-hidden">
       {/* Map Container */}
-      <div className="relative h-[200px] sm:h-[260px]">
+      <div className="relative h-[140px] sm:h-[180px]">
         <ComposableMap
           projection="geoEqualEarth"
           projectionConfig={{
@@ -421,102 +420,8 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
           </button>
         </div>
 
-        {/* Legend Toggle Button */}
-        <button
-          onClick={() => setLegendExpanded(!legendExpanded)}
-          className="absolute bottom-3 right-3 z-10 p-2 bg-slate-900/90 backdrop-blur-sm rounded-lg border border-slate-600/50 text-gray-300 hover:text-white hover:bg-slate-800/90 transition-colors"
-          title="Map key"
-        >
-          <InformationCircleIcon className="w-5 h-5" />
-        </button>
-
-        {/* Expanded Legend Panel */}
-        {legendExpanded && (
-          <>
-            {/* Backdrop for mobile */}
-            <div
-              className="fixed inset-0 bg-black/40 z-40 sm:hidden"
-              onClick={() => setLegendExpanded(false)}
-            />
-
-            {/* Legend Panel */}
-            <div className="fixed bottom-0 left-0 right-0 z-50 sm:absolute sm:bottom-3 sm:right-3 sm:left-auto sm:w-72
-                          bg-slate-900/95 backdrop-blur-md rounded-t-2xl sm:rounded-xl border border-slate-600/50
-                          max-h-[50vh] sm:max-h-none overflow-y-auto">
-              {/* Header */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700/50 sticky top-0 bg-slate-900/95 backdrop-blur-md">
-                <h3 className="text-sm font-semibold text-white">Map Key</h3>
-                <button
-                  onClick={() => setLegendExpanded(false)}
-                  className="p-1 hover:bg-slate-700 rounded-lg transition-colors"
-                >
-                  <ChevronDownIcon className="w-5 h-5 text-gray-400" />
-                </button>
-              </div>
-
-              {/* Content */}
-              <div className="p-4 space-y-4">
-                {/* Activity Levels */}
-                <div>
-                  <div className="text-xs text-slate-400 mb-2 font-medium">
-                    {hotspotsOnly ? 'Showing elevated regions only' : 'Post frequency vs. average'}
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm text-gray-200">
-                      <span className="w-3 h-3 rounded-full bg-red-500" />
-                      <span className="font-medium">Surging</span>
-                      <span className="text-xs text-slate-400 ml-auto">4×+ usual</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-200">
-                      <span className="w-3 h-3 rounded-full bg-orange-500" />
-                      <span className="font-medium">Elevated</span>
-                      <span className="text-xs text-slate-400 ml-auto">2×+ usual</span>
-                    </div>
-                    {!hotspotsOnly && (
-                      <div className="flex items-center gap-2 text-sm text-gray-200">
-                        <span className="w-3 h-3 rounded-full bg-green-500" />
-                        <span className="font-medium">Typical</span>
-                        <span className="text-xs text-slate-400 ml-auto">Normal range</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Earthquake legend - only shows when there are significant quakes */}
-                {significantQuakes.length > 0 && (
-                  <div className="pt-3 border-t border-slate-700/50">
-                    <div className="text-xs text-slate-400 mb-2 font-medium">Large Earthquakes (M6+)</div>
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm text-gray-200">
-                        <span className="w-4 h-4 rounded-full bg-red-500 ring-2 ring-red-500/30" />
-                        <span>Magnitude 7+</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-200">
-                        <span className="w-3.5 h-3.5 rounded-full bg-orange-500 ring-2 ring-orange-500/30" />
-                        <span>Magnitude 6.5+</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-200">
-                        <span className="w-3 h-3 rounded-full bg-yellow-500 ring-2 ring-yellow-500/30" />
-                        <span>Magnitude 6+</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Hotspots mode message when no hotspots */}
-                {hotspotsOnly && Object.values(activity).every(a => a.level === 'normal') && (
-                  <div className="pt-3 border-t border-slate-700/50">
-                    <div className="bg-green-900/50 rounded-lg px-3 py-2 text-center">
-                      <div className="text-sm text-green-200 font-medium">All regions typical</div>
-                      <div className="text-xs text-green-300/70">No hotspots detected</div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </>
-        )}
       </div>
+
     </div>
   );
 }

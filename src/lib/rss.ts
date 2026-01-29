@@ -17,10 +17,52 @@ import { createHash } from 'crypto';
  * timezone drift), clamp it to "now" to avoid confusing "just now" displays.
  */
 function parsePubDate(pubDateStr: string): Date {
-  const parsed = new Date(pubDateStr);
+  // Strip CDATA wrapper if present (e.g., The Diplomat uses this)
+  let cleaned = pubDateStr.replace(/<!\[CDATA\[([^\]]*)\]\]>/g, '$1');
+  // Normalize the input - trim whitespace and collapse multiple spaces
+  const normalized = cleaned.trim().replace(/\s+/g, ' ');
 
-  // If parsing failed, return current time
+  // Try standard parsing first
+  let parsed = new Date(normalized);
+
+  // If standard parsing failed, try custom formats
   if (isNaN(parsed.getTime())) {
+    // IAEA format: "26-01-27 13:30" (YY-MM-DD HH:MM)
+    const iaeaMatch = normalized.match(/^(\d{2})-(\d{2})-(\d{2})\s+(\d{1,2}):(\d{2})$/);
+    if (iaeaMatch) {
+      const [, yy, mm, dd, hh, min] = iaeaMatch;
+      // Assume 20xx for 2-digit years
+      const year = 2000 + parseInt(yy, 10);
+      parsed = new Date(year, parseInt(mm, 10) - 1, parseInt(dd, 10), parseInt(hh, 10), parseInt(min, 10));
+    }
+
+    // European timezone abbreviations: "29 Jan 2026 10:45:00 CET"
+    // Replace timezone abbreviations with offsets
+    // Note: Order matters - longer abbreviations first to avoid partial matches (WEST before WET)
+    if (isNaN(parsed.getTime())) {
+      const tzMap: [string, string][] = [
+        ['CEST', '+0200'], ['EEST', '+0300'], ['WEST', '+0100'],  // Longer first
+        ['CET', '+0100'], ['EET', '+0200'], ['WET', '+0000'],
+        ['GMT', '+0000'], ['UTC', '+0000'],
+        ['EDT', '-0400'], ['CDT', '-0500'], ['MDT', '-0600'], ['PDT', '-0700'],
+        ['EST', '-0500'], ['CST', '-0600'], ['MST', '-0700'], ['PST', '-0800'],
+      ];
+      let converted = normalized;
+      for (const [abbr, offset] of tzMap) {
+        // Use word boundary to prevent partial matches (e.g., "WET" in "WEST")
+        const regex = new RegExp(`\\b${abbr}\\b`);
+        if (regex.test(converted)) {
+          converted = converted.replace(regex, offset);
+          break;
+        }
+      }
+      parsed = new Date(converted);
+    }
+  }
+
+  // If still failed, return current time (logged for debugging)
+  if (isNaN(parsed.getTime())) {
+    console.warn(`[RSS] Failed to parse date: "${pubDateStr}"`);
     return new Date();
   }
 
