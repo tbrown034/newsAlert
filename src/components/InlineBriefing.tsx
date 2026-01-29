@@ -3,7 +3,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { WatchpointId } from '@/types';
 import { regionDisplayNames } from '@/lib/regionDetection';
-import { SparklesIcon, BoltIcon, RocketLaunchIcon, ChevronDownIcon, ChevronUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon, BoltIcon, RocketLaunchIcon, ChevronDownIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useSession } from '@/lib/auth-client';
 
 // Client-side cache - persists across region switches, keyed by region+tier
@@ -106,7 +106,7 @@ function highlightLocations(text: string): React.ReactNode {
         }
       }
       return (
-        <span key={i} className="font-semibold text-slate-900 dark:text-white">
+        <span key={i} className="font-semibold text-[var(--foreground)]">
           {part}
         </span>
       );
@@ -194,8 +194,8 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
 
   // Load collapsed preference from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem('ai-summary-collapsed');
-    if (saved === 'true') setIsCollapsed(true);
+    const savedCollapsed = localStorage.getItem('ai-summary-collapsed');
+    if (savedCollapsed === 'true') setIsCollapsed(true);
   }, []);
 
   // Save collapsed preference
@@ -300,15 +300,15 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
   if (loading) {
     const TierIcon = TIER_INFO[currentTier].icon;
     return (
-      <div className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800">
+      <div className="bg-[var(--background-secondary)] border-b border-[var(--border-light)]">
         <div className="px-4 py-3 flex items-center gap-3">
           <TierIcon className={`w-4 h-4 ${TIER_INFO[currentTier].color} animate-pulse`} />
           <div className="flex-1">
-            <span className="text-sm text-slate-600 dark:text-slate-300">
+            <span className="text-label text-[var(--foreground-muted)]">
               {getLoadingMessage(loadingElapsed, currentTier)}
             </span>
             {loadingElapsed > 0 && (
-              <span className="text-xs text-slate-400 dark:text-slate-500 ml-2 tabular-nums">
+              <span className="text-caption text-[var(--foreground-light)] ml-2 tabular-nums">
                 {loadingElapsed}s
               </span>
             )}
@@ -317,7 +317,7 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
             href={ANTHROPIC_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
+            className="text-caption text-[var(--foreground-light)] hover:text-[var(--foreground-muted)]"
           >
             {TIER_INFO[currentTier].model}
           </a>
@@ -329,12 +329,12 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
   // Error state
   if (error) {
     return (
-      <div className="bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200 dark:border-amber-800/50">
+      <div className="bg-[var(--color-elevated-muted)] border-b border-[var(--color-elevated)]">
         <div className="px-4 py-3 flex items-center justify-between">
-          <span className="text-sm text-amber-700 dark:text-amber-300">{error}</span>
+          <span className="text-label text-[var(--color-elevated)]">{error}</span>
           <button
             onClick={() => fetchBriefing('quick', true)}
-            className="text-xs text-amber-600 dark:text-amber-400 hover:underline"
+            className="text-caption text-[var(--color-elevated)] hover:underline"
           >
             Retry
           </button>
@@ -346,10 +346,10 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
   // No briefing yet - show loading placeholder
   if (!briefing) {
     return (
-      <div className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800">
+      <div className="bg-[var(--background-secondary)] border-b border-[var(--border-light)]">
         <div className="px-4 py-3 flex items-center gap-3">
-          <div className="w-4 h-4 border-2 border-slate-400 dark:border-slate-500 border-t-transparent rounded-full animate-spin" />
-          <span className="text-sm text-slate-500 dark:text-slate-400">Preparing summary...</span>
+          <div className="w-4 h-4 border-2 border-[var(--foreground-light)] border-t-transparent rounded-full animate-spin" />
+          <span className="text-label text-[var(--foreground-muted)]">Preparing summary...</span>
         </div>
       </div>
     );
@@ -358,98 +358,122 @@ export function InlineBriefing({ region }: InlineBriefingProps) {
   // Display briefing with upgrade options
   const TierIcon = TIER_INFO[briefing.tier || 'quick'].icon;
 
-  // Collapsed view - minimal bar to expand
+  // Collapsed view - minimal clickable bar
   if (isCollapsed) {
     return (
-      <div className="bg-slate-100 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
-        <button
-          onClick={toggleCollapsed}
-          className="w-full px-4 py-2.5 flex items-center justify-between hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors"
-        >
-          <div className="flex items-center gap-2">
-            <TierIcon className={`w-4 h-4 ${TIER_INFO[briefing.tier || 'quick'].color}`} />
-            <span className="text-sm text-slate-600 dark:text-slate-400">Summary</span>
-          </div>
-          <ChevronDownIcon className="w-4 h-4 text-slate-400" />
-        </button>
+      <div className="border-b border-[var(--border-light)] bg-[var(--background-secondary)] mb-4">
+        <div className="px-4 py-2 flex items-center justify-between">
+          {/* Main clickable area - whole left side expands */}
+          <button
+            onClick={toggleCollapsed}
+            className="flex-1 flex items-center gap-2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] transition-colors group"
+          >
+            <span className="text-xs font-medium uppercase tracking-wide">AI-Powered News Briefing</span>
+            <span className="text-xs text-[var(--foreground-light)] opacity-60 group-hover:opacity-100 ml-1">
+              — Tap to show
+            </span>
+          </button>
+          {/* Expand toggle */}
+          <button
+            onClick={toggleCollapsed}
+            className="p-1.5 rounded hover:bg-[var(--background)] transition-colors"
+            title="Show AI summary"
+          >
+            <ChevronDownIcon className="w-3.5 h-3.5 text-[var(--foreground-light)]" />
+          </button>
+        </div>
       </div>
     );
   }
 
+  const tierInfo = TIER_INFO[briefing.tier || 'quick'];
+
   return (
-    <div className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800">
-      {/* Header */}
-      <div className="px-4 py-2.5 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <TierIcon className={`w-5 h-5 ${TIER_INFO[briefing.tier || 'quick'].color}`} />
-          <span className="text-sm font-semibold text-slate-800 dark:text-slate-100">Summary</span>
-          <a
-            href={ANTHROPIC_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
-          >
-            {TIER_INFO[briefing.tier || 'quick'].model}
-          </a>
-          {briefing.fromCache && (
-            <span className="text-xs text-slate-400 dark:text-slate-500">· cached</span>
-          )}
-        </div>
+    <div className="border-b border-[var(--border-light)] bg-[var(--background-secondary)] mb-4">
+      {/* Header row with controls */}
+      <div className="px-4 py-2 flex items-center justify-between border-b border-[var(--border-light)]">
+        <span className="text-xs font-medium text-[var(--foreground-muted)] uppercase tracking-wide">AI-Powered News Briefing</span>
+        {/* Hide AI button - clear option for users who don't want AI */}
         <button
           onClick={toggleCollapsed}
-          className="text-xs text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
+          className="flex items-center gap-1 px-2 py-1 rounded text-xs text-[var(--foreground-light)] hover:text-[var(--foreground-muted)] hover:bg-[var(--background)] transition-colors"
+          title="Hide AI summary"
         >
-          Hide
+          <XMarkIcon className="w-3.5 h-3.5" />
+          <span>Hide</span>
         </button>
       </div>
 
       {/* Body */}
       <div className="px-4 py-3 space-y-3">
-        <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+        <p className="text-sm text-[var(--foreground-muted)] leading-relaxed">
           {highlightLocations(briefing.summary)}
         </p>
 
         {briefing.keyDevelopments && briefing.keyDevelopments.length > 0 && (
           <ul className="space-y-1.5">
             {briefing.keyDevelopments.map((dev, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-300">
-                <span className="text-slate-400 dark:text-slate-500 mt-0.5">•</span>
-                <span className="leading-relaxed">{highlightLocations(dev.headline)}</span>
+              <li key={i} className="flex items-start gap-2 text-sm text-[var(--foreground-muted)]">
+                <span className="text-[var(--foreground-light)] mt-0.5">•</span>
+                <span className="leading-snug">{highlightLocations(dev.headline)}</span>
               </li>
             ))}
           </ul>
         )}
-      </div>
 
-      {/* Footer */}
-      <div className="px-4 py-2 flex items-center justify-between border-t border-slate-200/50 dark:border-slate-700/50">
-        <span className="text-xs text-slate-400 dark:text-slate-500">
-          {briefing.sourcesAnalyzed} sources · {briefing.usage?.latencyMs ? `${(briefing.usage.latencyMs / 1000).toFixed(1)}s` : ''}
-        </span>
-
-        <div className="flex items-center gap-2">
-          {(briefing.tier === 'quick') && (
-            <button
-              onClick={() => fetchBriefing('advanced', true)}
-              disabled={loading}
-              className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+        {/* Footer with model info and upgrade options */}
+        <div className="pt-2 border-t border-[var(--border-light)]">
+          {/* Model attribution + About link on same row */}
+          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-[var(--foreground-light)] mb-2">
+            <span>Generated with</span>
+            <a
+              href={ANTHROPIC_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-orange-600 dark:text-orange-400 hover:underline"
             >
-              Try Sonnet
-            </button>
-          )}
-
-          {(briefing.tier === 'quick' || briefing.tier === 'advanced') && isAdmin && (
-            <button
-              onClick={() => fetchBriefing('pro', true)}
-              disabled={loading}
-              className="text-xs text-purple-600 dark:text-purple-400 hover:underline"
+              {tierInfo.model}
+            </a>
+            <span>·</span>
+            <span>{briefing.sourcesAnalyzed} sources analyzed</span>
+            {briefing.usage?.latencyMs && (
+              <>
+                <span>·</span>
+                <span>{(briefing.usage.latencyMs / 1000).toFixed(1)}s</span>
+              </>
+            )}
+            <span>·</span>
+            <a
+              href="/about#ai"
+              className="hover:underline"
             >
-              Try Opus
-            </button>
-          )}
+              About Our AI Use
+            </a>
+          </div>
 
-          {briefing.tier === 'pro' && (
-            <span className="text-xs text-purple-500">Opus</span>
+          {/* Model options */}
+          {(briefing.tier === 'quick' || (briefing.tier === 'advanced' && isAdmin)) && (
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-xs text-[var(--foreground-light)]">Try:</span>
+              {briefing.tier === 'quick' && (
+                <button
+                  onClick={() => fetchBriefing('advanced', true)}
+                  disabled={loading}
+                  className="text-xs px-2 py-1 rounded border border-[var(--border-light)] text-[var(--foreground-muted)] hover:bg-[var(--background)] hover:border-[var(--foreground-light)] transition-colors disabled:opacity-50"
+                >
+                  Claude Sonnet 4 (Fast)
+                </button>
+              )}
+              {isAdmin && (
+                <button
+                  onClick={() => fetchBriefing('pro', true)}
+                  disabled={loading}
+                  className="text-xs px-2 py-1 rounded border border-[var(--border-light)] text-[var(--foreground-muted)] hover:bg-[var(--background)] hover:border-[var(--foreground-light)] transition-colors disabled:opacity-50"
+                >
+                  Claude Opus 4.5 (Deeper)
+                </button>
+              )}
+            </div>
           )}
         </div>
       </div>

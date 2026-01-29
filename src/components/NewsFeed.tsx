@@ -365,10 +365,10 @@ export function NewsFeed({
   }, [sortedItems, initialSessionIds, newSinceArrivalCount]);
 
   return (
-    <div className="flex flex-col bg-white dark:bg-black">
+    <div className="flex flex-col bg-[var(--background)]">
       {/* Region Tabs + Volume Indicator (sticky header) */}
-      <div className="sticky top-14 sm:top-16 z-30 bg-white dark:bg-black">
-        <div className="flex items-center border-b border-slate-200 dark:border-slate-800">
+      <div className="sticky top-14 sm:top-16 z-30 bg-[var(--background)]">
+        <div className="flex items-center border-b border-[var(--border-light)]">
           {/* Scrollable tabs area */}
           <div
             className="flex items-center overflow-x-auto scrollbar-hide"
@@ -394,20 +394,20 @@ export function NewsFeed({
                   tabIndex={isSelected ? 0 : -1}
                   onClick={() => handleTabSelect(tab.id)}
                   className={`
-                    relative flex-shrink-0 px-3 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-medium
+                    relative flex-shrink-0 px-3 sm:px-4 py-3 sm:py-3.5 text-label font-medium
                     transition-colors duration-200 whitespace-nowrap min-h-[44px]
-                    focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset
+                    focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--foreground)] focus-visible:ring-inset
                     ${visibilityClass || 'flex'}
                     ${isSelected
-                      ? 'text-slate-900 dark:text-slate-100'
-                      : 'text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-900'
+                      ? 'text-[var(--foreground)]'
+                      : 'text-[var(--foreground-light)] hover:text-[var(--foreground-muted)] hover:bg-[var(--background-secondary)]'
                     }
                   `}
                 >
                   {tab.label}
 
                   {isSelected && (
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-blue-600 rounded-full" />
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-[var(--foreground)] rounded-full" />
                   )}
                 </button>
               );
@@ -418,12 +418,12 @@ export function NewsFeed({
           <button
             onClick={() => setRegionalExpanded(!regionalExpanded)}
             className={`
-              relative flex items-center gap-1 px-3 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-medium
+              relative flex items-center gap-1 px-3 sm:px-4 py-3 sm:py-3.5 text-label font-medium
               transition-colors duration-200 whitespace-nowrap min-h-[44px]
-              focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--foreground)] focus-visible:ring-inset
               ${isDropdownTabSelected || regionalExpanded
-                ? 'text-slate-900 dark:text-slate-100'
-                : 'text-slate-500 dark:text-slate-500 hover:text-slate-700 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-900'
+                ? 'text-[var(--foreground)]'
+                : 'text-[var(--foreground-light)] hover:text-[var(--foreground-muted)] hover:bg-[var(--background-secondary)]'
               }
             `}
             aria-expanded={regionalExpanded}
@@ -433,7 +433,7 @@ export function NewsFeed({
               : 'Regional'}
             <ChevronDownIcon className={`w-3.5 h-3.5 transition-transform ${regionalExpanded ? 'rotate-180' : ''}`} />
             {isDropdownTabSelected && (
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-blue-600 rounded-full" />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-[var(--foreground)] rounded-full" />
             )}
           </button>
 
@@ -444,7 +444,7 @@ export function NewsFeed({
               onClick={onRefresh}
               disabled={isLoading}
               aria-label={isLoading ? 'Refreshing feed' : 'Refresh feed'}
-              className="flex-shrink-0 px-3 py-3 min-h-[44px] text-slate-400 hover:text-blue-600 transition-colors disabled:opacity-50 border-l border-slate-200 dark:border-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset"
+              className="flex-shrink-0 px-3 py-3 min-h-[44px] text-[var(--foreground-light)] hover:text-[var(--foreground)] transition-colors disabled:opacity-50 border-l border-[var(--border-light)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--foreground)] focus-visible:ring-inset"
             >
               <ArrowPathIcon className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             </button>
@@ -453,7 +453,7 @@ export function NewsFeed({
 
         {/* Expandable regional row */}
         {regionalExpanded && (
-          <div className="flex items-center gap-1 px-2 sm:px-3 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center gap-1 px-2 sm:px-3 py-2 border-b border-[var(--border-light)] bg-[var(--background-secondary)] overflow-x-auto scrollbar-hide">
             {/* Show first 3 regions inline on mobile, all on larger screens */}
             {allTabs.filter(t => !t.alwaysVisible).slice(0, 3).map((tab) => {
               const isSelected = selectedTab === tab.id;
@@ -465,10 +465,10 @@ export function NewsFeed({
                     setRegionalExpanded(false);
                   }}
                   className={`
-                    px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm font-medium rounded-lg transition-colors whitespace-nowrap
+                    px-2.5 sm:px-3 py-1.5 text-caption sm:text-label font-medium rounded-lg transition-colors whitespace-nowrap
                     ${isSelected
-                      ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
-                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+                      ? 'bg-[var(--background-card)] text-[var(--foreground)] border border-[var(--border)]'
+                      : 'bg-[var(--background-card)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] border border-[var(--border-light)]'
                     }
                   `}
                 >

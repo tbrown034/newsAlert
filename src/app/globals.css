@@ -4,18 +4,38 @@
 @variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Trevor Touch - Light theme */
-  --background: #f5f5f7;
-  --background-secondary: #eaeaec;
-  --background-card: #ffffff;
-  --foreground: #1a1a2e;
-  --foreground-muted: #64748b;
-  --foreground-light: #94a3b8;
+  /* ============================================
+     PULSE DESIGN SYSTEM - Light Theme
+     ============================================ */
 
-  /* Accent colors */
-  --accent-blue: #2563eb;
-  --accent-blue-hover: #1d4ed8;
-  --accent-blue-light: #dbeafe;
+  /* Background layers */
+  --background: #f8f9fa;
+  --background-secondary: #f1f3f5;
+  --background-card: #ffffff;
+
+  /* Foreground hierarchy */
+  --foreground: #1a1a2e;
+  --foreground-muted: #495057;
+  --foreground-light: #868e96;
+
+  /* Borders */
+  --border: #dee2e6;
+  --border-light: #e9ecef;
+
+  /* Semantic colors ONLY - no decorative accents */
+  --color-critical: #dc2626;
+  --color-critical-muted: #fecaca;
+  --color-elevated: #ea580c;
+  --color-elevated-muted: #fed7aa;
+  --color-success: #059669;
+  --color-success-muted: #a7f3d0;
+  --color-info: #6c757d;
+  --color-info-muted: #e9ecef;
+
+  /* Legacy accent support (being phased out) */
+  --accent-blue: #495057;
+  --accent-blue-hover: #343a40;
+  --accent-blue-light: #e9ecef;
   --accent-amber: #d97706;
   --accent-amber-light: #fef3c7;
   --accent-green: #059669;
@@ -27,49 +47,104 @@
   --accent-purple: #7c3aed;
   --accent-purple-light: #ede9fe;
 
-  /* Typography - loaded via next/font/google for optimal performance */
+  /* Typography */
   --font-serif: var(--font-source-serif), Georgia, serif;
   --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
+
+  /* Spacing scale (8px base) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-2xl: 32px;
+
+  /* Type scale - Mobile first */
+  --text-display: 1.5rem;      /* 24px */
+  --text-title: 1.0625rem;     /* 17px */
+  --text-body: 0.9375rem;      /* 15px */
+  --text-label: 0.8125rem;     /* 13px */
+  --text-caption: 0.75rem;     /* 12px */
+  --text-micro: 0.6875rem;     /* 11px */
 }
 
-/* Dark mode - X/Twitter inspired */
+/* ============================================
+   PULSE DESIGN SYSTEM - Dark Theme
+   Refined, professional, easy on the eyes
+   ============================================ */
 .dark {
+  /* Background layers - true black with subtle lifts */
   --background: #000000;
-  --background-secondary: #16181c;
-  --background-card: #16181c;
-  --foreground: #e7e9ea;
-  --foreground-muted: #71767b;
-  --foreground-light: #536471;
+  --background-secondary: #111111;
+  --background-card: #161616;
 
-  /* Accent colors - X-style vibrant */
-  --accent-blue: #1d9bf0;
-  --accent-blue-hover: #1a8cd8;
-  --accent-blue-light: #031018;
+  /* Foreground hierarchy - warm off-white, not harsh */
+  --foreground: #f1f3f5;
+  --foreground-muted: #adb5bd;
+  --foreground-light: #6c757d;
+
+  /* Borders - subtle, low contrast */
+  --border: #2a2a2a;
+  --border-light: #1f1f1f;
+
+  /* Semantic colors - slightly muted for dark mode */
+  --color-critical: #ef4444;
+  --color-critical-muted: #450a0a;
+  --color-elevated: #f97316;
+  --color-elevated-muted: #431407;
+  --color-success: #10b981;
+  --color-success-muted: #064e3b;
+  --color-info: #9ca3af;
+  --color-info-muted: #1f2937;
+
+  /* Legacy accent support (neutral in dark mode) */
+  --accent-blue: #adb5bd;
+  --accent-blue-hover: #ced4da;
+  --accent-blue-light: #1f1f1f;
   --accent-amber: #f59e0b;
   --accent-amber-light: #422006;
-  --accent-green: #00ba7c;
-  --accent-green-light: #003d29;
-  --accent-red: #f4212e;
-  --accent-red-light: #2d0607;
-  --accent-orange: #ff7a00;
-  --accent-orange-light: #331900;
-  --accent-purple: #794bc4;
-  --accent-purple-light: #1a0f29;
+  --accent-green: #10b981;
+  --accent-green-light: #064e3b;
+  --accent-red: #ef4444;
+  --accent-red-light: #450a0a;
+  --accent-orange: #f97316;
+  --accent-orange-light: #431407;
+  --accent-purple: #a78bfa;
+  --accent-purple-light: #2e1065;
 }
 
 @theme inline {
+  /* Background */
   --color-background: var(--background);
   --color-background-secondary: var(--background-secondary);
   --color-background-card: var(--background-card);
+
+  /* Foreground hierarchy */
   --color-foreground: var(--foreground);
   --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-light: var(--foreground-light);
+
+  /* Borders */
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+
+  /* Semantic colors */
+  --color-critical: var(--color-critical);
+  --color-elevated: var(--color-elevated);
+  --color-success: var(--color-success);
+  --color-info: var(--color-info);
+
+  /* Legacy accent support */
   --color-accent-blue: var(--accent-blue);
   --color-accent-amber: var(--accent-amber);
   --color-accent-green: var(--accent-green);
   --color-accent-red: var(--accent-red);
   --color-accent-orange: var(--accent-orange);
+
+  /* Fonts */
   --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
   --font-mono: var(--font-mono);
 }
 
@@ -88,60 +163,160 @@ h1, h2, h3, .font-serif {
 }
 
 /* ============================================
-   TYPOGRAPHY SYSTEM
+   PULSE TYPOGRAPHY SYSTEM
    ============================================
 
-   Type Scale (based on 16px base):
-   - text-2xs:  10px (0.625rem) - metadata, timestamps
-   - text-xs:   12px (0.75rem)  - small labels
-   - text-sm:   14px (0.875rem) - secondary text
-   - text-base: 16px (1rem)     - body text
-   - text-lg:   18px (1.125rem) - emphasized text
-   - text-xl:   20px (1.25rem)  - subheadings
-   - text-2xl:  24px (1.5rem)   - section titles
-   - text-3xl:  30px (1.875rem) - page titles
+   Hierarchy through weight + color, not just size.
+   Source Serif for headlines = brand signature.
 
-   Custom sizes for specific use cases:
+   Mobile-First Scale:
+   - Display: 24px → 30px (section headers)
+   - Title:   17px → 19px (news headlines)
+   - Body:    15px → 16px (content)
+   - Label:   13px → 14px (source names)
+   - Caption: 12px        (timestamps)
+   - Micro:   11px        (badges)
 */
 
-/* Micro text - metadata, timestamps, badges */
-.text-2xs {
-  font-size: 0.625rem; /* 10px */
-  line-height: 1.4;
+/* === TYPE SCALE CLASSES === */
+
+/* Display - Section headers like "Live Wire" */
+.text-display {
+  font-family: var(--font-serif);
+  font-size: var(--text-display);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
 }
 
-/* News headline size - slightly larger than sm for better readability */
+@media (min-width: 640px) {
+  .text-display {
+    font-size: 1.875rem; /* 30px */
+  }
+}
+
+/* Title - News headlines (THE SIGNATURE STYLE) */
+.text-title {
+  font-family: var(--font-serif);
+  font-size: 0.9375rem; /* 15px - more subtle */
+  font-weight: 500; /* medium, not semibold */
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .text-title {
+    font-size: 1rem; /* 16px */
+  }
+}
+
+/* Body - Content, summaries */
+.text-body {
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--foreground-muted);
+}
+
+@media (min-width: 640px) {
+  .text-body {
+    font-size: 1rem; /* 16px */
+  }
+}
+
+/* Label - Source names, tab labels */
+.text-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--foreground-muted);
+}
+
+@media (min-width: 640px) {
+  .text-label {
+    font-size: 0.875rem; /* 14px */
+  }
+}
+
+/* Caption - Timestamps, counts */
+.text-caption {
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--foreground-light);
+}
+
+/* Micro - Badges, compact metadata */
+.text-micro {
+  font-family: var(--font-sans);
+  font-size: var(--text-micro);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+  color: var(--foreground-light);
+}
+
+/* Legacy support */
+.text-2xs {
+  font-size: var(--text-micro);
+  line-height: 1.3;
+}
+
 .text-news {
-  font-size: 0.9375rem; /* 15px */
+  font-size: var(--text-body);
   line-height: 1.5;
 }
 
-/* Caption text - for attribution, sources */
-.text-caption {
-  font-size: 0.6875rem; /* 11px */
-  line-height: 1.45;
-  letter-spacing: 0.01em;
+/* === HIERARCHY UTILITIES === */
+
+/* Primary text - full contrast */
+.text-primary {
+  color: var(--foreground);
 }
 
-/* Headline typography - tighter tracking for larger text */
+/* Secondary text - muted */
+.text-secondary {
+  color: var(--foreground-muted);
+}
+
+/* Tertiary text - subtle */
+.text-tertiary {
+  color: var(--foreground-light);
+}
+
+/* === HEADLINE STYLES === */
+
+/* Headline - serif with tight tracking */
 .headline {
   font-family: var(--font-serif);
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--foreground);
 }
 
 /* Body text optimized for reading */
 .body-text {
+  font-family: var(--font-sans);
+  font-weight: 400;
   line-height: 1.6;
-  letter-spacing: 0.01em;
+  color: var(--foreground-muted);
 }
 
-/* Label typography - for section headers, tags */
+/* Label typography - for tags, small labels */
 .label-text {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  font-weight: 500;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
+  color: var(--foreground-light);
 }
 
 /* Custom scrollbar for light theme */
@@ -172,57 +347,126 @@ h1, h2, h3, .font-serif {
   display: none;
 }
 
-/* Section labels - Trevor style */
+/* === SECTION LABELS - Brand element === */
 .section-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-family: var(--font-serif);
+  font-size: var(--text-label);
+  font-weight: 500;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--accent-blue);
+  color: var(--foreground-muted);
 }
 
-/* Card styling */
+/* Section header with line decoration */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.section-header::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-light);
+}
+
+/* === SPACING UTILITIES === */
+.gap-xs { gap: var(--space-xs); }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
+.gap-xl { gap: var(--space-xl); }
+.gap-2xl { gap: var(--space-2xl); }
+
+.mt-section { margin-top: var(--space-2xl); }
+.mb-section { margin-bottom: var(--space-lg); }
+.py-section { padding-top: var(--space-2xl); padding-bottom: var(--space-2xl); }
+
+/* === CARD STYLING === */
 .card {
   background: var(--background-card);
   border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .dark .card {
+  background: var(--background-card);
+  border: 1px solid var(--border);
   box-shadow: none;
-  border: 1px solid #2f3336;
-  background: #16181c;
 }
 
-/* Badge base styles */
+/* Card with tighter padding for news items */
+.card-compact {
+  padding: var(--space-md);
+}
+
+@media (min-width: 640px) {
+  .card-compact {
+    padding: var(--space-lg);
+  }
+}
+
+/* === BADGE STYLES - Semantic colors only === */
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.625rem;
-  font-size: 0.75rem;
+  padding: 2px 8px;
+  font-size: var(--text-micro);
   font-weight: 500;
-  border-radius: 9999px;
+  border-radius: 4px;
+  letter-spacing: 0.01em;
 }
 
+/* Semantic badge variants */
+.badge-critical {
+  background: var(--color-critical-muted);
+  color: var(--color-critical);
+}
+
+.badge-elevated {
+  background: var(--color-elevated-muted);
+  color: var(--color-elevated);
+}
+
+.badge-success {
+  background: var(--color-success-muted);
+  color: var(--color-success);
+}
+
+.badge-info {
+  background: var(--color-info-muted);
+  color: var(--foreground-muted);
+}
+
+/* Neutral badge - for regions, categories */
+.badge-neutral {
+  background: var(--background-secondary);
+  color: var(--foreground-muted);
+  border: 1px solid var(--border-light);
+}
+
+/* Legacy badge support */
 .badge-blue {
-  background: var(--accent-blue-light);
-  color: var(--accent-blue);
+  background: var(--color-info-muted);
+  color: var(--foreground-muted);
 }
 
 .badge-red {
-  background: var(--accent-red-light);
-  color: var(--accent-red);
+  background: var(--color-critical-muted);
+  color: var(--color-critical);
 }
 
 .badge-amber {
-  background: var(--accent-amber-light);
-  color: var(--accent-amber);
+  background: var(--color-elevated-muted);
+  color: var(--color-elevated);
 }
 
 .badge-green {
-  background: var(--accent-green-light);
-  color: var(--accent-green);
+  background: var(--color-success-muted);
+  color: var(--color-success);
 }
 
 .badge-purple {
@@ -230,22 +474,22 @@ h1, h2, h3, .font-serif {
   color: var(--accent-purple);
 }
 
-/* Tag pills - outlined style */
+/* === TAG STYLES - Outlined, neutral === */
 .tag {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
+  padding: 2px 8px;
+  font-size: var(--text-micro);
   font-weight: 500;
-  border-radius: 0.375rem;
-  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  border: 1px solid var(--border);
   color: var(--foreground-muted);
   background: transparent;
 }
 
 .tag:hover {
-  border-color: var(--accent-blue);
-  color: var(--accent-blue);
+  border-color: var(--foreground-light);
+  background: var(--background-secondary);
 }
 
 /* Divider */
@@ -259,15 +503,25 @@ h1, h2, h3, .font-serif {
   background: linear-gradient(to right, transparent, #2f3336, transparent);
 }
 
-/* Link style */
+/* === LINK STYLES - Neutral, not blue === */
 a.link {
-  color: var(--accent-blue);
+  color: var(--foreground-muted);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 a.link:hover {
-  color: var(--accent-blue-hover);
+  color: var(--foreground);
+}
+
+/* Interactive link - slightly more prominent */
+a.link-interactive {
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+a.link-interactive:hover {
+  text-decoration: underline;
 }
 
 /* ============================================

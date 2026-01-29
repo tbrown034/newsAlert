@@ -251,3 +251,92 @@ A chronological record of development sessions and significant changes.
 - `docs/devlog.md` - this file (project-specific log)
 
 ---
+
+## 2026-01-29 - AI Summary Redesign
+
+**Session Summary:**
+- Completely redesigned the AI Summary component (InlineBriefing) from a card-based design to a full-width header section
+- Fixed critical header visibility bug where the sticky filter bar was covering the AI Summary header
+- Simplified the visual design to be less "AI feely" per user feedback
+- Tested across mobile (375px), tablet (768px), and desktop (1280px) using Playwright
+
+**Key Decisions:**
+- Full-width design (no horizontal margins) to visually differentiate from news message cards
+- Simple bullet points (•) instead of numbered circles with gradient backgrounds
+- Moved InlineBriefing INSIDE the sticky header section rather than below it
+- KISS approach: no gradients, no shadows, just clean borders and subtle backgrounds
+
+**Notable Changes:**
+
+*src/components/InlineBriefing.tsx*
+- Removed `mx-3 sm:mx-4` margins - now spans full width of container
+- Changed from rounded card (`rounded-2xl`) to border-bottom separator (`border-b`)
+- Simplified header: lightning icon + "Summary" + model link + cache indicator + Hide button
+- Replaced numbered bullets (`<span className="flex items-center justify-center w-5 h-5 rounded-full bg-gradient-to-br...">1</span>`) with simple bullet character (`• `)
+- Background: `bg-slate-50 dark:bg-slate-900/50` with `border-slate-200 dark:border-slate-800`
+
+*src/components/NewsFeed.tsx*
+- **Critical fix**: Moved `<InlineBriefing>` from line ~725 (inside feed-panel div) to line ~670 (inside sticky header div)
+- This ensures the AI Summary stays visible above messages and isn't hidden behind the z-30 sticky filter bar
+- Component now renders as part of the sticky section, appearing between filter bar and scrollable feed
+
+**Technical Notes:**
+- The bug occurred because InlineBriefing was rendered AFTER the sticky header's closing `</div>`, so when users scrolled, the sticky filter bar (z-index: 30) would overlay the AI Summary header
+- Fix was structural: placing the component INSIDE the sticky section means it's part of the same stacking context
+- Tested with Playwright's `browser_resize` and `browser_take_screenshot` tools across 3 breakpoints
+- Used `localStorage.removeItem('ai-summary-collapsed')` during testing to reset collapsed state
+
+**Design Evolution:**
+1. Started: Rounded card with margins, attached below filter bar
+2. User feedback: "Too attached to filter bar, should be its own card"
+3. Added spacing, rounded corners, gradients
+4. User feedback: "Should take full width to differentiate"
+5. Made full-width with border-b separator
+6. User feedback: "Too AI feely, don't like numbered bullets"
+7. Simplified to plain bullets, removed gradients
+8. User feedback: "Header is hidden behind sticky bar"
+9. Moved inside sticky section - final fix
+
+---
+
+## 2026-01-29 - Logo & Favicon Unification
+
+**Session Summary:**
+- Discovered header logo (globe with meridians) didn't match favicon (eye symbol) after earlier favicon redesign
+- User rejected both designs - tried Option 4 (P with signal waves) but was too small/looked like "P with a hat"
+- Settled on Option 6: Bold white P with cyan pulse/heartbeat line underneath
+- Regenerated all favicon PNG sizes and removed redundant ICO file
+
+**Key Decisions:**
+- Chose Option 6 over Option 4 for better readability at small sizes
+- Bold white P on black background with cyan (#22d3ee) EKG-style pulse line
+- Removed `src/app/favicon.ico` - redundant since layout.tsx configures SVG/PNG icons
+- Used rsvg-convert (librsvg) for SVG→PNG conversion at all required sizes
+
+**Notable Changes:**
+
+*public/favicon.svg*
+- Replaced eye design with bold P + pulse line
+- Black background (#0a0a0a), white P, cyan pulse path
+
+*src/app/HomeClient.tsx* (lines 417-432)
+- Updated header logo SVG to match new favicon design
+- Changed container from gradient bg to solid `bg-black`
+- Increased SVG size from `w-5 h-5 sm:w-6 sm:h-6` to `w-6 h-6 sm:w-7 sm:h-7`
+
+*public/* (regenerated PNGs)
+- favicon-16x16.png
+- favicon-32x32.png
+- favicon-192x192.png
+- favicon-512x512.png
+- apple-touch-icon.png (180x180)
+
+*src/app/favicon.ico*
+- Deleted - layout.tsx metadata already serves SVG/PNG versions
+
+**Technical Notes:**
+- Pulse line SVG path: `M4 26 L10 26 L12 23 L14 29 L16 24 L18 26 L28 26` (flat→spike→spike→flat)
+- Font in SVG: `system-ui, -apple-system, sans-serif` for cross-platform consistency
+- rsvg-convert command: `rsvg-convert -w {size} -h {size} favicon.svg -o favicon-{size}x{size}.png`
+
+---

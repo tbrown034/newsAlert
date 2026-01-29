@@ -66,11 +66,11 @@ function ExternalLinkCard({ link }: { link: MediaAttachment }) {
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="mt-2 flex items-center gap-2.5 p-2 rounded-md border border-slate-200/60 dark:border-slate-700/60 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors group"
+      className="mt-2 flex items-center gap-2.5 p-2 rounded-md border border-[var(--border-light)] hover:border-[var(--border)] hover:bg-[var(--background-secondary)] transition-colors group"
     >
       {/* Small thumbnail */}
       {link.thumbnail && !imgError && (
-        <div className="relative w-10 h-10 rounded flex-shrink-0 overflow-hidden bg-slate-100 dark:bg-slate-800">
+        <div className="relative w-10 h-10 rounded flex-shrink-0 overflow-hidden bg-[var(--background-secondary)]">
           <Image
             src={link.thumbnail}
             alt=""
@@ -84,12 +84,12 @@ function ExternalLinkCard({ link }: { link: MediaAttachment }) {
       {/* Content - single line */}
       <div className="flex-1 min-w-0">
         {link.title && (
-          <p className="text-sm text-slate-700 dark:text-slate-200 truncate leading-tight">
+          <p className="text-label text-[var(--foreground)] truncate leading-tight">
             {link.title}
           </p>
         )}
         {domain && (
-          <p className="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1">
+          <p className="text-caption text-[var(--foreground-light)] flex items-center gap-1">
             <ArrowTopRightOnSquareIcon className="w-3 h-3 opacity-60" />
             {domain}
           </p>
@@ -231,15 +231,16 @@ function SourceAvatar({
   );
 }
 
-// Region badge colors and labels
+// Region badge colors - neutral, muted to avoid color overload
+// Color only for semantic meaning (breaking/elevated), not categorization
 const regionBadges: Record<WatchpointId, { label: string; color: string }> = {
-  'us': { label: 'US', color: 'bg-blue-500/10 text-blue-600 dark:text-blue-400' },
-  'latam': { label: 'AMERICAS', color: 'bg-green-500/10 text-green-600 dark:text-green-400' },
-  'middle-east': { label: 'MIDEAST', color: 'bg-orange-500/10 text-orange-600 dark:text-orange-400' },
-  'europe-russia': { label: 'EUR', color: 'bg-purple-500/10 text-purple-600 dark:text-purple-400' },
-  'asia': { label: 'ASIA', color: 'bg-rose-500/10 text-rose-600 dark:text-rose-400' },
-  'seismic': { label: 'SEISMIC', color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
-  'all': { label: 'GLOBAL', color: 'bg-slate-500/10 text-slate-600 dark:text-slate-400' },
+  'us': { label: 'US', color: 'bg-[var(--background-secondary)] text-[var(--foreground-muted)] border border-[var(--border-light)]' },
+  'latam': { label: 'AMERICAS', color: 'bg-[var(--background-secondary)] text-[var(--foreground-muted)] border border-[var(--border-light)]' },
+  'middle-east': { label: 'MIDEAST', color: 'bg-[var(--background-secondary)] text-[var(--foreground-muted)] border border-[var(--border-light)]' },
+  'europe-russia': { label: 'EUR', color: 'bg-[var(--background-secondary)] text-[var(--foreground-muted)] border border-[var(--border-light)]' },
+  'asia': { label: 'ASIA', color: 'bg-[var(--background-secondary)] text-[var(--foreground-muted)] border border-[var(--border-light)]' },
+  'seismic': { label: 'SEISMIC', color: 'bg-[var(--color-elevated-muted)] text-[var(--color-elevated)]' },
+  'all': { label: 'GLOBAL', color: 'bg-[var(--background-secondary)] text-[var(--foreground-muted)] border border-[var(--border-light)]' },
 };
 
 function formatTimeAgo(date: Date): string {
@@ -340,9 +341,10 @@ export function NewsCard({ item }: NewsCardProps) {
   return (
     <article
       className="
-        relative px-3 py-3 sm:px-4 sm:py-4 bg-white dark:bg-slate-900 rounded-xl
-        border border-slate-200/80 dark:border-slate-800
-        hover:border-slate-300 dark:hover:border-slate-600
+        relative px-3 py-3 sm:px-4 sm:py-4
+        bg-[var(--background-card)] rounded-xl
+        border border-[var(--border-light)]
+        hover:border-[var(--border)]
         transition-all duration-200
       "
     >
@@ -369,15 +371,15 @@ export function NewsCard({ item }: NewsCardProps) {
               platformColor={platformColor}
             />
             <div className="flex items-center gap-1.5 min-w-0">
-              <span className="text-sm font-semibold text-slate-800 dark:text-slate-100 truncate">
+              <span className="text-label font-medium text-[var(--foreground)] truncate">
                 {item.repostContext ? item.repostContext.originalAuthor : item.source.name}
               </span>
               {isVerified && !item.repostContext && (
-                <CheckBadgeSolid className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                <CheckBadgeSolid className="w-4 h-4 text-[var(--color-success)] flex-shrink-0" />
               )}
               {item.source.isStateSponsored && (
                 <span
-                  className="flex items-center gap-0.5 px-1 py-0.5 text-2xs font-medium rounded bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400 flex-shrink-0"
+                  className="flex items-center gap-0.5 px-1 py-0.5 text-micro font-medium rounded bg-[var(--color-elevated-muted)] text-[var(--color-elevated)] flex-shrink-0"
                   title="State-sponsored media"
                 >
                   <BuildingLibraryIcon className="w-3 h-3" />
@@ -385,11 +387,11 @@ export function NewsCard({ item }: NewsCardProps) {
                 </span>
               )}
               {item.repostContext?.originalHandle && (
-                <span className="text-xs text-slate-400 dark:text-slate-500 truncate">
+                <span className="text-caption text-[var(--foreground-light)] truncate">
                   @{item.repostContext.originalHandle}
                 </span>
               )}
-              <span className="text-xs text-slate-400 dark:text-slate-500 flex-shrink-0" suppressHydrationWarning>
+              <span className="text-caption text-[var(--foreground-light)] flex-shrink-0" suppressHydrationWarning>
                 · {formatTimeAgo(item.timestamp)}
                 <span className="hidden sm:inline"> · {item.timestamp.toLocaleString('en-US', {
                   month: 'short',
@@ -409,46 +411,46 @@ export function NewsCard({ item }: NewsCardProps) {
 
         {/* Reply context - show parent post for context */}
         {item.replyContext && (
-          <div className="ml-10 pl-3 border-l-2 border-slate-200 dark:border-slate-700">
-            <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 mb-1">
+          <div className="ml-10 pl-3 border-l-2 border-[var(--border)]">
+            <div className="flex items-center gap-1 text-caption text-[var(--foreground-light)] mb-1">
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
               </svg>
               <span>Replying to</span>
-              <span className="text-blue-500 dark:text-blue-400 font-medium">
+              <span className="text-[var(--foreground-muted)] font-medium">
                 @{item.replyContext.parentHandle || item.replyContext.parentAuthor}
               </span>
             </div>
             {/* Show parent text if available */}
             {item.replyContext.parentText && (
-              <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 italic">
+              <p className="text-caption text-[var(--foreground-light)] line-clamp-2 italic">
                 &ldquo;{item.replyContext.parentText}&rdquo;
               </p>
             )}
           </div>
         )}
 
-        {/* Row 2: Message text with truncation */}
-        <div className="text-sm text-slate-800 dark:text-slate-100 leading-relaxed py-2">
-          <p>
+        {/* Row 2: Message text with truncation - body text style */}
+        <div className="text-body py-1">
+          <p className="text-[var(--foreground)]">
             {displayText}
             {needsTruncation && !isExpanded && (
               <>
-                <span className="text-slate-400">...</span>
+                <span className="text-[var(--foreground-light)]">...</span>
                 <button
                   onClick={handleToggleExpand}
-                  className="ml-1 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+                  className="ml-1 text-[var(--foreground-muted)] hover:text-[var(--foreground)] font-medium"
                 >
-                  Show more
+                  more
                 </button>
               </>
             )}
             {needsTruncation && isExpanded && (
               <button
                 onClick={handleToggleExpand}
-                className="ml-1 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+                className="ml-1 text-[var(--foreground-muted)] hover:text-[var(--foreground)] font-medium"
               >
-                Show less
+                less
               </button>
             )}
           </p>
@@ -465,7 +467,7 @@ export function NewsCard({ item }: NewsCardProps) {
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group w-fit"
+            className="inline-flex items-center gap-1.5 text-caption text-[var(--foreground-light)] hover:text-[var(--foreground)] transition-colors group w-fit"
           >
             <span className="border-b border-dotted border-current">
               {(() => {
@@ -482,34 +484,34 @@ export function NewsCard({ item }: NewsCardProps) {
 
         {/* Row 3: Tags + Actions */}
         <div className="flex items-center justify-between pt-1">
-          {/* Source type (neutral) + Platform (icon + name with brand color) */}
+          {/* Source type (neutral) + Platform (icon + name) */}
           <div className="flex items-center gap-2.5">
-            <span className={`px-1.5 py-0.5 text-2xs font-medium rounded border ${sourceTypeStyle}`}>
+            <span className={`px-1.5 py-0.5 text-micro font-medium rounded border ${sourceTypeStyle}`}>
               {sourceTypeLabel}
             </span>
-            <span className={`flex items-center gap-1 text-2xs ${platformColor}`}>
+            <span className={`flex items-center gap-1 text-xs font-medium ${platformColors[item.source.platform] || platformColors.rss}`}>
               <PlatformIcon platform={item.source.platform} className="w-3.5 h-3.5" />
               <span>{platformNames[item.source.platform] || item.source.platform}</span>
             </span>
           </div>
-          {/* Actions */}
+          {/* Actions - neutral colors */}
           <div className="flex items-center gap-3">
             <button
               onClick={handleShare}
-              className="flex items-center gap-1.5 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors"
+              className="flex items-center gap-1.5 text-[var(--foreground-light)] hover:text-[var(--foreground-muted)] transition-colors"
               aria-label="Share this post"
             >
               <ShareIcon className="w-4 h-4" />
-              <span className="text-xs font-medium">Share</span>
+              <span className="text-caption font-medium">Share</span>
             </button>
             {item.url && (
               <button
                 onClick={handleOpenSource}
-                className="flex items-center gap-1.5 text-slate-400 hover:text-blue-500 dark:text-slate-500 dark:hover:text-blue-400 transition-colors"
+                className="flex items-center gap-1.5 text-[var(--foreground-light)] hover:text-[var(--foreground)] transition-colors"
                 aria-label="Open source"
               >
                 <ArrowTopRightOnSquareIcon className="w-4 h-4" />
-                <span className="text-xs font-medium">Source</span>
+                <span className="text-caption font-medium">Source</span>
               </button>
             )}
           </div>
