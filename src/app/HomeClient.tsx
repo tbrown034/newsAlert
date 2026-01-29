@@ -71,6 +71,8 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mapCollapsed, setMapCollapsed] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [useUTC, setUseUTC] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   // Initialize theme from localStorage
   useEffect(() => {
@@ -79,6 +81,38 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
       setTheme(savedTheme);
     }
   }, []);
+
+  // Update current time every second for the header clock
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Format time for header display
+  const formatHeaderTime = () => {
+    if (useUTC) {
+      return currentTime.toLocaleString('en-US', {
+        timeZone: 'UTC',
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      }) + ' UTC';
+    }
+    return currentTime.toLocaleString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+      timeZoneName: 'short',
+    });
+  };
 
   // Initialize autoUpdate preference from localStorage (after hydration)
   useEffect(() => {
@@ -622,10 +656,13 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                 {/* Dynamic Title */}
                 <div className="flex items-center gap-2 flex-shrink-0">
                   {heroView === 'main' && (
-                    <>
-                      <GlobeAltIcon className="w-4 h-4 text-blue-500" />
-                      <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Global Monitor</h2>
-                    </>
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <GlobeAltIcon className="w-4 h-4 text-blue-500" />
+                        <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Global Monitor</h2>
+                      </div>
+                      <span className="text-xs font-mono text-slate-500 dark:text-slate-400 ml-6">{formatHeaderTime()}</span>
+                    </div>
                   )}
                   {heroView === 'seismic' && (
                     <>
@@ -743,6 +780,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                   activity={activityData || undefined}
                   significantQuakes={significantQuakes}
                   hoursWindow={hoursWindow}
+                  useUTC={useUTC}
                 />
               )}
               {heroView === 'seismic' && (
@@ -874,7 +912,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
             {/* Stats */}
             <div>
               <div className="text-2xs text-slate-400 dark:text-slate-500 mb-1.5 font-medium">Stats</div>
-              <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
+              <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 flex-wrap">
                 <div className="flex items-center gap-1.5">
                   <span className="text-slate-400 dark:text-slate-500">Window:</span>
                   <span className="font-mono text-slate-700 dark:text-slate-300">{hoursWindow}h</span>
@@ -887,40 +925,153 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                   <span className="text-slate-400 dark:text-slate-500">Sources:</span>
                   <span className="font-mono text-slate-700 dark:text-slate-300">{totalSources}</span>
                 </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-slate-400 dark:text-slate-500">Map Time:</span>
+                  <button
+                    onClick={() => setUseUTC(!useUTC)}
+                    className="font-mono text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 underline decoration-dotted underline-offset-2 transition-colors"
+                  >
+                    {useUTC ? 'UTC' : 'Local'}
+                  </button>
+                </div>
               </div>
             </div>
-            {/* Map Key */}
+            {/* Map Key - view-specific */}
             <div>
               <div className="text-2xs text-slate-400 dark:text-slate-500 mb-1.5 font-medium">Map Key</div>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-500 dark:text-slate-400">
-                <div className="flex items-center gap-2">
-                  <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-green-500" />
-                    <span>Typical</span>
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-orange-500" />
-                    <span>2x+</span>
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-red-500" />
-                    <span>4x+</span>
-                  </span>
-                </div>
-                {significantQuakes.length > 0 && (
+                {/* Activity levels - Main view */}
+                {heroView === 'main' && (
+                  <>
+                    <div className="flex items-center gap-2">
+                      <span className="text-slate-400 dark:text-slate-500 text-2xs">({hoursWindow}h)</span>
+                      <span className="flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-green-500" />
+                        <span>Typical</span>
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-orange-500" />
+                        <span>2x+</span>
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-red-500" />
+                        <span>4x+</span>
+                      </span>
+                    </div>
+                    {significantQuakes.length > 0 && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-300 dark:text-slate-600">|</span>
+                        <span className="text-slate-400 dark:text-slate-500 text-2xs">(24h)</span>
+                        <span className="flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full bg-yellow-500" />
+                          <span>M6+</span>
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full bg-orange-500" />
+                          <span>M6.5+</span>
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <span className="w-2 h-2 rounded-full bg-red-500" />
+                          <span>M7+</span>
+                        </span>
+                      </div>
+                    )}
+                  </>
+                )}
+                {/* Seismic magnitude scale */}
+                {heroView === 'seismic' && (
                   <div className="flex items-center gap-2">
-                    <span className="text-slate-300 dark:text-slate-600">|</span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-green-500" />
+                      <span>M2.5+</span>
+                    </span>
                     <span className="flex items-center gap-1">
                       <span className="w-2 h-2 rounded-full bg-yellow-500" />
-                      <span>M6+</span>
+                      <span>M4.5+</span>
                     </span>
                     <span className="flex items-center gap-1">
                       <span className="w-2 h-2 rounded-full bg-orange-500" />
-                      <span>M6.5+</span>
+                      <span>M6+</span>
                     </span>
                     <span className="flex items-center gap-1">
                       <span className="w-2 h-2 rounded-full bg-red-500" />
                       <span>M7+</span>
+                    </span>
+                  </div>
+                )}
+                {/* Weather severity */}
+                {heroView === 'weather' && (
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-sky-500" />
+                      <span>Advisory</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-yellow-500" />
+                      <span>Watch</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-orange-500" />
+                      <span>Warning</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-red-500" />
+                      <span>Emergency</span>
+                    </span>
+                  </div>
+                )}
+                {/* Outages severity */}
+                {heroView === 'outages' && (
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-yellow-500" />
+                      <span>Minor</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-orange-500" />
+                      <span>Significant</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-red-500" />
+                      <span>Major</span>
+                    </span>
+                  </div>
+                )}
+                {/* Travel advisory levels */}
+                {heroView === 'travel' && (
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-blue-500" />
+                      <span>Level 1</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-yellow-500" />
+                      <span>Level 2</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-orange-500" />
+                      <span>Level 3</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-red-500" />
+                      <span>Level 4</span>
+                    </span>
+                  </div>
+                )}
+                {/* Fire intensity */}
+                {heroView === 'fires' && (
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-yellow-500" />
+                      <span>Low</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-orange-500" />
+                      <span>Moderate</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-red-500" />
+                      <span>High</span>
                     </span>
                   </div>
                 )}

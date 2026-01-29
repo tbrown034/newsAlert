@@ -16,10 +16,22 @@ import { RegionActivity } from '@/lib/activityDetection';
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
 /**
- * Get local time at a given longitude with city name
+ * Get time at a given longitude with city name
+ * @param useUTC - If true, shows UTC time instead of estimated local time
  */
-function getLocalTime(longitude: number, city: string): string {
+function getTimeDisplay(longitude: number, city: string, useUTC: boolean): string {
   const now = new Date();
+
+  if (useUTC) {
+    const time = now.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+      timeZone: 'UTC',
+    });
+    return `${time} UTC`;
+  }
+
   // Approximate timezone offset from longitude (15 degrees = 1 hour)
   const offsetHours = Math.round(longitude / 15);
   const utcTime = now.getTime() + now.getTimezoneOffset() * 60000;
@@ -43,6 +55,7 @@ interface WorldMapProps {
   significantQuakes?: Earthquake[]; // 6.0+ earthquakes for Main view
   hoursWindow?: number; // Time window in hours
   hotspotsOnly?: boolean; // Only show elevated/critical regions
+  useUTC?: boolean; // Display times in UTC instead of local
 }
 
 // Activity level colors - visual language:
@@ -53,10 +66,10 @@ const activityColors: Record<string, { fill: string; glow: string; text: string 
   normal: { fill: '#22c55e', glow: 'rgba(34, 197, 94, 0.3)', text: 'text-green-400' },      // Green - normal
 };
 
-// Region marker positions (longitude, latitude) - actual capital city coordinates
+// Region marker positions (longitude, latitude) - positioned for visual balance
 const regionMarkers: Record<string, { coordinates: [number, number]; label: string; city: string; zoom: number }> = {
   'us': { coordinates: [-77.04, 38.91], label: 'United States', city: 'DC', zoom: 2.2 },
-  'latam': { coordinates: [-46.63, -23.55], label: 'Latin America', city: 'São Paulo', zoom: 1.8 },
+  'latam': { coordinates: [-66.90, 10.48], label: 'Latin America', city: 'Caracas', zoom: 1.8 },
   'middle-east': { coordinates: [51.39, 35.69], label: 'Middle East', city: 'Tehran', zoom: 2.5 },
   'europe-russia': { coordinates: [30.52, 50.45], label: 'Europe-Russia', city: 'Kyiv', zoom: 2.2 },
   'asia': { coordinates: [116.41, 39.90], label: 'Asia', city: 'Beijing', zoom: 2 },
@@ -66,12 +79,63 @@ const regionMarkers: Record<string, { coordinates: [number, number]; label: stri
 const DEFAULT_CENTER: [number, number] = [40, 25];
 const DEFAULT_ZOOM = 1;
 
-function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {}, activity = {}, significantQuakes = [], hoursWindow = 6, hotspotsOnly = false }: WorldMapProps) {
+// Map theme colors
+const mapThemes = {
+  dark: {
+    water: 'bg-[#1e3a5f]',
+    land: '#4a6274',
+    landHover: '#5d7486',
+    stroke: '#5d7486',
+    labelDefault: '#d1d5db',
+    labelActive: '#fff',
+    timeLabel: '#9ca3af',
+    textShadow: '0 2px 4px rgba(0,0,0,0.9)',
+    markerStroke: '#fff',
+    markerStrokeHover: 'rgba(255,255,255,0.6)',
+    markerStrokeDefault: 'rgba(255,255,255,0.3)',
+    glowOpacity: 0.6,
+    glowOpacityHover: 0.8,
+  },
+  light: {
+    water: 'bg-[#6ba3bd]',
+    land: '#d4cfc2',
+    landHover: '#c9c4b6',
+    stroke: '#b8b3a5',
+    labelDefault: '#1f2937',
+    labelActive: '#000',
+    timeLabel: '#374151',
+    textShadow: '0 1px 2px rgba(255,255,255,0.8)',
+    markerStroke: '#1f2937',
+    markerStrokeHover: 'rgba(0,0,0,0.5)',
+    markerStrokeDefault: 'rgba(0,0,0,0.3)',
+    glowOpacity: 0.7,
+    glowOpacityHover: 0.9,
+  },
+};
+
+function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {}, activity = {}, significantQuakes = [], hoursWindow = 6, hotspotsOnly = false, useUTC = false }: WorldMapProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [position, setPosition] = useState({ coordinates: DEFAULT_CENTER, zoom: DEFAULT_ZOOM });
   const [hoveredMarker, setHoveredMarker] = useState<string | null>(null);
   const [hoveredQuake, setHoveredQuake] = useState<string | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  // Detect theme changes
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'));
+    };
+    checkTheme();
+
+    // Watch for theme changes
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const theme = isDarkMode ? mapThemes.dark : mapThemes.light;
 
   const handleMoveEnd = (position: { coordinates: [number, number]; zoom: number }) => {
     setPosition(position);
@@ -155,16 +219,16 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
   // Show loading placeholder during SSR to avoid hydration mismatch
   if (!isMounted) {
     return (
-      <div className="relative w-full bg-[#1e3a5f] overflow-hidden">
+      <div className={`relative w-full ${theme.water} overflow-hidden`}>
         <div className="relative h-[140px] sm:h-[180px] flex items-center justify-center">
-          <div className="text-gray-600 text-sm">Loading map...</div>
+          <div className="text-gray-500 dark:text-gray-600 text-sm">Loading map...</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="relative w-full bg-[#1e3a5f] overflow-hidden">
+    <div className={`relative w-full ${theme.water} overflow-hidden`}>
       {/* Map Container */}
       <div className="relative h-[140px] sm:h-[180px]">
         <ComposableMap
@@ -191,12 +255,12 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill="#4a6274"
-                  stroke="#5d7486"
+                  fill={theme.land}
+                  stroke={theme.stroke}
                   strokeWidth={0.5}
                   style={{
                     default: { outline: 'none' },
-                    hover: { outline: 'none', fill: '#5d7486' },
+                    hover: { outline: 'none', fill: theme.landHover },
                     pressed: { outline: 'none' },
                   }}
                 />
@@ -236,9 +300,9 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
                   <circle
                     r={24}
                     fill="none"
-                    stroke="#fff"
+                    stroke={theme.markerStroke}
                     strokeWidth={2}
-                    opacity={0.3}
+                    opacity={0.5}
                     strokeDasharray="4 4"
                     className="animate-spin-slow"
                   />
@@ -260,7 +324,7 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
                 <circle
                   r={isSelected ? 20 : isHovered ? 18 : 16}
                   fill={colors.glow}
-                  opacity={isHovered ? 0.8 : 0.6}
+                  opacity={isHovered ? theme.glowOpacityHover : theme.glowOpacity}
                   style={{ transition: 'r 150ms ease, opacity 150ms ease' }}
                 />
 
@@ -268,8 +332,8 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
                 <circle
                   r={isSelected ? 12 : isHovered ? 11 : 10}
                   fill={colors.fill}
-                  stroke={isSelected ? '#fff' : isHovered ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.3)'}
-                  strokeWidth={isSelected ? 3 : isHovered ? 2 : 1}
+                  stroke={isSelected ? theme.markerStroke : isHovered ? theme.markerStrokeHover : theme.markerStrokeDefault}
+                  strokeWidth={isSelected ? 3 : isHovered ? 2 : 1.5}
                   className={isCritical ? 'animate-pulse-subtle' : ''}
                   style={{ transition: 'r 150ms ease, stroke-width 150ms ease' }}
                 />
@@ -277,13 +341,13 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
 
                 {/* Label */}
                 <text
-                  y={30}
+                  y={34}
                   textAnchor="middle"
-                  fill={isSelected || isHovered ? '#fff' : '#d1d5db'}
-                  fontSize={14}
-                  fontWeight={isSelected || isHovered ? 'bold' : '500'}
+                  fill={isSelected || isHovered ? theme.labelActive : theme.labelDefault}
+                  fontSize={20}
+                  fontWeight={isSelected || isHovered ? '700' : '600'}
                   style={{
-                    textShadow: '0 2px 4px rgba(0,0,0,0.9)',
+                    textShadow: theme.textShadow,
                     pointerEvents: 'none',
                     transition: 'fill 150ms ease',
                   }}
@@ -293,17 +357,18 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
 
                 {/* Local Time with City */}
                 <text
-                  y={48}
+                  y={58}
                   textAnchor="middle"
-                  fill="#9ca3af"
-                  fontSize={12}
+                  fill={theme.timeLabel}
+                  fontSize={16}
+                  fontWeight="500"
                   fontFamily="monospace"
                   style={{
-                    textShadow: '0 2px 4px rgba(0,0,0,0.9)',
+                    textShadow: theme.textShadow,
                     pointerEvents: 'none',
                   }}
                 >
-                  {getLocalTime(marker.coordinates[0], marker.city)}
+                  {getTimeDisplay(marker.coordinates[0], marker.city, useUTC)}
                 </text>
 
                 {/* Hover tooltip - activity level */}

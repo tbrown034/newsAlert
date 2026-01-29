@@ -272,6 +272,12 @@ function formatTimeAgo(date: Date): string {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
+// Check if post is very recent (less than 5 minutes old)
+function isVeryRecent(timestamp: Date): boolean {
+  const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
+  return timestamp.getTime() > fiveMinutesAgo;
+}
+
 export function NewsCard({ item }: NewsCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const platformColor = platformColors[item.source.platform] || platformColors.rss;
@@ -279,6 +285,7 @@ export function NewsCard({ item }: NewsCardProps) {
   const sourceTypeLabel = sourceTypeLabels[item.source.sourceType] || item.source.sourceType;
   const isVerified = item.verificationStatus === 'confirmed';
   const regionBadge = regionBadges[item.region] || regionBadges['all'];
+  const veryRecent = isVeryRecent(item.timestamp);
 
   // Check if text needs truncation
   const needsTruncation = item.title.length > CHAR_LIMIT;
@@ -340,13 +347,14 @@ export function NewsCard({ item }: NewsCardProps) {
 
   return (
     <article
-      className="
+      className={`
         relative px-3 py-3 sm:px-4 sm:py-4
         bg-[var(--background-card)] rounded-xl
         border border-[var(--border-light)]
         hover:border-[var(--border)]
         transition-all duration-200
-      "
+        ${veryRecent ? 'border-l-4 border-l-emerald-500 dark:border-l-emerald-400' : ''}
+      `}
     >
       <div className="flex flex-col gap-2">
         {/* Repost indicator */}

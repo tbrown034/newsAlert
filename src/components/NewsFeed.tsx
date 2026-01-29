@@ -5,7 +5,7 @@ import { NewsItem, WatchpointId } from '@/types';
 import { NewsCard } from './NewsCard';
 import { EditorialCard, isEditorialItem } from './EditorialCard';
 import { InlineBriefing } from './InlineBriefing';
-import { ArrowPathIcon, ExclamationTriangleIcon, GlobeAltIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, ExclamationTriangleIcon, GlobeAltIcon, ChevronDownIcon, SignalIcon } from '@heroicons/react/24/outline';
 import { regionDisplayNames } from '@/lib/regionDetection';
 
 interface ActivityData {
@@ -364,149 +364,61 @@ export function NewsFeed({
     return -1;
   }, [sortedItems, initialSessionIds, newSinceArrivalCount]);
 
+  // Get the current region label
+  const currentRegionLabel = selectedTab === 'all'
+    ? 'All Regions'
+    : allTabs.find(t => t.id === selectedTab)?.label || 'All Regions';
+
+  // Get the current source label
+  const currentSourceLabel = platformFilter === 'all'
+    ? 'All Sources'
+    : platformFilters.find(f => f.id === platformFilter)?.label || 'All Sources';
+
+  const totalPosts = Object.values(platformCounts).reduce((sum, c) => sum + c, 0);
+
   return (
     <div className="flex flex-col bg-[var(--background)]">
-      {/* Region Tabs + Volume Indicator (sticky header) */}
+      {/* Unified Filter Bar (sticky header) */}
       <div className="sticky top-14 sm:top-16 z-30 bg-[var(--background)]">
-        <div className="flex items-center border-b border-[var(--border-light)]">
-          {/* Scrollable tabs area */}
-          <div
-            className="flex items-center overflow-x-auto scrollbar-hide"
-            role="tablist"
-            aria-label="Feed filters"
-          >
-            {/* Inline tabs - responsive visibility */}
-            {inlineTabs.map((tab) => {
-              const isSelected = selectedTab === tab.id;
-
-              // Responsive visibility classes
-              let visibilityClass = '';
-              if (tab.minScreen === 'sm') visibilityClass = 'hidden sm:flex';
-              else if (tab.minScreen === 'md') visibilityClass = 'hidden md:flex';
-              else if (tab.minScreen === 'lg') visibilityClass = 'hidden lg:flex';
-
-              return (
-                <button
-                  key={tab.id}
-                  role="tab"
-                  aria-selected={isSelected}
-                  aria-controls="feed-panel"
-                  tabIndex={isSelected ? 0 : -1}
-                  onClick={() => handleTabSelect(tab.id)}
-                  className={`
-                    relative flex-shrink-0 px-3 sm:px-4 py-3 sm:py-3.5 text-label font-medium
-                    transition-colors duration-200 whitespace-nowrap min-h-[44px]
-                    focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--foreground)] focus-visible:ring-inset
-                    ${visibilityClass || 'flex'}
-                    ${isSelected
-                      ? 'text-[var(--foreground)]'
-                      : 'text-[var(--foreground-light)] hover:text-[var(--foreground-muted)] hover:bg-[var(--background-secondary)]'
-                    }
-                  `}
-                >
-                  {tab.label}
-
-                  {isSelected && (
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-[var(--foreground)] rounded-full" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Regional toggle button */}
-          <button
-            onClick={() => setRegionalExpanded(!regionalExpanded)}
-            className={`
-              relative flex items-center gap-1 px-3 sm:px-4 py-3 sm:py-3.5 text-label font-medium
-              transition-colors duration-200 whitespace-nowrap min-h-[44px]
-              focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--foreground)] focus-visible:ring-inset
-              ${isDropdownTabSelected || regionalExpanded
-                ? 'text-[var(--foreground)]'
-                : 'text-[var(--foreground-light)] hover:text-[var(--foreground-muted)] hover:bg-[var(--background-secondary)]'
-              }
-            `}
-            aria-expanded={regionalExpanded}
-          >
-            {isDropdownTabSelected
-              ? dropdownTabs.find(t => t.id === selectedTab)?.label
-              : 'Regional'}
-            <ChevronDownIcon className={`w-3.5 h-3.5 transition-transform ${regionalExpanded ? 'rotate-180' : ''}`} />
-            {isDropdownTabSelected && (
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-[var(--foreground)] rounded-full" />
-            )}
-          </button>
-
-          <div className="flex-1" /> {/* Spacer */}
-
-          {onRefresh && (
-            <button
-              onClick={onRefresh}
-              disabled={isLoading}
-              aria-label={isLoading ? 'Refreshing feed' : 'Refresh feed'}
-              className="flex-shrink-0 px-3 py-3 min-h-[44px] text-[var(--foreground-light)] hover:text-[var(--foreground)] transition-colors disabled:opacity-50 border-l border-[var(--border-light)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--foreground)] focus-visible:ring-inset"
-            >
-              <ArrowPathIcon className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-            </button>
-          )}
-        </div>
-
-        {/* Expandable regional row */}
-        {regionalExpanded && (
-          <div className="flex items-center gap-1 px-2 sm:px-3 py-2 border-b border-[var(--border-light)] bg-[var(--background-secondary)] overflow-x-auto scrollbar-hide">
-            {/* Show first 3 regions inline on mobile, all on larger screens */}
-            {allTabs.filter(t => !t.alwaysVisible).slice(0, 3).map((tab) => {
-              const isSelected = selectedTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => {
-                    handleTabSelect(tab.id);
-                    setRegionalExpanded(false);
-                  }}
-                  className={`
-                    px-2.5 sm:px-3 py-1.5 text-caption sm:text-label font-medium rounded-lg transition-colors whitespace-nowrap
-                    ${isSelected
-                      ? 'bg-[var(--background-card)] text-[var(--foreground)] border border-[var(--border)]'
-                      : 'bg-[var(--background-card)] text-[var(--foreground-muted)] hover:text-[var(--foreground)] border border-[var(--border-light)]'
-                    }
-                  `}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-
-            {/* More dropdown for remaining regions on mobile */}
-            <div className="relative sm:hidden" ref={moreDropdownRef}>
+        <div className="px-3 sm:px-4 py-2 sm:py-2.5 border-b border-[var(--border-light)] bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-sm space-y-2">
+          {/* Row 1: Filter dropdowns */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Region Dropdown */}
+            <div className="relative" ref={moreDropdownRef}>
               <button
-                onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
-                className="px-2.5 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center gap-1"
+                onClick={() => {
+                  setRegionalExpanded(!regionalExpanded);
+                  setSourceFilterExpanded(false);
+                }}
+                className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
               >
-                More
-                <ChevronDownIcon className={`w-3 h-3 transition-transform ${moreDropdownOpen ? 'rotate-180' : ''}`} />
+                <GlobeAltIcon className="w-4 h-4 text-blue-500" />
+                <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">{currentRegionLabel}</span>
+                <ChevronDownIcon className={`w-3.5 h-3.5 text-slate-400 transition-transform ${regionalExpanded ? 'rotate-180' : ''}`} />
               </button>
-              {moreDropdownOpen && (
-                <div className="absolute top-full left-0 mt-1 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-lg z-50 min-w-[140px]">
-                  {allTabs.filter(t => !t.alwaysVisible).slice(3).map((tab) => {
+
+              {/* Region dropdown menu */}
+              {regionalExpanded && (
+                <div className="absolute top-full left-0 mt-1 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-50 min-w-[160px]">
+                  {allTabs.map((tab) => {
                     const isSelected = selectedTab === tab.id;
                     return (
                       <button
                         key={tab.id}
                         onClick={() => {
                           handleTabSelect(tab.id);
-                          setMoreDropdownOpen(false);
                           setRegionalExpanded(false);
                         }}
                         className={`
-                          w-full px-3 py-2.5 text-sm font-medium transition-colors text-left
+                          w-full px-3 py-2 text-sm font-medium transition-colors text-left flex items-center gap-2
                           ${isSelected
-                            ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
-                            : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                            ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                            : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
                           }
                         `}
                       >
-                        {tab.label}
+                        {tab.id === 'all' ? 'All Regions' : tab.label}
+                        {isSelected && <span className="ml-auto text-blue-500">✓</span>}
                       </button>
                     );
                   })}
@@ -514,102 +426,27 @@ export function NewsFeed({
               )}
             </div>
 
-            {/* Show remaining regions inline on larger screens */}
-            {allTabs.filter(t => !t.alwaysVisible).slice(3).map((tab) => {
-              const isSelected = selectedTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => {
-                    handleTabSelect(tab.id);
-                    setRegionalExpanded(false);
-                  }}
-                  className={`
-                    hidden sm:block px-3 py-1.5 text-sm font-medium rounded-lg transition-colors whitespace-nowrap
-                    ${isSelected
-                      ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
-                      : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
-                    }
-                  `}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
-        )}
+            {/* Source Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setSourceFilterExpanded(!sourceFilterExpanded);
+                  setRegionalExpanded(false);
+                }}
+                className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
+              >
+                <SignalIcon className="w-4 h-4 text-emerald-500" />
+                <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">{currentSourceLabel}</span>
+                <ChevronDownIcon className={`w-3.5 h-3.5 text-slate-400 transition-transform ${sourceFilterExpanded ? 'rotate-180' : ''}`} />
+              </button>
 
-        {/* Platform filter bar - collapsible */}
-        {(isLoading || Object.values(platformCounts).some(count => count > 0)) && (
-          <div className="px-3 sm:px-4 py-2 sm:py-2.5 flex items-center gap-2 sm:gap-3 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
-            {/* Collapsed state: just show toggle button */}
-            {!sourceFilterExpanded ? (
-              <>
-                <button
-                  onClick={() => setSourceFilterExpanded(true)}
-                  className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors flex items-center gap-1"
-                >
-                  <span>Filter by source</span>
-                  <ChevronDownIcon className="w-3 h-3" />
-                </button>
-                {/* Show active filter if not "all" */}
-                {platformFilter !== 'all' && (
-                  <span className="px-1.5 sm:px-2 py-0.5 text-[10px] sm:text-xs font-medium rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">
-                    {platformFilters.find(f => f.id === platformFilter)?.label}
-                    <button
-                      onClick={() => setPlatformFilter('all')}
-                      className="ml-1 text-blue-400 hover:text-blue-600"
-                    >
-                      ×
-                    </button>
-                  </span>
-                )}
-                {/* Stats + Live updates on right side */}
-                <div className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs text-slate-400 dark:text-slate-500 ml-auto flex-shrink-0">
-                  <span>{Object.values(platformCounts).reduce((sum, c) => sum + c, 0)} posts</span>
-                  {lastUpdated && (
-                    <span className="hidden sm:inline" suppressHydrationWarning>
-                      · {formatLastUpdated(lastUpdated)}
-                    </span>
-                  )}
-                  {onToggleAutoUpdate && (
-                    <>
-                      <span className="text-slate-300 dark:text-slate-700">|</span>
-                      <span>Live updates</span>
-                      <button
-                        onClick={onToggleAutoUpdate}
-                        className={`relative w-8 h-5 rounded-full transition-colors ${
-                          autoUpdate
-                            ? 'bg-blue-500'
-                            : 'bg-slate-300 dark:bg-slate-600'
-                        }`}
-                        aria-label={autoUpdate ? 'Disable live updates' : 'Enable live updates'}
-                      >
-                        <span
-                          className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
-                            autoUpdate ? 'translate-x-3' : 'translate-x-0'
-                          }`}
-                        />
-                      </button>
-                    </>
-                  )}
-                </div>
-              </>
-            ) : (
-              /* Expanded state: show all platform filters */
-              <>
-                <button
-                  onClick={() => setSourceFilterExpanded(false)}
-                  className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors flex items-center gap-1 flex-shrink-0"
-                >
-                  <span>Source:</span>
-                  <ChevronDownIcon className="w-3 h-3 rotate-180" />
-                </button>
-                <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
+              {/* Source dropdown menu */}
+              {sourceFilterExpanded && (
+                <div className="absolute top-full left-0 mt-1 py-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-50 min-w-[160px]">
                   {platformFilters.map((filter) => {
                     const isSelected = platformFilter === filter.id;
                     const count = filter.id === 'all'
-                      ? Object.values(platformCounts).reduce((sum, c) => sum + c, 0)
+                      ? totalPosts
                       : (platformCounts[filter.id] || 0);
 
                     // Hide platforms with 0 items (except "All" and currently selected)
@@ -617,52 +454,78 @@ export function NewsFeed({
                       return null;
                     }
 
-                    // Show loading state if still loading initial data
-                    const isLoadingPlatform = isLoading && filter.id !== 'all' && count === 0;
-
                     return (
                       <button
                         key={filter.id}
-                        onClick={() => setPlatformFilter(filter.id)}
-                        disabled={isLoadingPlatform}
+                        onClick={() => {
+                          setPlatformFilter(filter.id);
+                          setSourceFilterExpanded(false);
+                        }}
                         className={`
-                          px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full transition-colors whitespace-nowrap
+                          w-full px-3 py-2 text-sm font-medium transition-colors text-left flex items-center justify-between
                           ${isSelected
-                            ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
-                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700'
+                            ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                            : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
                           }
-                          ${isLoadingPlatform ? 'opacity-60' : ''}
                         `}
                       >
-                        {filter.label}
-                        {isLoadingPlatform ? (
-                          <span className="ml-1 inline-block w-2.5 h-2.5 border border-slate-400 border-t-transparent rounded-full animate-spin" />
-                        ) : (
-                          <span className={`ml-0.5 sm:ml-1 ${isSelected ? 'text-blue-500 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>
-                            {count}
-                          </span>
-                        )}
+                        <span>{filter.id === 'all' ? 'All Sources' : filter.label}</span>
+                        <span className={`text-xs ${isSelected ? 'text-blue-500' : 'text-slate-400'}`}>
+                          {isLoading && filter.id !== 'all' && count === 0 ? '...' : count}
+                        </span>
                       </button>
                     );
                   })}
                 </div>
-                {/* Stats on right side - hidden on mobile to reduce cramping */}
-                <div className="hidden sm:flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500 ml-auto flex-shrink-0">
-                  {loadTimeMs != null && (
-                    <span className={loadTimeMs > 10000 ? 'text-amber-500' : ''}>
-                      {loadTimeMs > 1000 ? `${(loadTimeMs / 1000).toFixed(1)}s` : `${loadTimeMs}ms`}
-                    </span>
-                  )}
-                  {lastUpdated && (
-                    <span suppressHydrationWarning>
-                      {formatLastUpdated(lastUpdated)}
-                    </span>
-                  )}
-                </div>
-              </>
-            )}
+              )}
+            </div>
           </div>
-        )}
+
+          {/* Row 2: Stats & Controls */}
+          <div className="flex items-center justify-between text-xs">
+            {/* Left: Post count and last updated */}
+            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+              <span className="font-medium">{totalPosts} posts</span>
+              {lastUpdated && (
+                <span className="text-slate-400 dark:text-slate-500" suppressHydrationWarning>
+                  · {formatLastUpdated(lastUpdated)}
+                </span>
+              )}
+            </div>
+
+            {/* Right: Live toggle and Refresh */}
+            <div className="flex items-center gap-3">
+              {/* Live updates toggle */}
+              {onToggleAutoUpdate && (
+                <button
+                  onClick={onToggleAutoUpdate}
+                  className={`flex items-center gap-2 px-2.5 py-1 rounded-md transition-colors ${
+                    autoUpdate
+                      ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                  }`}
+                  aria-label={autoUpdate ? 'Disable live updates' : 'Enable live updates'}
+                >
+                  <span className={`w-2 h-2 rounded-full ${autoUpdate ? 'bg-green-500' : 'bg-slate-400 dark:bg-slate-500'}`} />
+                  <span className="font-medium">Live updates</span>
+                </button>
+              )}
+
+              {/* Refresh button */}
+              {onRefresh && (
+                <button
+                  onClick={onRefresh}
+                  disabled={isLoading}
+                  aria-label={isLoading ? 'Refreshing feed' : 'Refresh feed'}
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+                >
+                  <ArrowPathIcon className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+                  <span className="font-medium">Refresh</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
 
         {/* Volume indicator - part of sticky header (only for region tabs) */}
         {selectedTab !== 'all' && activity?.[selectedTab] && (
