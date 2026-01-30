@@ -382,9 +382,11 @@ export function NewsFeed({
 
   const totalFilteredPosts = Object.values(platformCounts).reduce((sum, c) => sum + c, 0);
 
-  // Calculate display stats
-  const displayPosts = totalPosts ?? items.length;
-  const displaySources = uniqueSources ?? new Set(items.map(i => i.source.id)).size;
+  // Calculate display stats based on filtered view
+  // When "All" is selected, show total stats; otherwise show filtered region stats
+  const displayPosts = filteredItems.length;
+  const displaySources = new Set(filteredItems.map(i => i.source.id)).size;
+  const isFiltered = selectedTab !== 'all' || platformFilter !== 'all';
 
   return (
     <div className="flex flex-col">
@@ -421,11 +423,11 @@ export function NewsFeed({
 
           {/* Row 2: Stats */}
           <div className="text-xs text-slate-500 dark:text-slate-400 mb-2.5">
-            {'Fetched '}
+            {isFiltered ? 'Showing ' : 'Fetched '}
             <span className="font-semibold text-slate-700 dark:text-slate-300">{displayPosts} posts</span>
             {' from '}
             <span className="font-semibold text-slate-700 dark:text-slate-300">{displaySources} sources</span>
-            {' in last six hours'}
+            {isFiltered ? ' (filtered)' : ' in last six hours'}
           </div>
 
           {/* Row 2: Filter dropdowns */}
