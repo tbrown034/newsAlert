@@ -49,6 +49,18 @@ export const blockedSources = [
     reason: 'YouTube channel ID invalid (404), channel may have been removed or ID changed',
     dateBlocked: '2026-01-29',
   },
+  {
+    id: 'potus-tracker',
+    name: 'POTUS Tracker',
+    reason: 'Account/channel no longer accessible',
+    dateBlocked: '2026-01-30',
+  },
+  {
+    id: 'telegram-militarylandnet',
+    name: 'Military Land',
+    reason: 'Account/channel no longer accessible',
+    dateBlocked: '2026-01-30',
+  },
 ];
 
 // Quick lookup

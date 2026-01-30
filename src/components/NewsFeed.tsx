@@ -383,10 +383,13 @@ export function NewsFeed({
   const totalFilteredPosts = Object.values(platformCounts).reduce((sum, c) => sum + c, 0);
 
   // Calculate display stats based on filtered view
-  // When "All" is selected, show total stats; otherwise show filtered region stats
-  const displayPosts = filteredItems.length;
-  const displaySources = new Set(filteredItems.map(i => i.source.id)).size;
+  // When "All" is selected, show total stats from props (not paginated slice)
+  // When filtered, calculate from the filtered items
   const isFiltered = selectedTab !== 'all' || platformFilter !== 'all';
+  const displayPosts = isFiltered ? filteredItems.length : (totalPosts ?? filteredItems.length);
+  const displaySources = isFiltered
+    ? new Set(filteredItems.map(i => i.source.id)).size
+    : (uniqueSources ?? new Set(filteredItems.map(i => i.source.id)).size);
 
   return (
     <div className="flex flex-col">

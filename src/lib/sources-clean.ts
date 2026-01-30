@@ -1442,20 +1442,6 @@ export const tier1Sources: TieredSource[] = [
   },
   // === US Government Tracking Bots ===
   {
-    id: 'potus-tracker',
-    name: 'POTUS Tracker',
-    handle: '@potustracker.us',
-    platform: 'bluesky',
-    sourceType: 'bot',
-    fetchTier: 'T1',
-    confidence: 85,
-    region: 'us' as WatchpointId,
-    feedUrl: 'https://bsky.app/profile/potustracker.us',
-    url: 'https://bsky.app/profile/potustracker.us',
-    postsPerDay: 10,
-    tags: ['politics'] as USTag[],
-  },
-  {
     id: 'executive-orders-tracker',
     name: 'Executive Order Tracker',
     handle: '@executiveorders.bsky.social',
@@ -4069,20 +4055,6 @@ export const tier1Sources: TieredSource[] = [
     url: 'https://t.me/OSINTdefender',
     postsPerDay: 30,
   },
-  {
-    id: 'telegram-militarylandnet',
-    name: 'Military Land',
-    handle: '@militarylandnet',
-    platform: 'telegram',
-    sourceType: 'osint',
-    fetchTier: 'T1',
-    confidence: 90,
-    region: 'europe-russia' as WatchpointId,
-    feedUrl: 'https://t.me/s/militarylandnet',
-    url: 'https://t.me/militarylandnet',
-    postsPerDay: 15,
-  },
-
   // === ADDITIONAL MASTODON ACCOUNTS ===
   // NOTE: Bellingcat removed - already have them on Bluesky (no Bluesky+Mastodon dupes)
   {
