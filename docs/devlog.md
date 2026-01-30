@@ -541,6 +541,48 @@ A chronological record of development sessions and significant changes.
 
 ---
 
+## 2026-01-30 - Live Wire UX Improvements & Activity Threshold Tuning
+
+**Session Summary:**
+- Fixed cramped mobile layout in Live Wire header using flex-wrap
+- Reformatted stats as readable sentence: "Fetched X posts from Y sources in last six hours"
+- Moved refresh button next to title with "Refresh Feed" label and actual timestamp
+- Removed refresh from Pulse AI card (auto-refreshes on region change)
+- Tightened activity detection thresholds to prevent false positives in low-source regions
+- Fixed stats to show filtered counts when viewing specific regions
+
+**Key Decisions:**
+- Actual timestamp ("3:45 PM") instead of relative ("just now") - more useful
+- Stats now reflect filtered view: "Showing 12 posts from 8 sources (filtered)" when viewing Asia
+- Activity thresholds raised: elevated requires 2.5x baseline + 25 posts, critical requires 5x + 50 posts
+- Global sources (`region: 'all'`) don't inflate regional activity - only detected regional posts count
+
+**Notable Changes:**
+
+*src/components/NewsFeed.tsx*
+- Header restructured with `flex-wrap` for mobile
+- Stats use `filteredItems` instead of total items for accurate filtered counts
+- Added `formatActualTime()` helper for timestamp display
+- Changed wording: "Fetched" for all regions, "Showing" when filtered
+- Refresh button now text-based with timestamp below
+
+*src/components/BriefingCard.tsx*
+- Removed refresh button (icon and handler)
+- Cleaned up unused `ArrowPathIcon` import
+
+*src/lib/activityDetection.ts*
+- Elevated: 2x → 2.5x multiplier, added 25 post minimum
+- Critical: 4x → 5x multiplier, added 50 post minimum
+- Prevents Asia (low sources) from false positives with small post counts
+
+**Technical Notes:**
+- `flex-wrap` + `gap-x-3 gap-y-1` allows header elements to wrap naturally on mobile
+- `w-full sm:w-auto` on stats forces wrap on mobile, stays inline on desktop
+- Minimum post counts prevent low-baseline regions from triggering with noise
+- Baselines are calculated from source `postsPerDay` but global source posts get assigned to regions via content detection - this mismatch is acceptable with tightened thresholds
+
+---
+
 ## 2026-01-29 - Hydration Mismatch Fix & useClock Hook
 
 **Session Summary:**
@@ -582,5 +624,61 @@ const [time, setTime] = useState(new Date());
 const [time, setTime] = useState<Date | null>(null);
 useEffect(() => { setTime(new Date()); ... }, []);
 ```
+
+---
+
+## 2026-01-30 - Live Wire UX, Activity Thresholds & Map Reset
+
+**Session Summary:**
+- Fixed cramped mobile layout in Live Wire header
+- Tightened activity detection thresholds to prevent false positives
+- Fixed stats showing paginated count (50) instead of real total (870+)
+- Added "Checking feed activity..." loading state to prevent stale cache flash
+- Removed stale sources (potustracker.us, militarylandnet)
+- Added globe button and ocean click to reset map to all regions
+- Improved RSS error logging to include URLs
+
+**Key Decisions:**
+- Stats show "Fetched X posts from Y sources in last six hours" as readable sentence
+- Activity thresholds raised: elevated 2.5x+25 posts, critical 5x+50 posts (was 2x/4x)
+- `activityConfirmed` state prevents stale SSR cache from showing false elevated/critical
+- Map reset via globe button (obvious) + ocean click (natural) - two ways to discover
+
+**Notable Changes:**
+
+*src/components/NewsFeed.tsx*
+- Header uses `flex-wrap` for mobile layout
+- Stats use `totalPosts`/`uniqueSources` props when unfiltered, `filteredItems` when filtered
+- Shows "Showing X posts (filtered)" vs "Fetched X posts in last six hours"
+- Actual timestamp ("3:45 PM") instead of relative ("just now")
+
+*src/lib/activityDetection.ts*
+- Elevated: 2x → 2.5x multiplier + minimum 25 posts
+- Critical: 4x → 5x multiplier + minimum 50 posts
+- Prevents low-source regions (Asia) from false positives
+
+*src/app/HomeClient.tsx*
+- Added `activityConfirmed` state, starts false
+- Shows "Checking feed activity..." until client fetch confirms fresh data
+- Set true after successful fetchNews or fetchIncremental
+
+*src/components/WorldMap.tsx*
+- Globe button at top of zoom controls, highlights blue when "All" selected
+- Transparent rect behind map catches ocean clicks
+- Land clicks use `stopPropagation()` to avoid accidental resets
+- `handleShowAll()` resets both map position AND region filter
+
+*src/lib/rss.ts*
+- Error logs now include source URL for easier debugging
+- Specific detection for redirect loop errors
+
+*src/lib/sources-clean.ts & blocklist.ts*
+- Removed: potustracker.us (Bluesky gone), militarylandnet (Telegram private)
+- Added both to blocklist with reason
+
+**Technical Notes:**
+- Ocean click uses oversized `<rect x={-1000} y={-1000} width={3000} height={2000}>` to catch all empty areas
+- `activityConfirmed` pattern: don't trust SSR data for time-sensitive indicators, wait for client fetch
+- Pagination (`displayLimit=50`) is for render performance; stats should show true totals from props
 
 ---

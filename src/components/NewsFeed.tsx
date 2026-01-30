@@ -426,11 +426,31 @@ export function NewsFeed({
 
           {/* Row 2: Stats */}
           <div className="text-xs text-slate-500 dark:text-slate-400 mb-2.5">
-            {isFiltered ? 'Showing ' : 'Fetched '}
-            <span className="font-semibold text-slate-700 dark:text-slate-300">{displayPosts} posts</span>
-            {' from '}
-            <span className="font-semibold text-slate-700 dark:text-slate-300">{displaySources} sources</span>
-            {isFiltered ? ' (filtered)' : <> in last <span className="font-semibold text-slate-700 dark:text-slate-300">six hours</span></>}
+            <div>
+              {isFiltered ? 'Showing ' : 'Fetched '}
+              <span className="font-semibold text-slate-700 dark:text-slate-300">{displayPosts.toLocaleString()} posts</span>
+              {' from '}
+              <span className="font-semibold text-slate-700 dark:text-slate-300">{displaySources.toLocaleString()} sources</span>
+              {isFiltered ? ' (filtered)' : <> in last <span className="font-semibold text-slate-700 dark:text-slate-300">six hours</span> {selectedWatchpoint === 'all' ? 'globally' : `in ${regionDisplayNames[selectedWatchpoint]}`}</>}
+            </div>
+            {!isFiltered && activity && activity[selectedWatchpoint] && (
+              <div className="italic mt-0.5">
+                {(() => {
+                  const a = activity[selectedWatchpoint];
+                  if (!a.vsNormal || a.vsNormal === 'normal') return 'About average activity';
+                  if (a.vsNormal === 'above') {
+                    if (a.multiplier && a.multiplier >= 2) return `That's ${a.multiplier}× more than usual`;
+                    if (a.percentChange && a.percentChange >= 50) return `That's ${a.percentChange}% more than usual`;
+                    return 'Slightly more than average activity';
+                  }
+                  if (a.vsNormal === 'below') {
+                    if (a.percentChange) return `That's ${Math.abs(a.percentChange)}% less than usual`;
+                    return 'Less than average activity';
+                  }
+                  return 'About average activity';
+                })()}
+              </div>
+            )}
           </div>
 
           {/* Row 2: Filter dropdowns */}
