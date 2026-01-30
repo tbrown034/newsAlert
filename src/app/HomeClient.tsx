@@ -5,6 +5,7 @@ import { NewsFeed, Legend, WorldMap, SeismicMap, WeatherMap, OutagesMap, TravelM
 import { EditorialFAB } from '@/components/EditorialFAB';
 import { watchpoints as defaultWatchpoints } from '@/lib/mockData';
 import { NewsItem, WatchpointId, Watchpoint, Earthquake } from '@/types';
+import { useClock } from '@/hooks/useClock';
 import { GlobeAltIcon, CloudIcon, SignalIcon, ExclamationTriangleIcon, FireIcon, EllipsisHorizontalIcon, Bars3Icon, XMarkIcon, ChevronUpIcon, ChevronDownIcon, SunIcon, MoonIcon, InformationCircleIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
 import { useSession } from '@/lib/auth-client';
 import { MapPinIcon } from '@heroicons/react/24/solid';
@@ -59,6 +60,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
   // Live update settings
   const [pendingItems, setPendingItems] = useState<NewsItem[]>([]); // Buffer for new items
   const [autoUpdate, setAutoUpdate] = useState<boolean>(true); // Default to true, load from localStorage in useEffect
+  const [displayLimit, setDisplayLimit] = useState<number>(50); // Pagination: how many to show
 
   // Hero view mode
   const [heroView, setHeroView] = useState<HeroView>('main');
@@ -72,7 +74,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
   const [mapCollapsed, setMapCollapsed] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [useUTC, setUseUTC] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const currentTime = useClock();
 
   // Initialize theme from localStorage
   useEffect(() => {
@@ -82,14 +84,11 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
     }
   }, []);
 
-  // Update current time every second for the header clock
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
   // Format time for header display
   const formatHeaderTime = () => {
+    // Return placeholder during SSR/hydration to avoid mismatch
+    if (!currentTime) return '—';
+
     if (useUTC) {
       return currentTime.toLocaleString('en-US', {
         timeZone: 'UTC',
@@ -199,7 +198,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
 
         // Use functional updates to avoid depending on newsItems/pendingItems state
         if (autoUpdate) {
-          // Auto-update ON: Prepend directly to feed
+          // Auto-update ON: Prepend new items directly to feed
           setNewsItems(prev => {
             const existingIds = new Set(prev.map(i => i.id));
             const uniqueNewItems = newItems.filter(item => !existingIds.has(item.id));
@@ -255,8 +254,8 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
     const startTime = Date.now();
 
     try {
-      // Fetch all sources (no tier separation)
-      const response = await fetch(`/api/news?region=${selectedWatchpoint}&hours=6&limit=200`, {
+      // Fetch all sources (no tier separation) - high limit to get full 6h window
+      const response = await fetch(`/api/news?region=${selectedWatchpoint}&hours=6&limit=2000`, {
         signal: controller.signal,
       });
 
@@ -278,6 +277,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
 
       setNewsItems(items);
       setLastFetched(data.fetchedAt);
+      setDisplayLimit(50); // Reset pagination on fresh fetch
       if (data.hoursWindow) setHoursWindow(data.hoursWindow);
 
       if (data.activity) {
@@ -1084,23 +1084,23 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
       {/* Main Content */}
       <main id="feed" className="max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto px-3 sm:px-4 pb-20 pt-6 sm:pt-8">
         <div className="rounded-2xl border border-slate-300 dark:border-slate-600 overflow-hidden bg-slate-100 dark:bg-slate-900 shadow-lg shadow-black/5 dark:shadow-black/30">
-          {/* Live Wire header - section label style */}
-          <div className="px-3 sm:px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-[var(--color-success)] animate-pulse-soft" />
-                <h2 className="section-label">
-                  Live Wire
-                </h2>
-              </div>
-              {/* Post count on right */}
-              <div className="text-caption text-[var(--foreground-light)]">
-                {newsItems.length} posts
+          {/* Live Wire header - matches Global Monitor style */}
+          <div className="px-3 sm:px-4 py-2 bg-slate-100/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-700/50">
+            <div className="flex items-center gap-2">
+              <SignalIcon className="w-4 h-4 text-emerald-500" />
+              <div className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Live Wire</h2>
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                </div>
+                <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
+                  {newsItems.length} posts · {new Set(newsItems.map(i => i.source.id)).size} sources · last {hoursWindow}h
+                </span>
               </div>
             </div>
           </div>
           <NewsFeed
-            items={newsItems}
+            items={newsItems.slice(0, displayLimit)}
             selectedWatchpoint={selectedWatchpoint}
             onSelectWatchpoint={setSelectedWatchpoint}
             isLoading={isRefreshing}
@@ -1115,6 +1115,19 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
             autoUpdate={autoUpdate}
             onToggleAutoUpdate={toggleAutoUpdate}
           />
+
+          {/* Load more button - shows when there are more items beyond displayLimit */}
+          {newsItems.length > displayLimit && (
+            <div className="px-4 py-4 border-t border-slate-200/50 dark:border-slate-700/50 bg-slate-50/50 dark:bg-slate-800/30">
+              <button
+                onClick={() => setDisplayLimit(prev => prev + 50)}
+                className="w-full py-3 px-4 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg transition-colors flex items-center justify-center gap-2"
+              >
+                <ChevronDownIcon className="w-4 h-4" />
+                Load more ({newsItems.length - displayLimit} remaining)
+              </button>
+            </div>
+          )}
         </div>
       </main>
 

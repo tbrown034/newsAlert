@@ -3,19 +3,20 @@ import { WatchpointId } from '@/types';
 // =============================================================================
 // SIMPLIFIED ACTIVITY DETECTION
 // =============================================================================
-// Just count posts per region vs baseline - that's it.
+// Count total posts per region in the 6h window, compare to 6h baseline.
+// If we usually see 100 posts and we're seeing 232, that's a surge.
 // =============================================================================
 
-// Expected posts per hour under "normal" conditions
-// These should reflect a typical news day, not a quiet one
-const REGION_BASELINES: Record<WatchpointId, number> = {
-  'us': 10,
-  'latam': 6,
-  'middle-east': 15,
-  'europe-russia': 18,
-  'asia': 10,
+// Expected posts per 6-HOUR WINDOW under "normal" conditions
+// These should reflect a typical 6-hour period, not a quiet one
+const REGION_BASELINES_6H: Record<WatchpointId, number> = {
+  'us': 60,           // ~10/hour × 6
+  'latam': 36,        // ~6/hour × 6
+  'middle-east': 90,  // ~15/hour × 6
+  'europe-russia': 108, // ~18/hour × 6
+  'asia': 60,         // ~10/hour × 6
   'seismic': 0,
-  'all': 50,
+  'all': 300,         // ~50/hour × 6
 };
 
 export interface RegionActivity {
@@ -31,13 +32,11 @@ export interface RegionActivity {
 
 /**
  * Calculate activity level for all regions - O(n) single pass
+ * Items passed in are already filtered to the 6h window by the API
  */
 export function calculateRegionActivity(
   items: { region: WatchpointId; timestamp: Date }[]
 ): Record<WatchpointId, RegionActivity> {
-  const now = Date.now();
-  const oneHour = 60 * 60 * 1000;
-
   const regions: WatchpointId[] = [
     'us',
     'latam',
@@ -46,12 +45,10 @@ export function calculateRegionActivity(
     'asia',
   ];
 
-  // Count posts per region in single pass
+  // Count ALL posts per region (items are already 6h filtered by API)
   const counts: Record<string, number> = {};
   for (const item of items) {
-    if (now - item.timestamp.getTime() < oneHour) {
-      counts[item.region] = (counts[item.region] || 0) + 1;
-    }
+    counts[item.region] = (counts[item.region] || 0) + 1;
   }
 
   // Calculate activity levels
@@ -59,7 +56,7 @@ export function calculateRegionActivity(
 
   for (const region of regions) {
     const count = counts[region] || 0;
-    const baseline = REGION_BASELINES[region] || 5;
+    const baseline = REGION_BASELINES_6H[region] || 30;
     const multiplier = baseline > 0 ? Math.round((count / baseline) * 10) / 10 : 0;
     const percentChange = baseline > 0 ? Math.round(((count - baseline) / baseline) * 100) : 0;
 

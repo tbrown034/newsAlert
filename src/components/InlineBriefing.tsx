@@ -83,6 +83,28 @@ const HIGHLIGHT_LOCATIONS = [
 
 const SOURCE_SUFFIXES = ['Post', 'Times', 'Monitor', 'Tribune', 'Herald', 'Journal', 'News', 'Today', 'Daily'];
 
+// News outlets that contain location names - should NOT be highlighted
+// These are checked as patterns against the surrounding text
+const NEWS_OUTLET_PATTERNS = [
+  'France 24', 'France24',
+  'Jerusalem Post',
+  'South China Morning Post',
+  'Washington Post',
+  'China Daily',
+  'Russia Today', 'RT',
+  'India Today',
+  'Japan Times',
+  'Korea Herald', 'Korea Times',
+  'Taiwan News',
+  'Israel Hayom',
+  'Moscow Times',
+  'Kyiv Independent', 'Kyiv Post',
+  'Tehran Times',
+  'Damascus Now',
+  'Beirut Today',
+  'Gaza Now',
+];
+
 function highlightLocations(text: string): React.ReactNode {
   if (!text) return text;
 
@@ -98,13 +120,34 @@ function highlightLocations(text: string): React.ReactNode {
       loc => loc.toLowerCase() === part.toLowerCase()
     );
     if (isLocation) {
-      const nextPart = parts[i + 1];
+      // Check if this location is part of a known news outlet name
+      const nextPart = parts[i + 1] || '';
+      const prevPart = parts[i - 1] || '';
+
+      // Build context: what comes before and after this location
+      const contextAfter = part + nextPart.slice(0, 30); // e.g., "France 24" or "Jerusalem Post"
+      const contextBefore = prevPart.slice(-20) + part; // For patterns like "South China"
+
+      // Check against known news outlet patterns
+      const isPartOfOutlet = NEWS_OUTLET_PATTERNS.some(outlet => {
+        const outletLower = outlet.toLowerCase();
+        return contextAfter.toLowerCase().startsWith(outletLower) ||
+               contextBefore.toLowerCase().endsWith(outletLower) ||
+               contextAfter.toLowerCase().includes(outletLower);
+      });
+
+      if (isPartOfOutlet) {
+        return part; // Don't bold - it's part of a news outlet name
+      }
+
+      // Also check the old suffix-based approach as a fallback
       if (nextPart) {
         const nextWord = nextPart.trim().split(/\s+/)[0];
         if (SOURCE_SUFFIXES.some(suffix => suffix.toLowerCase() === nextWord.toLowerCase())) {
           return part;
         }
       }
+
       return (
         <span key={i} className="font-semibold text-[var(--foreground)]">
           {part}

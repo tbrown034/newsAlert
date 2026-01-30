@@ -29,8 +29,8 @@ const DEFAULT_TIME_WINDOW = 6; // 6 hours - optimized for "what's happening NOW"
 const MAX_TIME_WINDOW = 72; // Max 3 days
 
 // Limits (for safety)
-const MAX_LIMIT = 1000;
-const DEFAULT_LIMIT = 200;
+const MAX_LIMIT = 5000;
+const DEFAULT_LIMIT = 2000;
 
 // Track in-flight fetches to prevent duplicate requests
 const inFlightFetches = new Map<string, Promise<NewsItem[]>>();
@@ -320,7 +320,7 @@ async function fetchNewsWithCache(region: WatchpointId): Promise<NewsItem[]> {
       console.log(`[News API] Fetching ${region} (${sources.length} sources)`);
       const items = await fetchAllSources(sources);
 
-      // Deduplicate by ID
+      // Deduplicate by ID only (exact same post appearing twice)
       const seenIds = new Set<string>();
       const dedupedById = items.filter(item => {
         if (seenIds.has(item.id)) return false;
@@ -328,51 +328,14 @@ async function fetchNewsWithCache(region: WatchpointId): Promise<NewsItem[]> {
         return true;
       });
 
-      // Cross-platform deduplication: remove duplicate content from different platforms
-      // Uses normalized title (first 80 chars, lowercase, alphanumeric only) as content key
-      const normalizeForDedupe = (title: string): string => {
-        return title.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 80);
-      };
-
-      const seenContent = new Map<string, NewsItem>();
-      const crossPlatformDeduped = dedupedById.filter(item => {
-        const contentKey = normalizeForDedupe(item.title);
-        if (contentKey.length < 20) return true; // Too short to dedupe reliably
-
-        const existing = seenContent.get(contentKey);
-        if (existing) {
-          // Keep the one with higher confidence or from preferred platform
-          if (item.source.confidence > existing.source.confidence) {
-            seenContent.set(contentKey, item);
-            return true;
-          }
-          return false;
-        }
-        seenContent.set(contentKey, item);
-        return true;
-      });
-
-      // State Dept Travel Advisories source removed - was causing noise
-      // No travel advisory filtering needed anymore
-      const filtered = crossPlatformDeduped;
-
-      // Limit items per source to prevent feed flooding (max 3 per source)
-      const MAX_PER_SOURCE = 3;
-      const sourceItemCounts = new Map<string, number>();
-      const deduped = filtered.filter(item => {
-        const count = sourceItemCounts.get(item.source.id) || 0;
-        if (count >= MAX_PER_SOURCE) return false;
-        sourceItemCounts.set(item.source.id, count + 1);
-        return true;
-      });
-
-      // Sort by timestamp
-      deduped.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+      // Sort by timestamp (newest first) — no content dedup, no per-source limits
+      // We want to see EVERYTHING in chronological order
+      dedupedById.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 
       // Update cache
-      setCachedNews(cacheKey, deduped, true);
+      setCachedNews(cacheKey, dedupedById, true);
 
-      return deduped;
+      return dedupedById;
     } finally {
       inFlightFetches.delete(cacheKey);
     }

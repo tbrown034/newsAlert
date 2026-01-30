@@ -28,7 +28,7 @@ export default async function Home() {
     const timeoutId = setTimeout(() => controller.abort(), 15000);
 
     // Fetch all sources (no tier separation - simplified architecture)
-    const response = await fetch(`${baseUrl}/api/news?region=all&hours=6&limit=200`, {
+    const response = await fetch(`${baseUrl}/api/news?region=all&hours=6&limit=2000`, {
       next: { revalidate: 300 }, // Cache for 5 min (matches server cache TTL)
       signal: controller.signal,
     });

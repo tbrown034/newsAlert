@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, memo } from 'react';
 import Image from 'next/image';
 import { ArrowTopRightOnSquareIcon, ShareIcon, BuildingLibraryIcon } from '@heroicons/react/24/outline';
 import { CheckBadgeIcon as CheckBadgeSolid } from '@heroicons/react/24/solid';
@@ -272,20 +272,13 @@ function formatTimeAgo(date: Date): string {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-// Check if post is very recent (less than 5 minutes old)
-function isVeryRecent(timestamp: Date): boolean {
-  const fiveMinutesAgo = Date.now() - 5 * 60 * 1000;
-  return timestamp.getTime() > fiveMinutesAgo;
-}
-
-export function NewsCard({ item }: NewsCardProps) {
+export const NewsCard = memo(function NewsCard({ item }: NewsCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const platformColor = platformColors[item.source.platform] || platformColors.rss;
   const sourceTypeStyle = sourceTypeColors[item.source.sourceType] || sourceTypeColors.osint;
   const sourceTypeLabel = sourceTypeLabels[item.source.sourceType] || item.source.sourceType;
   const isVerified = item.verificationStatus === 'confirmed';
   const regionBadge = regionBadges[item.region] || regionBadges['all'];
-  const veryRecent = isVeryRecent(item.timestamp);
 
   // Check if text needs truncation
   const needsTruncation = item.title.length > CHAR_LIMIT;
@@ -353,7 +346,6 @@ export function NewsCard({ item }: NewsCardProps) {
         border border-[var(--border-light)]
         hover:border-[var(--border)]
         transition-all duration-200
-        ${veryRecent ? 'border-l-4 border-l-emerald-500 dark:border-l-emerald-400' : ''}
       `}
     >
       <div className="flex flex-col gap-2">
@@ -527,4 +519,4 @@ export function NewsCard({ item }: NewsCardProps) {
       </div>
     </article>
   );
-}
+});

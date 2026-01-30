@@ -3906,19 +3906,7 @@ export const tier1Sources: TieredSource[] = [
     url: 'https://mastodon.online/@bendobrown',
     postsPerDay: 3,
   },
-  {
-    id: 'mastodon-noelreports',
-    name: 'NOELREPORTS (Mastodon)',
-    handle: '@noelreports@mstdn.social',
-    platform: 'mastodon',
-    sourceType: 'osint',
-    fetchTier: 'T1',
-    confidence: 95,
-    region: 'europe-russia' as WatchpointId,
-    feedUrl: 'https://mstdn.social/@noelreports',
-    url: 'https://mstdn.social/@noelreports',
-    postsPerDay: 20,
-  },
+  // NOELREPORTS Mastodon removed - already on Bluesky
   {
     id: 'mastodon-warmapper',
     name: 'War Mapper',
@@ -4096,19 +4084,7 @@ export const tier1Sources: TieredSource[] = [
   },
 
   // === ADDITIONAL MASTODON ACCOUNTS ===
-  {
-    id: 'mastodon-bellingcat',
-    name: 'Bellingcat',
-    handle: '@Bellingcat@mstdn.social',
-    platform: 'mastodon',
-    sourceType: 'osint',
-    fetchTier: 'T1',
-    confidence: 95,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://mstdn.social/@Bellingcat',
-    url: 'https://mstdn.social/@Bellingcat',
-    postsPerDay: 3,
-  },
+  // NOTE: Bellingcat removed - already have them on Bluesky (no Bluesky+Mastodon dupes)
   {
     id: 'mastodon-osintaurora',
     name: 'OSINT AURORA',
@@ -4429,19 +4405,7 @@ export const tier1Sources: TieredSource[] = [
   },
   // MEMRI TV removed 2026-01-29: YouTube channel ID invalid (404)
   // === MASTODON - OSINT (Added Jan 2026) ===
-  {
-    id: 'mastodon-osinttechnical-mstdn',
-    name: 'OSINTtechnical',
-    handle: '@osinttechnical@mstdn.social',
-    platform: 'mastodon',
-    sourceType: 'osint',
-    fetchTier: 'T1',
-    confidence: 88,
-    region: 'all' as WatchpointId,
-    feedUrl: 'https://mstdn.social/@osinttechnical',
-    url: 'https://mstdn.social/@osinttechnical',
-    postsPerDay: 5,
-  },
+  // OSINTtechnical removed - duplicate of mastodon-osinttechnical (line ~3924)
   {
     id: 'mastodon-netblocks',
     name: 'NetBlocks',

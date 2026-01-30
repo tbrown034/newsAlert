@@ -340,3 +340,47 @@ A chronological record of development sessions and significant changes.
 - rsvg-convert command: `rsvg-convert -w {size} -h {size} favicon.svg -o favicon-{size}x{size}.png`
 
 ---
+
+## 2026-01-29 - Hydration Mismatch Fix & useClock Hook
+
+**Session Summary:**
+- Diagnosed and fixed React hydration mismatch error caused by live clock displaying different times on server vs client
+- Created reusable `useClock` custom hook following React best practices
+- Educational session covering SSR hydration, the "You Might Not Need an Effect" article, and when Effects ARE appropriate
+
+**Key Decisions:**
+- Extracted clock logic into `src/hooks/useClock.ts` for reusability
+- Initialize time as `null` during SSR, set real value only in `useEffect` (client-only)
+- Display `"—"` placeholder during hydration to ensure server/client match
+- Confirmed this is a valid useEffect use case (synchronizing with external system: browser timer)
+
+**Notable Changes:**
+
+*src/hooks/useClock.ts* (NEW)
+- Custom hook returning `Date | null`
+- Initializes to `null`, sets time in `useEffect` to avoid hydration mismatch
+- Updates every second via `setInterval`
+- Accepts optional `intervalMs` parameter (default: 1000)
+
+*src/app/HomeClient.tsx*
+- Added import for `useClock` hook
+- Replaced inline `useState` + `useEffect` combo with single `const currentTime = useClock()`
+- Reduced 8 lines to 1 line in the component
+
+**Technical Notes:**
+- Hydration mismatch occurs when `new Date()` runs on server (e.g., 22:45:49) then again on client (22:45:50)
+- React compares server HTML to client virtual DOM; any difference forces full re-render
+- `useEffect` never runs on server (no DOM), making it the escape hatch for client-only values
+- This pattern passes the "You Might Not Need an Effect" test: timer subscriptions ARE valid Effect use cases
+
+**The Pattern:**
+```tsx
+// Bad: new Date() runs on both server and client
+const [time, setTime] = useState(new Date());
+
+// Good: null on both, real value only on client
+const [time, setTime] = useState<Date | null>(null);
+useEffect(() => { setTime(new Date()); ... }, []);
+```
+
+---
