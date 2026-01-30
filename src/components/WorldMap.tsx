@@ -8,7 +8,7 @@ import {
   Marker,
   ZoomableGroup,
 } from 'react-simple-maps';
-import { ArrowPathIcon, PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
+import { ArrowPathIcon, PlusIcon, MinusIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 import { Watchpoint, WatchpointId, Earthquake } from '@/types';
 import { RegionActivity } from '@/lib/activityDetection';
 import { useMapTheme, mapDimensions } from '@/lib/mapTheme';
@@ -106,6 +106,12 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
     setPosition({ coordinates: DEFAULT_CENTER, zoom: DEFAULT_ZOOM });
   };
 
+  // Reset to world view AND clear region filter
+  const handleShowAll = () => {
+    setPosition({ coordinates: DEFAULT_CENTER, zoom: DEFAULT_ZOOM });
+    onSelect('all');
+  };
+
   // Get earthquake marker color based on magnitude
   const getQuakeColor = (magnitude: number) => {
     if (magnitude >= 7) return '#ef4444'; // Red
@@ -200,6 +206,16 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
             minZoom={0.5}
             maxZoom={4}
           >
+          {/* Ocean click catcher - clicking empty water resets to all regions */}
+          <rect
+            x={-1000}
+            y={-1000}
+            width={3000}
+            height={2000}
+            fill="transparent"
+            onClick={handleShowAll}
+            style={{ cursor: selected !== 'all' ? 'pointer' : 'default' }}
+          />
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
               geographies.map((geo) => (
@@ -209,6 +225,7 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
                   fill={theme.land}
                   stroke={theme.stroke}
                   strokeWidth={0.5}
+                  onClick={(e) => e.stopPropagation()} // Prevent land clicks from triggering ocean reset
                   style={{
                     default: { outline: 'none' },
                     hover: { outline: 'none', fill: theme.landHover },
@@ -413,6 +430,18 @@ function WorldMapComponent({ watchpoints, selected, onSelect, regionCounts = {},
 
         {/* Zoom Controls */}
         <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
+          <button
+            onClick={handleShowAll}
+            className={`p-2 rounded-lg transition-colors ${
+              selected === 'all'
+                ? 'bg-blue-600 text-white'
+                : 'bg-black/60 hover:bg-black/80 text-gray-300 hover:text-white'
+            }`}
+            title="Show all regions"
+          >
+            <GlobeAltIcon className="w-4 h-4" />
+          </button>
+          <div className="h-px bg-white/20 my-0.5" />
           <button
             onClick={handleZoomIn}
             className="p-2 bg-black/60 hover:bg-black/80 rounded-lg text-gray-300 hover:text-white transition-colors"
