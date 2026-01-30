@@ -9,7 +9,6 @@ import {
   ArrowTopRightOnSquareIcon,
   ShareIcon,
   ChevronDownIcon,
-  ArrowPathIcon
 } from '@heroicons/react/24/outline';
 import { MapPinIcon as MapPinSolidIcon } from '@heroicons/react/24/solid';
 
@@ -495,7 +494,7 @@ export function BriefingCard({ region }: BriefingCardProps) {
   return (
     <article className="relative px-3 py-3 sm:px-4 sm:py-4 bg-[var(--background-card)] rounded-xl border-2 border-slate-400 dark:border-slate-500 hover:border-slate-500 dark:hover:border-slate-400 transition-all duration-200">
       <div className="flex flex-col gap-2">
-        {/* Row 1: Avatar + Name + Meta | Region + Refresh */}
+        {/* Row 1: Avatar + Name + Meta | Region */}
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2.5 min-w-0">
             <PulseAvatar />
@@ -508,19 +507,9 @@ export function BriefingCard({ region }: BriefingCardProps) {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <span className={`px-1.5 py-0.5 text-2xs font-semibold rounded-md ${regionBadge.color}`}>
-              {regionBadge.label}
-            </span>
-            <button
-              onClick={() => fetchBriefing(currentTier, true)}
-              className="p-1 text-[var(--foreground-light)] hover:text-[var(--foreground)] transition-colors rounded hover:bg-[var(--background-secondary)]"
-              aria-label="Refresh briefing"
-              title="Refresh briefing"
-            >
-              <ArrowPathIcon className="w-4 h-4" />
-            </button>
-          </div>
+          <span className={`px-1.5 py-0.5 text-2xs font-semibold rounded-md flex-shrink-0 ${regionBadge.color}`}>
+            {regionBadge.label}
+          </span>
         </div>
 
         {/* Row 2: Summary text */}

@@ -29,6 +29,13 @@ export const mapThemes = {
     // Tooltip
     tooltipBg: 'rgba(0,0,0,0.9)',
     tooltipText: '#fff',
+
+    // Info Panel (selected item details)
+    infoPanelBg: 'bg-black/40',
+    infoPanelBorder: 'border-gray-800/40',
+    infoPanelTextPrimary: 'text-gray-100',
+    infoPanelTextSecondary: 'text-gray-300',
+    infoPanelTextMuted: 'text-gray-400',
   },
   light: {
     // Container
@@ -57,6 +64,13 @@ export const mapThemes = {
     // Tooltip
     tooltipBg: 'rgba(255,255,255,0.95)',
     tooltipText: '#1f2937',
+
+    // Info Panel (selected item details) - solid dark bg for contrast
+    infoPanelBg: 'bg-slate-800',
+    infoPanelBorder: 'border-slate-700',
+    infoPanelTextPrimary: 'text-white',
+    infoPanelTextSecondary: 'text-slate-200',
+    infoPanelTextMuted: 'text-slate-300',
   },
 };
 

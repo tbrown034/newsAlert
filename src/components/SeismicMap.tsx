@@ -313,7 +313,7 @@ function SeismicMapComponent({ earthquakes, selected, onSelect, isLoading, focus
 
       {/* Selected earthquake details */}
       {selected && (
-        <div className="px-4 py-4 bg-black/40 border-t border-gray-800/40">
+        <div className={`px-4 py-4 ${theme.infoPanelBg} border-t ${theme.infoPanelBorder}`}>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2">
@@ -326,7 +326,7 @@ function SeismicMapComponent({ earthquakes, selected, onSelect, isLoading, focus
                 >
                   M{selected.magnitude.toFixed(1)}
                 </span>
-                <span className="text-sm text-gray-400">{formatTimeAgo(selected.time)}</span>
+                <span className={`text-sm ${theme.infoPanelTextMuted}`}>{formatTimeAgo(selected.time)}</span>
                 {selected.tsunami && (
                   <span className="px-2 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-lg">
                     TSUNAMI
@@ -344,8 +344,8 @@ function SeismicMapComponent({ earthquakes, selected, onSelect, isLoading, focus
                   </span>
                 )}
               </div>
-              <p className="text-base text-gray-200 truncate">{selected.place}</p>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className={`text-base ${theme.infoPanelTextPrimary} truncate`}>{selected.place}</p>
+              <p className={`text-sm ${theme.infoPanelTextSecondary} mt-1`}>
                 Depth: {selected.depth.toFixed(1)}km
                 {selected.felt && ` • ${selected.felt} felt reports`}
               </p>

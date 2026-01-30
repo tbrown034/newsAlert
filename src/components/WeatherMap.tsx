@@ -378,7 +378,7 @@ function WeatherMapComponent({ onEventSelect, focusOnId }: WeatherMapProps) {
 
       {/* Selected event details */}
       {selected && (
-        <div className="px-4 py-4 bg-black/40 border-t border-gray-800/40">
+        <div className={`px-4 py-4 ${theme.infoPanelBg} border-t ${theme.infoPanelBorder}`}>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2">
@@ -395,12 +395,12 @@ function WeatherMapComponent({ onEventSelect, focusOnId }: WeatherMapProps) {
                 >
                   {selected.severity.toUpperCase()}
                 </span>
-                <span className="text-sm text-gray-400">{formatTimeAgo(selected.startTime)}</span>
+                <span className={`text-sm ${theme.infoPanelTextMuted}`}>{formatTimeAgo(selected.startTime)}</span>
               </div>
-              <p className="text-base font-medium text-gray-200">{selected.name}</p>
-              <p className="text-sm text-gray-400 mt-1 line-clamp-2">{selected.description}</p>
+              <p className={`text-base font-medium ${theme.infoPanelTextPrimary}`}>{selected.name}</p>
+              <p className={`text-sm ${theme.infoPanelTextSecondary} mt-1 line-clamp-2`}>{selected.description}</p>
               {selected.affectedAreas && selected.affectedAreas.length > 0 && (
-                <p className="text-xs text-gray-500 mt-2">
+                <p className={`text-xs ${theme.infoPanelTextMuted} mt-2`}>
                   Areas: {selected.affectedAreas.slice(0, 3).join(', ')}
                   {selected.affectedAreas.length > 3 && ` +${selected.affectedAreas.length - 3} more`}
                 </p>

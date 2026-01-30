@@ -326,7 +326,7 @@ function OutagesMapComponent({ onOutageSelect, focusOnId }: OutagesMapProps) {
 
       {/* Selected outage details */}
       {selected && (
-        <div className="px-4 py-4 bg-black/40 border-t border-gray-800/40">
+        <div className={`px-4 py-4 ${theme.infoPanelBg} border-t ${theme.infoPanelBorder}`}>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2">
@@ -339,13 +339,13 @@ function OutagesMapComponent({ onOutageSelect, focusOnId }: OutagesMapProps) {
                 >
                   {severityStyles[selected.severity].label}
                 </span>
-                <span className="text-sm text-gray-400">{formatTimeAgo(selected.startTime)}</span>
+                <span className={`text-sm ${theme.infoPanelTextMuted}`}>{formatTimeAgo(selected.startTime)}</span>
               </div>
-              <p className="text-base font-medium text-gray-200">
+              <p className={`text-base font-medium ${theme.infoPanelTextPrimary}`}>
                 {selected.country} ({selected.capital})
               </p>
-              <p className="text-sm text-gray-400 mt-1">{selected.description}</p>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className={`text-sm ${theme.infoPanelTextSecondary} mt-1`}>{selected.description}</p>
+              <p className={`text-xs ${theme.infoPanelTextMuted} mt-2`}>
                 ~{selected.percentDown}% connectivity loss • Source: {selected.source}
               </p>
             </div>

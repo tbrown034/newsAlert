@@ -105,9 +105,17 @@ export function calculateRegionActivity(
     // Critical = major crisis (Israel/Iran, large-scale protests, etc.)
     // Elevated = notable activity worth watching
     // Normal = typical news day
+    //
+    // Requirements:
+    // - Raised thresholds: 2.5x for elevated, 5x for critical (was 2x/4x)
+    // - Minimum post count: need at least 25 posts to trigger elevated, 50 for critical
+    //   This prevents low-source regions (Asia) from false positives
     let level: RegionActivity['level'];
-    if (multiplier >= 4) level = 'critical';
-    else if (multiplier >= 2) level = 'elevated';
+    const MIN_ELEVATED_COUNT = 25;
+    const MIN_CRITICAL_COUNT = 50;
+
+    if (multiplier >= 5 && count >= MIN_CRITICAL_COUNT) level = 'critical';
+    else if (multiplier >= 2.5 && count >= MIN_ELEVATED_COUNT) level = 'elevated';
     else level = 'normal';
 
     let vsNormal: 'above' | 'below' | 'normal';

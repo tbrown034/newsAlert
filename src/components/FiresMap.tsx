@@ -312,7 +312,7 @@ function FiresMapComponent({ onFireSelect, focusOnId }: FiresMapProps) {
 
       {/* Selected fire details */}
       {selected && (
-        <div className="px-4 py-4 bg-black/40 border-t border-gray-800/40">
+        <div className={`px-4 py-4 ${theme.infoPanelBg} border-t ${theme.infoPanelBorder}`}>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2">
@@ -325,16 +325,16 @@ function FiresMapComponent({ onFireSelect, focusOnId }: FiresMapProps) {
                 >
                   {severityStyles[selected.severity].label}
                 </span>
-                <span className="text-sm text-gray-400">{formatTimeAgo(selected.date)}</span>
-                <span className="text-xs text-gray-500 bg-gray-800 px-2 py-0.5 rounded">
+                <span className={`text-sm ${theme.infoPanelTextMuted}`}>{formatTimeAgo(selected.date)}</span>
+                <span className={`text-xs ${theme.infoPanelTextMuted} bg-slate-700 px-2 py-0.5 rounded`}>
                   {selected.source}
                 </span>
               </div>
-              <p className="text-base font-medium text-gray-200">{selected.title}</p>
+              <p className={`text-base font-medium ${theme.infoPanelTextPrimary}`}>{selected.title}</p>
               {selected.area && (
-                <p className="text-sm text-gray-400 mt-1">{selected.area}</p>
+                <p className={`text-sm ${theme.infoPanelTextSecondary} mt-1`}>{selected.area}</p>
               )}
-              <p className="text-xs text-gray-500 mt-2 line-clamp-2">{selected.description}</p>
+              <p className={`text-xs ${theme.infoPanelTextMuted} mt-2 line-clamp-2`}>{selected.description}</p>
             </div>
             <a
               href={selected.url}

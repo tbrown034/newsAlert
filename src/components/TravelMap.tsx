@@ -320,7 +320,7 @@ function TravelMapComponent({ onAdvisorySelect, focusOnId }: TravelMapProps) {
 
       {/* Selected advisory details */}
       {selected && (
-        <div className="px-4 py-4 bg-black/40 border-t border-gray-800/40">
+        <div className={`px-4 py-4 ${theme.infoPanelBg} border-t ${theme.infoPanelBorder}`}>
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2">
@@ -333,12 +333,12 @@ function TravelMapComponent({ onAdvisorySelect, focusOnId }: TravelMapProps) {
                 >
                   LEVEL {selected.level}
                 </span>
-                <span className="text-sm text-gray-400">{formatDate(selected.updatedAt)}</span>
+                <span className={`text-sm ${theme.infoPanelTextMuted}`}>{formatDate(selected.updatedAt)}</span>
               </div>
-              <p className="text-base font-medium text-gray-200">{selected.country}</p>
-              <p className="text-sm text-gray-400 mt-1">{levelStyles[selected.level].label}</p>
+              <p className={`text-base font-medium ${theme.infoPanelTextPrimary}`}>{selected.country}</p>
+              <p className={`text-sm ${theme.infoPanelTextSecondary} mt-1`}>{levelStyles[selected.level].label}</p>
               {selected.risks.length > 0 && (
-                <p className="text-xs text-gray-500 mt-2">
+                <p className={`text-xs ${theme.infoPanelTextMuted} mt-2`}>
                   Risks: {selected.risks.slice(0, 4).join(', ')}
                 </p>
               )}
