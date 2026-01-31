@@ -29,11 +29,18 @@ type HeroView = 'main' | 'seismic' | 'weather' | 'outages' | 'travel' | 'fires';
 interface HomeClientProps {
   initialData: ApiResponse | null;
   initialRegion: WatchpointId;
+  initialMapFocus?: WatchpointId; // Focus map here without filtering feed
 }
 
-export default function HomeClient({ initialData, initialRegion }: HomeClientProps) {
+export default function HomeClient({ initialData, initialRegion, initialMapFocus }: HomeClientProps) {
   const { data: session } = useSession();
-  const [selectedWatchpoint, setSelectedWatchpoint] = useState<WatchpointId>(initialRegion);
+  const [selectedWatchpoint, setSelectedWatchpointState] = useState<WatchpointId>(initialRegion);
+
+  // Wrapper to persist region selection to localStorage
+  const setSelectedWatchpoint = useCallback((region: WatchpointId) => {
+    setSelectedWatchpointState(region);
+    localStorage.setItem('news-selected-region', region);
+  }, []);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [newsItems, setNewsItems] = useState<NewsItem[]>(() => {
     if (!initialData?.items) return [];
@@ -120,6 +127,14 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
     const saved = localStorage.getItem('news-auto-update');
     if (saved !== null) {
       setAutoUpdate(saved === 'true');
+    }
+  }, []);
+
+  // Restore saved region preference for returning users
+  useEffect(() => {
+    const savedRegion = localStorage.getItem('news-selected-region') as WatchpointId | null;
+    if (savedRegion && ['all', 'us', 'latam', 'middle-east', 'europe-russia', 'asia'].includes(savedRegion)) {
+      setSelectedWatchpointState(savedRegion); // Use state setter directly to avoid re-saving
     }
   }, []);
 
@@ -325,6 +340,9 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
       hasInitialData.current = false;
       // We have SSR data - fetch any items newer than fetchedAt (fills the gap)
       fetchIncrementalRef.current();
+    } else {
+      // No SSR data (failed or timed out) - do a full fetch
+      fetchNewsRef.current();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -760,6 +778,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
                   significantQuakes={significantQuakes}
                   hoursWindow={hoursWindow}
                   useUTC={useUTC}
+                  initialFocus={initialMapFocus}
                 />
               )}
               {heroView === 'seismic' && (
@@ -1206,6 +1225,7 @@ export default function HomeClient({ initialData, initialRegion }: HomeClientPro
             totalPosts={newsItems.length}
             uniqueSources={new Set(newsItems.map(i => i.source.id)).size}
             hoursWindow={hoursWindow}
+            allItemsForTrending={newsItems}
           />
 
           {/* Load more button - shows when there are more items beyond displayLimit */}
