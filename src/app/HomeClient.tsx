@@ -158,7 +158,8 @@ export default function HomeClient({ initialData, initialRegion, initialMapFocus
 
   // Ref to prevent duplicate fetches
   const isFetchingRef = useRef(false);
-  const hasInitialData = useRef(!!initialData);
+  // Check if we have ACTUAL data, not just an empty response
+  const hasInitialData = useRef(!!(initialData?.items?.length));
 
   // Toggle auto-update preference (saves to localStorage in handler, not useEffect)
   const toggleAutoUpdate = useCallback(() => {
